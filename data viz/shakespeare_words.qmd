@@ -9,9 +9,11 @@ execute:
   warning: false
   message: false
 ---
-***Heavily influenced by [@hardin47]("https://github.com/hardin47") Professor Jo Hardin at Pomona College and [@deepdk]("https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38")***
+
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College. Analysis based on [\@deepdk](https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38)***
 
 ## Loading relevant libraries
+
 ```{r}
 library(tidyverse)
 library(scales)
@@ -25,24 +27,29 @@ library(sysfonts)
 ```
 
 ## Importation of the data
+
 ```{r}
 romeo_juliet <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-17/romeo_juliet.csv')
 ```
 
 ### Data Wrangling
+
 Filter the data-set for only the characters Romeo and Juliet.
+
 ```{r}
 romeo_juliet <- romeo_juliet |>  
   filter(character %in% c("Romeo","Juliet")) 
 ```
 
 Making a list of the words that we are not interested in.
+
 ```{r}
 # Create a custom list of words to exclude
 custom_stop_words <- c("thou", "thy", "thee", "thine", "art", "hast", "dost", "ere", "o","hath")
 ```
 
 Make a simple data set that has a column of the character, the word spoke, and the number of times it was spoken.
+
 ```{r}
 word_counts <- romeo_juliet |> 
   unnest_tokens(word, dialogue) |> 
@@ -54,7 +61,9 @@ word_counts <- romeo_juliet |>
 
 word_counts
 ```
+
 Creating a dataset for each character
+
 ```{r}
 juliet <- word_counts |> 
   filter(character == "Juliet")
@@ -64,7 +73,9 @@ romeo <- word_counts |>
 ```
 
 ### Attempt At Importing Fonts
+
 Importing a custom font (has not been able to work yet)
+
 ```{r}
 sysfonts::font_add_google("MedievalSharp", "MedievalSharp")
 showtext::showtext_auto()
@@ -73,14 +84,11 @@ my_font <- "MedievalSharp"
 ```
 
 # Creating The Word Maps
+
 Word maps of the most common words in Romeo and Juliet's lines.
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="49%"}
-
-
-
 ```{r}
 romeo |> 
   ggplot(aes(label = word, size = n, color = n)) +
@@ -94,11 +102,9 @@ romeo |>
   theme_minimal() +
   scale_color_gradient(low = "#1c63d6", high = "#5006bf")
 ```
-
 :::
 
 ::: {.column width="2%"}
-
 :::
 
 ::: {.column width="49%"}
@@ -117,6 +123,4 @@ juliet |>
 
 ```
 :::
-
-::::
-
+:::

@@ -9,8 +9,7 @@ execute:
   warning: false
   message: false
 ---
-***Heavily influenced by Professor Jo Hardin at Pomona College***
-
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College.***
 
 ## Loading relevant libraries
 ```{r}
