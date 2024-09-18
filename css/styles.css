@@ -1,0 +1,44 @@
+/* styles.css */
+
+/* Navbar styles */
+.navbar {
+  background-color: #007bff; /* Blue color for the navbar background */
+  color: #fff; /* White text color in the navbar */
+  padding: 10px 20px; /* Adds padding inside the navbar */
+}
+
+.navbar a {
+  color: #fff; /* White color for links in the navbar */
+  text-decoration: none; /* Removes underline from links */
+  padding: 10px; /* Adds padding around links */
+}
+
+.navbar a:hover {
+  background-color: #0056b3; /* Darker blue for link background on hover */
+}
+
+/* Modern button styles */
+button {
+  background-color: #007bff; /* Blue color for button background */
+  color: #fff; /* White text color on the button */
+  border: none; /* Removes default button border */
+  padding: 10px 20px; /* Adds padding inside the button */
+  border-radius: 5px; /* Rounds the corners of the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue for button background on hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar {
+    text-align: center; /* Center-aligns navbar content on small screens */
+  }
+
+  .navbar a {
+    display: block; /* Makes navbar links block elements */
+    margin-bottom: 10px; /* Adds space between navbar links */
+  }
+}

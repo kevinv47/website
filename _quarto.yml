@@ -3,12 +3,31 @@ project:
   output-dir: docs
 
 website:
-  title: "kevinv47"
+  title: "Kevin Valdivia"
+  site-url: https://yourwebsite.dev  # Add your site URL if applicable
+  description: "Your website description"  # Add a description for the website
   navbar:
-    left:
+    right:
       - href: index.qmd
         text: Home
-      - about.qmd
+#      - href: about.qmd
+#        text: About
+      - text: "Projects"
+        menu:
+          - text: "Under Development"
+      - text: "Data Viz"
+        menu:
+          - href: data viz/school_income.qmd
+            text: "Student Income Status at Elite Schools"
+          - href: data viz/Shakespeare.qmd
+            text: "shakespeare_words.qmd"
+  open-graph:
+    locale: en_US
+  comments:
+    utterances:
+      repo: yourusername/yourrepository  # Add your GitHub repo if using Utterances
+  page-footer:
+    left: "© Copyright 2024 Kevin Valdivia. Except where otherwise noted, all text and images licensed CC-BY-NC 4.0."
 
 format:
   html:
@@ -17,4 +36,3 @@ format:
     toc: true
 
 editor: visual
-

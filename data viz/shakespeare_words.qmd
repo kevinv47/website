@@ -1,0 +1,122 @@
+---
+title: "Creating a Word Map With Custom Shapes"
+subtitle: "Dataset is About The Words Used in Shakespeare's Romeo & Juliet"
+date: "Sep 17, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+***Heavily influenced by [@hardin47]("https://github.com/hardin47") Professor Jo Hardin at Pomona College and [@deepdk]("https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38")***
+
+## Loading relevant libraries
+```{r}
+library(tidyverse)
+library(scales)
+library(tidytext)
+library(devtools)
+library(ggwordcloud)
+library(png)
+library(svglite)
+library(showtext)
+library(sysfonts)
+```
+
+## Importation of the data
+```{r}
+romeo_juliet <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-17/romeo_juliet.csv')
+```
+
+### Data Wrangling
+Filter the data-set for only the characters Romeo and Juliet.
+```{r}
+romeo_juliet <- romeo_juliet |>  
+  filter(character %in% c("Romeo","Juliet")) 
+```
+
+Making a list of the words that we are not interested in.
+```{r}
+# Create a custom list of words to exclude
+custom_stop_words <- c("thou", "thy", "thee", "thine", "art", "hast", "dost", "ere", "o","hath")
+```
+
+Make a simple data set that has a column of the character, the word spoke, and the number of times it was spoken.
+```{r}
+word_counts <- romeo_juliet |> 
+  unnest_tokens(word, dialogue) |> 
+  anti_join(stop_words) |>   # Remove common stop words
+  filter(!str_detect(word, "^[0-9]+$")) |>   # Remove numbers
+  filter(!word %in% custom_stop_words) |>   # Remove custom words
+  mutate(word = stringr::str_replace(word, "'s", "")) |> 
+  count(character, word, sort = TRUE)
+
+word_counts
+```
+Creating a dataset for each character
+```{r}
+juliet <- word_counts |> 
+  filter(character == "Juliet")
+
+romeo <- word_counts |> 
+  filter(character == "Romeo")
+```
+
+### Attempt At Importing Fonts
+Importing a custom font (has not been able to work yet)
+```{r}
+sysfonts::font_add_google("MedievalSharp", "MedievalSharp")
+showtext::showtext_auto()
+
+my_font <- "MedievalSharp"
+```
+
+# Creating The Word Maps
+Word maps of the most common words in Romeo and Juliet's lines.
+
+:::: {.columns}
+
+::: {.column width="49%"}
+
+
+
+```{r}
+romeo |> 
+  ggplot(aes(label = word, size = n, color = n)) +
+  # The following code can be run without the rest to make a simple word cloud
+  # ggwordcloud::geom_text_wordcloud(rm_outside = TURE, shape = "circle") 
+  ggwordcloud::geom_text_wordcloud_area(
+    mask = png::readPNG("media/romeo.png"),
+    rm_outside = TRUE,
+    ) +
+  scale_size_area(max_size = 20) +
+  theme_minimal() +
+  scale_color_gradient(low = "#1c63d6", high = "#5006bf")
+```
+
+:::
+
+::: {.column width="2%"}
+
+:::
+
+::: {.column width="49%"}
+```{r}
+juliet |> 
+  ggplot(aes(label = word, size = n, color = n)) +
+  ggwordcloud::geom_text_wordcloud_area(
+    mask = png::readPNG("media/juliet.png"),
+    rm_outside = TRUE
+  # Couldn't get the custom font to work yet
+  # family = my_font   
+    ) +
+  scale_size_area(max_size = 20) +
+  theme_minimal() +
+  scale_color_gradient(low = "#c41cd6", high = "#5006bf")
+
+```
+:::
+
+::::
+
