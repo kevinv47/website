@@ -70,7 +70,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Kevin Valdivia">
 <meta property="og:description" content="Your website description">
-<meta property="og:image" content="https://yourwebsite.dev/media/headshot.jpg">
+<meta property="og:image" content="media/headshot.jpg">
 <meta property="og:site_name" content="Kevin Valdivia">
 <meta property="og:locale" content="en_US">
 </head>
@@ -114,8 +114,8 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Student Income Status at Elite Schools</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./data viz/Shakespeare.html">
- <span class="dropdown-text">Shakespeare’s Words</span></a>
+    <a class="dropdown-item" href="./data viz/Shakespeare.qmd">
+ <span class="dropdown-text">shakespeare_words.qmd</span></a>
   </li>  
     </ul>
   </li>
@@ -239,7 +239,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/yourwebsite\.dev");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
