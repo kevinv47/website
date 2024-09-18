@@ -4,7 +4,7 @@ project:
 
 website:
   title: "Kevin Valdivia"
-  site-url: https://yourwebsite.dev  # Add your site URL if applicable
+#  site-url: https://yourwebsite.dev  # Add your site URL if applicable
   description: "Your website description"  # Add a description for the website
   navbar:
     right:
