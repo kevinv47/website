@@ -20,7 +20,7 @@ website:
           - href: data viz/school_income.qmd
             text: "Student Income Status at Elite Schools"
           - href: data viz/Shakespeare.qmd
-            text: "shakespeare_words.qmd"
+            text: "Shakespeare Word Cloud"
   open-graph:
     locale: en_US
   comments:
