@@ -1,0 +1,118 @@
+---
+title: "Understanding Chess Match Dataset"
+subtitle: "Using regular expressions and a basic model"
+date: "Oct 1, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College. Analysis based on [\@deepdk](https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38)***
+
+## Packages
+
+```{r}
+library(tidyverse)
+```
+
+## Loading Chess Dataset
+
+The chess dataset this week comes from Lichess.org via [Kaggle/Mitchell J.](https://www.kaggle.com/datasets/datasnaek/chess/data)
+
+The data will also be cleaned during importation, removing all detailed information about the type of opening and leaving only broader categories of data to allow for data aggregation.
+
+```{r}
+chess <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-01/chess.csv') |> 
+  mutate(opening_main = case_when(
+    str_detect(opening_name, ":") ~ str_extract(opening_name, ".+?(?=:)"),
+    str_detect(opening_name, "\\|") ~ str_extract(opening_name, ".+?(?= \\|)"),
+    str_detect(opening_name, "#") ~ str_extract(opening_name, ".+?(?= #)"),
+    TRUE ~ opening_name)) |> 
+  mutate(num_moves = str_count(moves, "\\S+"))
+```
+
+## Collapsig Data
+
+We collapse the data by grouping by opening type and filtering for more than 500 observations with this opening.
+
+```{r}
+top_open <- chess |>  
+  group_by(opening_main) |> 
+  summarize(open_count = n(),
+            open_prop = open_count / nrow(chess)) |> 
+  arrange(desc(open_count)) |> 
+  filter(open_count > 500) |> 
+  select(opening_main) |> 
+  pull()
+
+top_open
+
+chess_top <- chess |> 
+  filter(opening_main %in% top_open)
+```
+
+## Plotting
+
+### Outcomes based on opening used
+
+The following shows the proportion for the winner of the gram depending on what type of opening was used. Only the most popular openings are shown.
+
+```{r}
+chess_top |> 
+  mutate(winner = case_when(
+    winner == "white" ~ "Opener",
+    winner == "black" ~ "Follower",
+    winner == "draw" ~ "Draw")) |> 
+  mutate(winner = factor(winner, levels = c("Follower", "Draw", "Opener"))) |> 
+  ggplot(aes(x = opening_main, fill = winner)) +
+  geom_bar(position = "fill") +
+  # Tilting the text
+  #theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)) +
+  scale_fill_brewer(palette = "Dark2") +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "Proportion",
+      y = "Opening",
+      fill = "Winner",
+      title = "Type Opening With Outcome Proportion")
+```
+
+###Exploring links with player rating We plot player ratings and color the observations by the type of opening. One observationis that the Sicilian openign tends to be used between higher rated player matches and the King's Pawn game is used in lower rated player matches.
+
+```{r}
+chess_top |> 
+  ggplot(aes(x = white_rating, y = black_rating, color = opening_main)) +
+  geom_point() +
+  scale_color_brewer(palette = "Spectral") +
+  labs(x = "White Rating", 
+       y = "Black Rating", 
+       color = "Opening",
+       title = "Player Rating and Type of Opening")
+```
+
+## Model
+
+We make a basic model predicting whether the opening will be sicilian in a parituclar game. The results are below.
+
+```{r}
+chess <- chess |> 
+  mutate(sicilian = ifelse(opening_main == "Sicilian Defense", 1, 0))
+
+glm(sicilian ~ black_rating + num_moves, data = chess, family = binomial) |> 
+  broom::augment(type.predict = "response")
+```
+
+## Graphing the model
+
+A model with more predictive power would have a dark shaded region on the bottom left and another on the top right of the graph. We do not find this in the graph below wo se can say that this model is not capturing the likelihood of Sicilian opening taking place.
+
+```{r}
+glm(sicilian ~ black_rating + white_rating + num_moves + rated, 
+    data = chess, family = "binomial") |> 
+  broom::augment(type.predict = "response") |> 
+  ggplot(aes(x = .fitted, y = sicilian)) + 
+  geom_point(alpha = 0.1)
+```

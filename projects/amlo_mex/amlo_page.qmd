@@ -1,0 +1,68 @@
+---
+title: "Project Under Development"
+subtitle: "How AMLO's MORENA Took Over Mexican Politics"
+date: "Sep 17, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+dep <- read.csv("deputies.csv") 
+unique(dep$party)
+```
+
+```{r}
+# Define the specific order for the parties
+party_order <- c(
+  "National Regeneration Movement (MORENA)",
+  "Ecologist Green Party of Mexico (PVEM)",
+  "Labor Party (PT)",
+  "Institutional Revolutionary Party (PRI)",
+  "National Action Party (PAN)",
+  "Democratic Revolutionary Party (PRD)",
+  "Citizens' Movement (MC)",
+  "Social Encounter Party (PES)",
+  "New Alliance Party (NA)", 
+  "Other Parties"
+)
+
+# Convert the party column to a factor with the specified order
+dep <- dep |> 
+  mutate(party = factor(party, levels = party_order))
+
+# Define the color palette
+party_colors <- c(
+  "National Regeneration Movement (MORENA)" = "#C8102E",# Red
+  "Ecologist Green Party of Mexico (PVEM)" = "#A60000", # Red
+  "Labor Party (PT)" = "#A50000",                       # Red
+  "Institutional Revolutionary Party (PRI)" = "#003DA5",# Blue
+  "National Action Party (PAN)" = "#005EB8",            # Blue
+  "Democratic Revolutionary Party (PRD)" = "#0072BB",   # Blue
+  "Citizens' Movement (MC)" = "#FF6F00",                # Orange
+  "Other parties" = "#7E1F8B",                          # Purple
+  "Social Encounter Party (PES)" = "#5E4B8C",           # Purple
+  "New Alliance Party (NA)" = "#5E4B8C",                # Purple
+  "Other Parties" = "#5E4B8C"
+)
+
+# Create the plot
+dep |> 
+  group_by(party) |> 
+  ggplot(aes(x = year, y = elected, group = party, fill = party)) +
+  geom_col() +
+  scale_fill_manual(values = party_colors) +
+  geom_hline(yintercept = 250, color = "black", size = 1) +  # Add the horizontal line
+  scale_x_continuous(breaks = unique(dep$year)) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +  # Tilt x-axis labels
+  labs(fill = "Party",
+       x = "Year", y = "Elected")
+
+```

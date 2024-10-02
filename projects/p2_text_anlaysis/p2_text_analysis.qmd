@@ -1,0 +1,83 @@
+
+---
+title: "The Office - Text Analysis Project"
+subtitle: "Dataset is Every Line in the Office"
+date: "Sep 30, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+### Loading Packages
+```{r}
+library(tidyverse)
+library(maps)
+```
+
+## Loading the Dataset
+```{r}
+office <- read.csv("the-office_lines.csv")
+colnames(office)
+```
+
+### Dataset Manipulation For Graphing Main 4 Characters Overtime
+```{r}
+main_4_mentions <- office |> 
+  mutate(Jim = ifelse(str_detect(Line, "(?i)jim"), 1, 0)) |> 
+  mutate(Pam = ifelse(str_detect(Line, "(?i)pam"), 1, 0)) |> 
+  mutate(Michael = ifelse(str_detect(Line, "(?i)michael"), 1, 0)) |> 
+  mutate(Dwight = ifelse(str_detect(Line, "(?i)dwight"), 1, 0)) |> 
+  arrange(Season, Episode_Number) |> 
+  group_by(Season, Episode_Number) |> 
+  summarize(Jim = sum(Jim),
+            Pam = sum(Pam),
+            Michael = sum(Michael),
+            Dwight = sum(Dwight)) |> 
+  ungroup() |> 
+  mutate(season_episode_num = row_number()) |> 
+  mutate(season_episode = ifelse(Episode_Number == 1, str_c("S", Season), "")) |> 
+  select(Jim:season_episode) |> 
+  pivot_longer(cols = Jim:Dwight,
+               names_to = "character",
+               values_to = "count")
+main_4_mentions
+```
+
+
+## Graph of the main four characters overtime
+```{r}
+main_4_mentions |> 
+  ggplot(aes(x = season_episode_num, y = count, color = character)) +
+  geom_smooth(se = FALSE) +
+  labs(x = "Season",
+        y = "Count",
+        color = "Character") +
+  scale_x_continuous( breaks = main_4_mentions$season_episode_num,
+                      labels = main_4_mentions$season_episode,
+                      #minor_breaks = NULL      # Remove minor ticks
+                      ) +
+  scale_color_manual(values = c("Pam" = "#FF6F61",
+                                "Jim" = "#007B7F",
+                                "Dwight" = "#7D3C98",
+                                "Michael" = "#DAA520")) +
+  theme_minimal()
+```
+
+
+
+
+
+```{r}
+corporate <- office |> 
+  mutate(corporate = ifelse(str_detect(Line, "(?i)corporate"), 1, 0))
+
+corporate |> 
+  group_by(Character) |>
+  summarize(corporate = sum(corporate)) |> 
+  arrange(desc(corporate)) |> 
+  slice_head(n = 5)
+```
+

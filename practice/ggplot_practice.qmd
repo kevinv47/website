@@ -1,0 +1,111 @@
+---
+title: "ggplot Practice For Review"
+subtitle: "ggplot examples"
+date: "Oct 2, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+***ggplot examples based on plots submitted as HW. Directed by Professor Jo Hardin***
+
+### Opening Library
+
+```{r}
+library(tidyverse)
+```
+
+## Putting a label next to a specific data point
+
+```{r}
+ggplot(midwest, aes(x = percollege, y = percbelowpoverty)) +
+  geom_point(aes(color = state)) + #, shape = state)) +
+  geom_text(aes(label = ifelse((percollege >= 30) & (percbelowpoverty >= 20), county, "")), vjust = -1, hjust = 0.5, color = "red") +
+  labs(x = "Percentage of College Grads", 
+       y = "Percentage below the Poverty Line",        
+       title = "Counties with College Grads and Below the Poverty Line",
+       subtitle = "% of college graduate to % below the poverty line in midwestern counties",
+       color = "State",
+       shape = "State"
+       )
+```
+
+## Plot with facet wrap & geom_smooth
+
+::: callout-note
+`se = FALSE` removes the confidence bands around the line. These bands show the uncertainty around the smooth curve. We'll discuss uncertainty around estimates later in the course and bring these bands back then.
+:::
+
+```{r}
+ggplot(midwest, aes(x = percollege, y = percbelowpoverty, 
+           color = state, shape = state)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(~ state) +
+  labs(x = "Percentage of College Graduates",
+       y = "Percentage Below the Poverty Line",
+       title = "Counties with College Grads and Below the Poverty Line",
+       subtitle = "% of college graduate to % below the poverty line in midwestern counties",
+       color = "State",
+       shape = "State")
+  
+```
+
+## Creating a box plot - Changing the name of the values - Adding a label to a datapoint
+
+```{r}
+ggplot(midwest, aes(x = ifelse(state == "IL", "Illinois", 
+                        ifelse(state == "IN", "Indianapolis", 
+                        ifelse(state == "MI", "Minesota", 
+                        ifelse(state == "OH", "Ohio", "Wisconsin")))), 
+                    y = area)) +
+  geom_boxplot(aes(fill = state), show.legend = FALSE) + 
+  geom_text(aes(label = ifelse((area > 0.09) & (state == "MI"), county, "")), 
+            color = "darkgreen",
+            vjust = 1, hjust = -0.1) +
+  labs(x = "State",
+       y = "County Area",
+       title = "Box Plot's of Midwestern Counties Land Area")
+```
+
+## Proportion bar graph with parameter: position = "fill"
+
+::: callout-note
+The `fill` must be a `categorical variable`.
+:::
+
+```{r}
+#| label: hint
+
+midwest <- midwest |>
+  mutate(metro = if_else(inmetro == 1, "Yes", "No"))
+```
+
+```{r}
+ggplot(midwest, aes(x = state, fill = metro)) +
+  geom_bar(position = "fill") +
+  labs(x = "State",
+       y = "Proportion",
+       fill = "Metro",
+       title = "Proportion of Counties that are Metro Areas by State") +
+  scale_fill_manual(values = c("Yes" = "darkblue", "No" = "darkred"))
+```
+
+## geom_point, fact_wrap, and alpha parameter
+
+::: callout-tip \## Hint - [The `ggplot2` reference for themes](https://ggplot2.tidyverse.org/reference/ggtheme.html) will be helpful in determining the theme. - The `size` of the points is 2. - The transparency (`alpha`) of the points is 0.5. - You can put line breaks in labels with `\n`. :::
+
+```{r}
+ggplot(midwest, aes(percollege, percbelowpoverty, color = percwhite)) +
+  geom_point(size = 2, alpha = 0.5) +
+  facet_wrap(~ state) +
+  theme_minimal() +
+  labs(x = "% college educated",
+       y = "% below poverty line",
+       title = "College Education and Population Under Poverty Line ",
+       subtitle = "For Counties in the Midwest by States",
+       color = "% white")
+```

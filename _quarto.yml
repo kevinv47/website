@@ -14,13 +14,20 @@ website:
 #        text: About
       - text: "Projects"
         menu:
-          - text: "Under Development"
-      - text: "Data Viz"
+          - href: projects/amlo_mex/amlo_page.qmd
+            text: "AMLO Prject (under development)"
+      - text: "Tidytuesday"
         menu:
-          - href: data viz/school_income.qmd
+          - href: tidytuesday/school_income.qmd
             text: "Student Income Status at Elite Schools"
-          - href: data viz/shakespeare_words.qmd
+          - href: tidytuesday/shakespeare_words.qmd
             text: "Shakespeare Word Cloud"
+          - href: tidytuesday/chess_matches.qmd
+            text: "Chess Matches"
+      - text: "Practice"
+        menu:
+          - href: practice/ggplot_practice.qmd
+            text: "ggplot Practice"
   open-graph:
     locale: en_US
   comments:
