@@ -14,7 +14,6 @@ execute:
 ### Loading Packages
 ```{r}
 library(tidyverse)
-library(maps)
 ```
 
 ## Loading the Dataset
@@ -80,4 +79,42 @@ corporate |>
   arrange(desc(corporate)) |> 
   slice_head(n = 5)
 ```
+
+
+```{r}
+main_characters <- c("Michael", "Jim", "Pam", "Dwight", "Ryan", "Angela", 
+                "Andy", "Stanley", "Phyllis", "Kelly", "Toby", 
+                "Kevin", "Oscar", "Creed", "Meredith")
+
+ontask <- office |> 
+  filter(Character %in% main_characters) |> 
+  mutate(on_task = case_when(
+    str_detect(Line, "(?i)(Sales call|Close the deal|Client meeting|Team building|Sales quota|Dunder Mifflin|Paper company|File|Report|Workplace safety|Expense report|Business trip|Client relations|Company policy|Human resources|Submit a proposal|Meet the deadline|Job performance|Close a sale|Office supplies|Sales pitch|Productivity report|Employee evaluation|Quarterly review|Manager meeting|Sales team|Sales numbers|Work email|Conference call|Work-life balance|Overtime|Office hours|Weekly meeting|Promotion|Sales report|Job interview|Submit the paperwork|Company-wide memo|Business strategy|Client presentation|Office party|Budget meeting|New hire|Work project|Revenue target|Annual review|Management decision|Employee training|Company retreat|Work performance)") ~ 1,
+    TRUE ~ 0)) |> 
+  group_by(Character) |> 
+  summarise(prop = sum(on_task)/n())
+```
+
+
+```{r}
+pallete <- c("Pam" = "#FF6F61",      # Coral
+              "Jim" = "#007B7F",      # Teal
+                                "Dwight" = "#7D3C98",   # Purple
+                                "Michael" = "#DAA520",  # Goldenrod
+                                "Angela" = "#F1C40F",   # Bright Yellow
+                                "Stanley" = "#E74C3C",   # Bright Red
+                                "Phyllis" = "#3498DB",   # Bright Blue
+                                "Ryan" = "#9B59B6",      # Lavender
+                                "Toby" = "#2ECC71",      # Bright Green
+                                "Kelly" = "#E67E22"      # Bright Orange
+)
+
+ontask |> 
+  ggplot(aes(x = reorder(Character, prop), y = prop, color = Character)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_manual(values = pallete) +
+  theme_minimal()
+```
+
 
