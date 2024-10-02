@@ -1,8 +1,7 @@
-
 ---
 title: "The Office - Text Analysis Project"
 subtitle: "Dataset is Every Line in the Office"
-date: "Sep 30, 2024"
+date: "Oct 2, 2024"
 author: "Kevin Valdivia"
 format: html
 toc: false # Table of contents
@@ -12,17 +11,20 @@ execute:
 ---
 
 ### Loading Packages
+
 ```{r}
 library(tidyverse)
 ```
 
 ## Loading the Dataset
+
 ```{r}
 office <- read.csv("the-office_lines.csv")
 colnames(office)
 ```
 
 ### Dataset Manipulation For Graphing Main 4 Characters Overtime
+
 ```{r}
 main_4_mentions <- office |> 
   mutate(Jim = ifelse(str_detect(Line, "(?i)jim"), 1, 0)) |> 
@@ -45,8 +47,8 @@ main_4_mentions <- office |>
 main_4_mentions
 ```
 
-
 ## Graph of the main four characters overtime
+
 ```{r}
 main_4_mentions |> 
   ggplot(aes(x = season_episode_num, y = count, color = character)) +
@@ -65,10 +67,6 @@ main_4_mentions |>
   theme_minimal()
 ```
 
-
-
-
-
 ```{r}
 corporate <- office |> 
   mutate(corporate = ifelse(str_detect(Line, "(?i)corporate"), 1, 0))
@@ -79,7 +77,6 @@ corporate |>
   arrange(desc(corporate)) |> 
   slice_head(n = 5)
 ```
-
 
 ```{r}
 main_characters <- c("Michael", "Jim", "Pam", "Dwight", "Ryan", "Angela", 
@@ -95,26 +92,22 @@ ontask <- office |>
   summarise(prop = sum(on_task)/n())
 ```
 
-
 ```{r}
-pallete <- c("Pam" = "#FF6F61",      # Coral
-              "Jim" = "#007B7F",      # Teal
-                                "Dwight" = "#7D3C98",   # Purple
-                                "Michael" = "#DAA520",  # Goldenrod
-                                "Angela" = "#F1C40F",   # Bright Yellow
-                                "Stanley" = "#E74C3C",   # Bright Red
-                                "Phyllis" = "#3498DB",   # Bright Blue
-                                "Ryan" = "#9B59B6",      # Lavender
-                                "Toby" = "#2ECC71",      # Bright Green
-                                "Kelly" = "#E67E22"      # Bright Orange
-)
+palette <- c("Michael" = "#7FB3D5", "Jim" = "#8B8B8B", "Pam" = "#FF8DAA", 
+             "Dwight" = "#FFD700", "Ryan" = "#28A745", "Angela" = "#5B2C6F", 
+             "Andy" = "#FF6F61", "Stanley" = "#5C3A1D", "Phyllis" = "#A0522D", 
+             "Kelly" = "#FF1493", "Toby" = "#4A90E2", "Kevin" = "#FFA500", 
+             "Oscar" = "#1E4D2B", "Creed" = "#C0C0C0", "Meredith" = "#A50000")
+
+
 
 ontask |> 
-  ggplot(aes(x = reorder(Character, prop), y = prop, color = Character)) +
-  geom_col() +
+  ggplot(aes(x = reorder(Character, prop), y = prop, fill = Character)) +
+  geom_col(show.legend = FALSE) +
   coord_flip() +
-  scale_fill_manual(values = pallete) +
-  theme_minimal()
+  scale_fill_manual(values = palette) +
+  theme_minimal() +
+  labs(y = "Percentage",
+       x = "Character",
+       title = "Percentage of Work Related Lines By Character From 'The Office'")
 ```
-
-

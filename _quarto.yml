@@ -15,7 +15,9 @@ website:
       - text: "Projects"
         menu:
           - href: projects/amlo_mex/amlo_page.qmd
-            text: "AMLO Prject (under development)"
+            text: "AMLO Project (under development)"
+          - href: projects/the office/office_text_analysis.qmd
+            text: "Mini The Office Text Analysis"
       - text: "Tidytuesday"
         menu:
           - href: tidytuesday/school_income.qmd
