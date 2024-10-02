@@ -10,7 +10,7 @@ execute:
   message: false
 ---
 
-***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College. Analysis based on [\@deepdk](https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38)***
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College***
 
 ## Packages
 
