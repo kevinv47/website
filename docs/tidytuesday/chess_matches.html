@@ -143,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li>
     <a class="dropdown-item" href="../projects/the office/office_text_analysis.html">
- <span class="dropdown-text">Mini The Office Text Analysis</span></a>
+ <span class="dropdown-text">Text Analysis: <em>The Office</em></span></a>
   </li>  
     </ul>
   </li>
@@ -322,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="model" class="level2">
 <h2 class="anchored" data-anchor-id="model">Model</h2>
-<p>We make a basic model predicting whether the opening will be sicilian in a parituclar game. The results are below.</p>
+<p>We make a basic model predicting whether the opening will be Sicilian in a particular game. The results are below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chess <span class="ot">&lt;-</span> chess <span class="sc">|&gt;</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sicilian =</span> <span class="fu">ifelse</span>(opening_main <span class="sc">==</span> <span class="st">"Sicilian Defense"</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
@@ -350,7 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="graphing-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="graphing-the-model">Graphing the model</h2>
-<p>A model with more predictive power would have a dark shaded region on the bottom left and another on the top right of the graph. We do not find this in the graph below wo se can say that this model is not capturing the likelihood of Sicilian opening taking place.</p>
+<p>A model with more predictive power would have a dark shaded region on the bottom left and another on the top right of the graph. We do not find this in the graph below so we can say that this model is not capturing the likelihood of Sicilian opening taking place.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glm</span>(sicilian <span class="sc">~</span> black_rating <span class="sc">+</span> white_rating <span class="sc">+</span> num_moves <span class="sc">+</span> rated, </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> chess, <span class="at">family =</span> <span class="st">"binomial"</span>) <span class="sc">|&gt;</span> </span>

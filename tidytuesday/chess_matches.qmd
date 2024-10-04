@@ -95,7 +95,7 @@ chess_top |>
 
 ## Model
 
-We make a basic model predicting whether the opening will be sicilian in a parituclar game. The results are below.
+We make a basic model predicting whether the opening will be Sicilian in a particular game. The results are below.
 
 ```{r}
 chess <- chess |> 
@@ -107,7 +107,7 @@ glm(sicilian ~ black_rating + num_moves, data = chess, family = binomial) |>
 
 ## Graphing the model
 
-A model with more predictive power would have a dark shaded region on the bottom left and another on the top right of the graph. We do not find this in the graph below wo se can say that this model is not capturing the likelihood of Sicilian opening taking place.
+A model with more predictive power would have a dark shaded region on the bottom left and another on the top right of the graph. We do not find this in the graph below so we can say that this model is not capturing the likelihood of Sicilian opening taking place.
 
 ```{r}
 glm(sicilian ~ black_rating + white_rating + num_moves + rated, 

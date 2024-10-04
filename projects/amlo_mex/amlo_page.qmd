@@ -12,6 +12,8 @@ execute:
 
 ```{r}
 library(tidyverse)
+librar(ggparliament)
+library(gganimate)
 ```
 
 ```{r}
@@ -31,8 +33,7 @@ party_order <- c(
   "Citizens' Movement (MC)",
   "Social Encounter Party (PES)",
   "New Alliance Party (NA)", 
-  "Other Parties"
-)
+  "Other Parties")
 
 # Convert the party column to a factor with the specified order
 dep <- dep |> 
@@ -64,7 +65,6 @@ dep |>
   theme(axis.text.x = element_text(angle = 30, hjust = 1)) +  # Tilt x-axis labels
   labs(fill = "Party",
        x = "Year", y = "Elected")
-
 ```
 
 
