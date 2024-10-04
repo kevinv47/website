@@ -95,7 +95,7 @@
     "href": "practice/ggplot_practice.html",
     "title": "ggplot Practice For Review",
     "section": "",
-    "text": "ggplot examples based on plots submitted as HW. Directed by Professor Jo Hardin"
+    "text": "Some ggplot examples based on plots submitted as HW. Directed by Professor Jo Hardin"
   },
   {
     "objectID": "practice/ggplot_practice.html#putting-a-label-next-to-a-specific-data-point",
@@ -271,5 +271,19 @@
     "title": "The Office - Mini Text Analysis Project",
     "section": "Plotting of average amount of words in a line",
     "text": "Plotting of average amount of words in a line\nThis graph illustrates the average number of words per character’s line, highlighting which characters dominate conversations and which tend to be interrupted mid-thought. However, shorter lines may simply indicate they have less to say. Michael has the longest lines, followed by Andy and Dwight, while Phyllis and Meredith, the two female characters, have the shortest lines.\n\navg_line_length |&gt; \n  ggplot(aes(x = reorder(Character, avg_line), y = avg_line, fill = Character)) +\n  geom_col(show.legend = FALSE) +\n  geom_text(aes(label = paste0(round(avg_line, 1))), \n            vjust = 0.5, \n            hjust = 1.11,\n            size = 5,\n            color = \"white\",\n            fontface = \"bold\") +\n  scale_fill_manual(values = palette) +\n  labs(y = \"Average Word Count\",\n       x = \"Character\",\n       title = \"Average Count of Words in a Character's Line\") +\n  theme_minimal() +\n  theme(axis.text.x = element_blank(),\n        panel.grid = element_blank(),\n        plot.title = element_text(hjust = 0.5)) +\n  coord_flip()"
+  },
+  {
+    "objectID": "practice/ggplot_practice.html#data",
+    "href": "practice/ggplot_practice.html#data",
+    "title": "ggplot Practice For Review",
+    "section": "Data",
+    "text": "Data\nThis data will be used in one of my projects analyzing MORENA’s rise to power. I compiled the data from IPU (Global data on national parliaments). We will only make a graph for the 2024 composition but a more in depth analysis will be a part of my project under development.\n\n\n\n\n\n\nNote\n\n\n\nThe party name must be under a variable named party and the number of seats in seats.\n\n\n\ndep_2024 &lt;- read.csv(\"deputies.csv\") |&gt; \n  mutate(party = factor(party, levels = party_order)) |&gt; \n  arrange(party) |&gt; \n  filter(year == 2024) |&gt; \n  rename(seats = elected) |&gt; \n  select(-year)\n\nhead(dep_2024)\n\n                                    party seats\n1 National Regeneration Movement (MORENA)   236\n2  Ecologist Green Party of Mexico (PVEM)    77\n3                        Labor Party (PT)    51\n4                 Citizens' Movement (MC)    27\n5                           Other Parties     1\n6 Institutional Revolutionary Party (PRI)    35"
+  },
+  {
+    "objectID": "practice/ggplot_practice.html#creating-the-ggparliament-data-strcutre",
+    "href": "practice/ggplot_practice.html#creating-the-ggparliament-data-strcutre",
+    "title": "ggplot Practice For Review",
+    "section": "Creating the ggparliament data strcutre",
+    "text": "Creating the ggparliament data strcutre\nThis step is essential to be able to use ggpalriament in ggplot. The data structure must be changed in the following manner.\n\n# Use ggparliament's data structure to prepare the parliament plot\nmex_par_data &lt;- parliament_data(\n  election_data = dep_2024,\n  type = \"semicircle\",  # This sets the semicircular layout\n  parl_rows = 11         # Number of rows in the semicircle (adjust this based on number of seats)\n)\n\nIn the graph, shades of red represent the ‘Sigamos Haciendo Historia’ coalition, shades of blue represent the ‘Fuerza y Corazón por México’ coalition, orange represents the Movimiento Ciudadano party, and the purple circle represents other parties.\n\nmex_par_data |&gt; \n# Plot the semicircular parliament chart\n  ggplot(aes(x = x, y = y, colour = party, fill = party)) +\n    geom_parliament_seats(size = 4.5) +  # Adjust based on how large you want the circles\n    scale_colour_manual(values = party_colors) +  # Border colors\n    theme_void() +  # Remove axis and background\n    theme(legend.position = \"null\") + # Position cna be changed to bottom, right, etc...\n    labs(title = \"Deptuies Elected in the 2025 Mexican Election by Party\")"
   }
 ]

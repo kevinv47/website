@@ -139,7 +139,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-projects">    
         <li>
     <a class="dropdown-item" href="../projects/amlo_mex/amlo_page.html">
- <span class="dropdown-text">AMLO Prject (under development)</span></a>
+ <span class="dropdown-text">AMLO Project (under development)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/the office/office_text_analysis.html">
+ <span class="dropdown-text">Text Analysis: <em>The Office</em></span></a>
   </li>  
     </ul>
   </li>
@@ -220,7 +224,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><strong><em>ggplot examples based on plots submitted as HW. Directed by Professor Jo Hardin</em></strong></p>
+<p><strong><em>Some ggplot examples based on plots submitted as HW. Directed by Professor Jo Hardin</em></strong></p>
 <section id="opening-library" class="level3">
 <h3 class="anchored" data-anchor-id="opening-library">Opening Library</h3>
 <div class="cell">
@@ -366,8 +370,119 @@ Note
 </div>
 </div>
 </div>
+</section>
+<section id="using-ggparliament" class="level1">
+<h1>Using ggparliament</h1>
+<p>Install/Load ggparliament. If it the installation is not working use the commented install below.It was retrieved from <a href="https://github.com/zmeers/ggparliament">here</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># "stable version that did not work for me:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggparliament")</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># version from source that worked for me:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("zmeers/ggparliament")</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggparliament)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="defining-order-and-color" class="level3">
+<h3 class="anchored" data-anchor-id="defining-order-and-color">Defining order and color</h3>
+<p>Before I load the data I define the order I want the parties to appear (the order I chose is somewhat arbitrary). I also chose the colors here (colors are somewhat based on party coalitions).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the specific order for the parties</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>party_order <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"National Regeneration Movement (MORENA)"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ecologist Green Party of Mexico (PVEM)"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Labor Party (PT)"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Citizens' Movement (MC)"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Social Encounter Party (PES)"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"New Alliance Party (NA)"</span>, </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other Parties"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Institutional Revolutionary Party (PRI)"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"National Action Party (PAN)"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Democratic Revolutionary Party (PRD)"</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the color palette</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>party_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"National Regeneration Movement (MORENA)"</span> <span class="ot">=</span> <span class="st">"#C8102E"</span>,<span class="co"># Red</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ecologist Green Party of Mexico (PVEM)"</span> <span class="ot">=</span> <span class="st">"#A60000"</span>, <span class="co"># Red</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Labor Party (PT)"</span> <span class="ot">=</span> <span class="st">"#A50000"</span>,                       <span class="co"># Red</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Citizens' Movement (MC)"</span> <span class="ot">=</span> <span class="st">"#FF6F00"</span>,                <span class="co"># Orange</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other parties"</span> <span class="ot">=</span> <span class="st">"#7E1F8B"</span>,                          <span class="co"># Purple</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Social Encounter Party (PES)"</span> <span class="ot">=</span> <span class="st">"#5E4B8C"</span>,           <span class="co"># Purple</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"New Alliance Party (NA)"</span> <span class="ot">=</span> <span class="st">"#5E4B8C"</span>,                <span class="co"># Purple</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other Parties"</span> <span class="ot">=</span> <span class="st">"#5E4B8C"</span>,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Institutional Revolutionary Party (PRI)"</span> <span class="ot">=</span> <span class="st">"#003DA5"</span>,<span class="co"># Blue</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"National Action Party (PAN)"</span> <span class="ot">=</span> <span class="st">"#005EB8"</span>,            <span class="co"># Blue</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Democratic Revolutionary Party (PRD)"</span> <span class="ot">=</span> <span class="st">"#0072BB"</span>   <span class="co"># Blue</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>This data will be used in one of my projects analyzing MORENA’s rise to power. I compiled the data from <a href="https://data.ipu.org/parliament/MX/MX-LC01/working-methods/structure/">IPU</a> (Global data on national parliaments). We will only make a graph for the 2024 composition but a more in depth analysis will be a part of my project under development.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The party name must be under a variable named <code>party</code> and the number of seats in <code>seats</code>.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dep_2024 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"deputies.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">party =</span> <span class="fu">factor</span>(party, <span class="at">levels =</span> party_order)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(party) <span class="sc">|&gt;</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">seats =</span> elected) <span class="sc">|&gt;</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>year)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dep_2024)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                    party seats
+1 National Regeneration Movement (MORENA)   236
+2  Ecologist Green Party of Mexico (PVEM)    77
+3                        Labor Party (PT)    51
+4                 Citizens' Movement (MC)    27
+5                           Other Parties     1
+6 Institutional Revolutionary Party (PRI)    35</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-the-ggparliament-data-strcutre" class="level2">
+<h2 class="anchored" data-anchor-id="creating-the-ggparliament-data-strcutre">Creating the ggparliament data strcutre</h2>
+<p>This step is essential to be able to use ggpalriament in ggplot. The data structure must be changed in the following manner.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use ggparliament's data structure to prepare the parliament plot</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>mex_par_data <span class="ot">&lt;-</span> <span class="fu">parliament_data</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">election_data =</span> dep_2024,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"semicircle"</span>,  <span class="co"># This sets the semicircular layout</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parl_rows =</span> <span class="dv">11</span>         <span class="co"># Number of rows in the semicircle (adjust this based on number of seats)</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the graph, shades of red represent the ‘Sigamos Haciendo Historia’ coalition, shades of blue represent the ‘Fuerza y Corazón por México’ coalition, orange represents the Movimiento Ciudadano party, and the purple circle represents other parties.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mex_par_data <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the semicircular parliament chart</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">colour =</span> party, <span class="at">fill =</span> party)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_parliament_seats</span>(<span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span>  <span class="co"># Adjust based on how large you want the circles</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> party_colors) <span class="sc">+</span>  <span class="co"># Border colors</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_void</span>() <span class="sc">+</span>  <span class="co"># Remove axis and background</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"null"</span>) <span class="sc">+</span> <span class="co"># Position cna be changed to bottom, right, etc...</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Deptuies Elected in the 2025 Mexican Election by Party"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ggplot_practice_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

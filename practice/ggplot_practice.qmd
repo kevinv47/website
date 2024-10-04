@@ -10,7 +10,7 @@ execute:
   message: false
 ---
 
-***ggplot examples based on plots submitted as HW. Directed by Professor Jo Hardin***
+***Some ggplot examples based on plots submitted as HW. Directed by Professor Jo Hardin***
 
 ### Opening Library
 
@@ -109,3 +109,95 @@ ggplot(midwest, aes(percollege, percbelowpoverty, color = percwhite)) +
        subtitle = "For Counties in the Midwest by States",
        color = "% white")
 ```
+
+# Using ggparliament
+
+Install/Load ggparliament. If it the installation is not working use the commented install below.It was retrieved from [here](https://github.com/zmeers/ggparliament).
+
+```{r}
+# "stable version that did not work for me:
+# install.packages("ggparliament")
+# version from source that worked for me:
+# devtools::install_github("zmeers/ggparliament")
+library(ggparliament)
+```
+
+### Defining order and color
+Before I load the data I define the order I want the parties to appear (the order I chose is somewhat arbitrary). I also chose the colors here (colors are somewhat based on party coalitions).
+
+```{r}
+# Define the specific order for the parties
+party_order <- c(
+  "National Regeneration Movement (MORENA)",
+  "Ecologist Green Party of Mexico (PVEM)",
+  "Labor Party (PT)",
+  "Citizens' Movement (MC)",
+  "Social Encounter Party (PES)",
+  "New Alliance Party (NA)", 
+  "Other Parties",
+  "Institutional Revolutionary Party (PRI)",
+  "National Action Party (PAN)",
+  "Democratic Revolutionary Party (PRD)"
+)
+
+# Define the color palette
+party_colors <- c(
+  "National Regeneration Movement (MORENA)" = "#C8102E",# Red
+  "Ecologist Green Party of Mexico (PVEM)" = "#A60000", # Red
+  "Labor Party (PT)" = "#A50000",                       # Red
+    "Citizens' Movement (MC)" = "#FF6F00",                # Orange
+  "Other parties" = "#7E1F8B",                          # Purple
+  "Social Encounter Party (PES)" = "#5E4B8C",           # Purple
+  "New Alliance Party (NA)" = "#5E4B8C",                # Purple
+  "Other Parties" = "#5E4B8C",
+  "Institutional Revolutionary Party (PRI)" = "#003DA5",# Blue
+  "National Action Party (PAN)" = "#005EB8",            # Blue
+  "Democratic Revolutionary Party (PRD)" = "#0072BB"   # Blue
+)
+```
+
+
+## Data
+
+This data will be used in one of my projects analyzing MORENA's rise to power. I compiled the data from [IPU](https://data.ipu.org/parliament/MX/MX-LC01/working-methods/structure/) (Global data on national parliaments). We will only make a graph for the 2024 composition but a more in depth analysis will be a part of my project under development. 
+
+::: callout-note
+The party name must be under a variable named `party` and the number of seats in `seats`.
+:::
+
+```{r}
+dep_2024 <- read.csv("deputies.csv") |> 
+  mutate(party = factor(party, levels = party_order)) |> 
+  arrange(party) |> 
+  filter(year == 2024) |> 
+  rename(seats = elected) |> 
+  select(-year)
+
+head(dep_2024)
+```
+
+## Creating the ggparliament data strcutre
+
+This step is essential to be able to use ggpalriament in ggplot. The data structure must be changed in the following manner.
+
+```{r}
+# Use ggparliament's data structure to prepare the parliament plot
+mex_par_data <- parliament_data(
+  election_data = dep_2024,
+  type = "semicircle",  # This sets the semicircular layout
+  parl_rows = 11         # Number of rows in the semicircle (adjust this based on number of seats)
+)
+```
+
+In the graph, shades of red represent the 'Sigamos Haciendo Historia' coalition, shades of blue represent the 'Fuerza y Corazón por México' coalition, orange represents the Movimiento Ciudadano party, and the purple circle represents other parties.
+```{r}
+mex_par_data |> 
+# Plot the semicircular parliament chart
+  ggplot(aes(x = x, y = y, colour = party, fill = party)) +
+    geom_parliament_seats(size = 4.5) +  # Adjust based on how large you want the circles
+    scale_colour_manual(values = party_colors) +  # Border colors
+    theme_void() +  # Remove axis and background
+    theme(legend.position = "null") + # Position cna be changed to bottom, right, etc...
+    labs(title = "Deptuies Elected in the 2025 Mexican Election by Party") 
+```
+
