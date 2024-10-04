@@ -185,19 +185,19 @@ This step is essential to be able to use ggpalriament in ggplot. The data struct
 mex_par_data <- parliament_data(
   election_data = dep_2024,
   type = "semicircle",  # This sets the semicircular layout
-  parl_rows = 11         # Number of rows in the semicircle (adjust this based on number of seats)
+  parl_rows = 10        # Number of rows in the semicircle (adjust this based on number of seats)
 )
 ```
 
 In the graph, shades of red represent the 'Sigamos Haciendo Historia' coalition, shades of blue represent the 'Fuerza y Corazón por México' coalition, orange represents the Movimiento Ciudadano party, and the purple circle represents other parties.
-```{r}
+```{r, fig.width=10, fig.height=6}
+# The above fig dimensions were changed to avoid narrowing of the graph
 mex_par_data |> 
 # Plot the semicircular parliament chart
   ggplot(aes(x = x, y = y, colour = party, fill = party)) +
-    geom_parliament_seats(size = 4.5) +  # Adjust based on how large you want the circles
+    geom_parliament_seats(size = 5.5) +  # Adjust based on how large you want the circles
     scale_colour_manual(values = party_colors) +  # Border colors
     theme_void() +  # Remove axis and background
     theme(legend.position = "null") + # Position cna be changed to bottom, right, etc...
     labs(title = "Deptuies Elected in the 2025 Mexican Election by Party") 
 ```
-
