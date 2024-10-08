@@ -123,6 +123,7 @@ library(ggparliament)
 ```
 
 ### Defining order and color
+
 Before I load the data I define the order I want the parties to appear (the order I chose is somewhat arbitrary). I also chose the colors here (colors are somewhat based on party coalitions).
 
 ```{r}
@@ -156,10 +157,9 @@ party_colors <- c(
 )
 ```
 
-
 ## Data
 
-This data will be used in one of my projects analyzing MORENA's rise to power. I compiled the data from [IPU](https://data.ipu.org/parliament/MX/MX-LC01/working-methods/structure/) (Global data on national parliaments). We will only make a graph for the 2024 composition but a more in depth analysis will be a part of my project under development. 
+This data will be used in one of my projects analyzing MORENA's rise to power. I compiled the data from [IPU](https://data.ipu.org/parliament/MX/MX-LC01/working-methods/structure/) (Global data on national parliaments). We will only make a graph for the 2024 composition but a more in depth analysis will be a part of my project under development.
 
 ::: callout-note
 The party name must be under a variable named `party` and the number of seats in `seats`.
@@ -190,6 +190,7 @@ mex_par_data <- parliament_data(
 ```
 
 In the graph, shades of red represent the 'Sigamos Haciendo Historia' coalition, shades of blue represent the 'Fuerza y Corazón por México' coalition, orange represents the Movimiento Ciudadano party, and the purple circle represents other parties.
+
 ```{r, fig.width=10, fig.height=6}
 # The above fig dimensions were changed to avoid narrowing of the graph
 mex_par_data |> 

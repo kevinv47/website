@@ -26,6 +26,8 @@ website:
             text: "Shakespeare Word Cloud"
           - href: tidytuesday/chess_matches.qmd
             text: "Chess Matches"
+          - href: tidytuesday/biodiversity_national_parks.qmd
+            text: "Biodiversity In National Parks"
       - text: "Practice"
         menu:
           - href: practice/ggplot_practice.qmd

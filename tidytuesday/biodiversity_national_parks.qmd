@@ -1,0 +1,112 @@
+---
+title: "Biodiverisity in West Coast National Parks"
+subtitle: "Creating a Waffle Plot of Unique Species Spotted"
+date: "Oct 8, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College.***
+
+### Libraries Used
+Waffle was used to create the waffle graph.
+```{r}
+library(tidyverse)
+library(waffle)
+```
+
+
+### Data importation
+This Tidytuesday dataset was curated by [f.hull](https://github.com/frankiethull) and comes from NPSpecies - [The National Park Service biodiversity database](https://irma.nps.gov/NPSpecies/). This data was accessed on September 2nd, 2024.
+
+```{r}
+species <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-08/most_visited_nps_species_data.csv')
+```
+
+```{r}
+species |> 
+  distinct(ParkName)
+```
+
+
+
+We see the Great Smoky Mountains (GRSM) has a much higher amount of biodiveristy than any other park even when examining known present species.
+```{r}
+species |> 
+  group_by(ParkCode, Occurrence) |> 
+  summarize(biodiv = n()) |> 
+  ggplot(aes(ParkCode, biodiv, color = Occurrence)) +
+  geom_point(size = 2) +
+  #scale_y_log10() +
+  coord_flip() +
+  labs(x = "Unqiue Species",
+       y = "Park Code",
+       color = "Occurence\nClassification",
+       title = "Unique Species At Popular National Parks\nby the Species Occurence Classification")+
+  theme_minimal()
+```
+
+# Creating a Waffle plot
+
+First I create a dataset called wc_species that has the west coast national parks and filters for 
+
+```{r}
+wc_species <- species |> 
+  count(ParkCode, CategoryName, ParkName) |> 
+  filter(n>=10 & ParkCode %in% c("JOTR", "YOSE", "OLYM")) |> 
+  mutate(n = round(n/10))
+```
+
+### Creating a color pallete
+Here I identify the unique biological categories in west coast naitonal parks.
+```{r}
+unique(wc_species$CategoryName)
+```
+I use ChatGPT to create a color scheme based of off htese biological categories that will be easy to see in a waffle chart.
+```{r}
+custom_palette <- c(
+  "Bacteria" = "#FF6347",            
+  "Bird" = "#1E90FF",                
+  "Fungi" = "#A0522D",               
+  "Insect" = "#FFD700",              
+  "Mammal" = "#B22222",              
+  "Other Non-vertebrates" = "#7CFC00",
+  "Reptile" = "#9ACD32",             
+  "Spider/Scorpion" = "#8A2BE2",     
+  "Vascular Plant" = "#4E7C31",      
+  "Amphibian" = "#DAA520",           
+  "Fish" = "#4682B4"                 
+)
+```
+
+
+## Plotting
+I plot a waffle chart that shows the biodiversity of biological groups amoung the three west coast naitonal parks in the dataset.
+```{r}
+wc_species |> 
+  mutate(ParkName = str_extract(ParkName, ".*(?= National Park)")) |> 
+  ggplot(aes(fill = CategoryName, values = n)) +
+  geom_waffle(color = "white", size=0.25, n_rows = 10, flip = TRUE) +
+  facet_wrap(~ParkName, strip.position = "bottom") +
+  scale_x_discrete() +
+  scale_y_continuous(label = function(x) x * 100, 
+                    expand = c(0,0)) +
+  coord_equal() +
+  theme_minimal() +
+theme(
+    panel.grid = element_blank(), 
+    axis.ticks.y = element_line()
+    #strip.text = element_text(face = "bold")  # Make facet labels bold
+  ) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  scale_fill_manual(values = custom_palette) +
+  labs(fill = "Biological Group",
+       title = "Biodiversity in West Coast National Parks",
+       subtitle = "Each Square Represents 10 Species by Biological Category")
+```
+
+

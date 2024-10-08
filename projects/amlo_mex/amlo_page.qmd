@@ -10,62 +10,126 @@ execute:
   message: false
 ---
 
+
 ```{r}
+# Libraries used
 library(tidyverse)
-librar(ggparliament)
+library(ggparliament)
 library(gganimate)
 ```
 
-```{r}
-dep <- read.csv("deputies.csv") 
-unique(dep$party)
-```
 
 ```{r}
-# Define the specific order for the parties
-party_order <- c(
-  "National Regeneration Movement (MORENA)",
-  "Ecologist Green Party of Mexico (PVEM)",
-  "Labor Party (PT)",
-  "Institutional Revolutionary Party (PRI)",
-  "National Action Party (PAN)",
-  "Democratic Revolutionary Party (PRD)",
-  "Citizens' Movement (MC)",
-  "Social Encounter Party (PES)",
-  "New Alliance Party (NA)", 
-  "Other Parties")
-
-# Convert the party column to a factor with the specified order
-dep <- dep |> 
-  mutate(party = factor(party, levels = party_order))
-
-# Define the color palette
-party_colors <- c(
-  "National Regeneration Movement (MORENA)" = "#C8102E",# Red
-  "Ecologist Green Party of Mexico (PVEM)" = "#A60000", # Red
-  "Labor Party (PT)" = "#A50000",                       # Red
-  "Institutional Revolutionary Party (PRI)" = "#003DA5",# Blue
-  "National Action Party (PAN)" = "#005EB8",            # Blue
-  "Democratic Revolutionary Party (PRD)" = "#0072BB",   # Blue
-  "Citizens' Movement (MC)" = "#FF6F00",                # Orange
-  "Other parties" = "#7E1F8B",                          # Purple
-  "Social Encounter Party (PES)" = "#5E4B8C",           # Purple
-  "New Alliance Party (NA)" = "#5E4B8C",                # Purple
-  "Other Parties" = "#5E4B8C"
+party_order <- list(
+  "PT",          # Far-left
+  "MORENA",      # Left
+  "VERDE",       # Center-left
+  "MC",          # Center to Center-left
+  "PRD",         # Center-left
+  "PRI",         # Center-right
+  "PAN",         # Right
+  "PES",         # Far-right
+  "Other_Parties" # Other/Unknown
 )
 
-# Create the plot
-dep |> 
-  group_by(party) |> 
-  ggplot(aes(x = year, y = elected, group = party, fill = party)) +
-  geom_col() +
-  scale_fill_manual(values = party_colors) +
-  geom_hline(yintercept = 250, color = "black", size = 1) +  # Add the horizontal line
-  scale_x_continuous(breaks = unique(dep$year)) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +  # Tilt x-axis labels
-  labs(fill = "Party",
-       x = "Year", y = "Elected")
+party_colors <- list(
+  PT = "#f02b19",           # Red
+  MORENA = "#b5261f",       # Dark Red
+  VERDE = "#38a700",        # Green
+  MC = "#f57c00",           # Orange
+  PRD = "#ffcc00",          # Yellow
+  PRI = "#006847",          # Green (plus Red/White in their logo)
+  PAN = "#004a98",          # Blue
+  PES = "#5c246e",          # Purple
+  Other_Parties = "#b2b2b2" # Grey for other/unknown parties
+)
+
+
+coalition_colors <- list(
+  PT = "#a41e34",           # Red
+  MORENA = "#b5261f",       # Dark Red
+  VERDE = "#a41e34",        # Green
+  MC = "#f57c00",           # Orange
+  PRD = "#ec4891",          # Yellow
+  PRI = "#ec4891",          # Green (plus Red/White in their logo)
+  PAN = "#ec4891",          # Blue
+  PES = "#5c246e",          # Purple
+  Other_Parties = "#b2b2b2" # Grey for other/unknown parties
+)
 ```
 
 
 
+```{r}
+deputies <- read.csv("deputies_00_24.csv") |> 
+  mutate(party = factor(party, levels = party_order)) |> 
+  arrange(party) |> 
+  filter(year == 2024) |> 
+  rename(seats = elected) |> 
+  select(-year) |> 
+  mutate(coalition = case_when(party %in% c("MORENA", "PT", "VERDE") ~ "morenacoal",
+                               party %in% c("PRD", "PRI") ~ "fcpmx",
+                               TRUE ~ party))
+```
+
+```{r}
+# Use ggparliament's data structure to prepare the parliament plot
+mex_par_data <- parliament_data(
+  election_data = deputies,
+  type = "semicircle",  # This sets the semicircular layout
+  parl_rows = 10        # Number of rows in the semicircle (adjust this based on number of seats)
+)
+```
+
+
+
+```{r, fig.width=10, fig.height=6}
+# The above fig dimensions were changed to avoid narrowing of the graph
+mex_par_data |> 
+  ggplot(aes(x = x, y = y)) +
+    geom_parliament_seats(size = 6, aes(color = party)) + 
+    scale_colour_manual(values = party_colors) + 
+    theme_void() + 
+    theme(legend.position = "null") +
+    labs(title = "Deptuies Elected in the 2025 Mexican Election by Party") 
+```
+
+
+
+```{r, eval=FALSE}
+deputies <- read.csv("deputies_00_24.csv") %>%
+  mutate(party = factor(party, levels = party_order),
+         year = factor(year)) %>%  # Convert year to a factor
+  arrange(party) %>%
+  rename(seats = elected)
+
+
+# Create a function to prepare data for each year
+prepare_parliament_data <- function(year_data) {
+  parliament_data(
+    election_data = year_data,
+    type = "semicircle",  # This sets the semicircular layout
+    parl_rows = 10        # Number of rows in the semicircle
+  )
+}
+
+# Specify a custom temporary directory
+temp_dir <- tempdir()
+
+# Create animated parliament plot
+deputies %>%
+  group_by(year) %>%
+  nest() %>%
+  mutate(par_data = map(data, prepare_parliament_data)) %>%
+  unnest(par_data) %>%
+  ggplot(aes(x = x, y = y)) +
+  geom_parliament_seats(size = 6, aes(color = party)) + 
+  scale_colour_manual(values = party_colors) + 
+  theme_void() + 
+  theme(legend.position = "null") +
+  labs(title = "Deputies Elected in the Mexican Election by Party ({frame_time})") +
+  transition_time(year)  # Now will only show specified years
+
+animate(animated_plot, renderer = gifski_renderer(temp_dir))
+
+```
