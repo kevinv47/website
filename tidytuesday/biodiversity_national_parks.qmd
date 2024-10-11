@@ -13,14 +13,16 @@ execute:
 ***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College.***
 
 ### Libraries Used
+
 Waffle was used to create the waffle graph.
+
 ```{r}
 library(tidyverse)
 library(waffle)
 ```
 
-
 ### Data importation
+
 This Tidytuesday dataset was curated by [f.hull](https://github.com/frankiethull) and comes from NPSpecies - [The National Park Service biodiversity database](https://irma.nps.gov/NPSpecies/). This data was accessed on September 2nd, 2024.
 
 ```{r}
@@ -32,9 +34,8 @@ species |>
   distinct(ParkName)
 ```
 
-
-
 We see the Great Smoky Mountains (GRSM) has a much higher amount of biodiveristy than any other park even when examining known present species.
+
 ```{r}
 species |> 
   group_by(ParkCode, Occurrence) |> 
@@ -52,7 +53,7 @@ species |>
 
 # Creating a Waffle plot
 
-First I create a dataset called wc_species that has the west coast national parks and filters for 
+First I create a dataset called wc_species that has the west coast national parks and filters for
 
 ```{r}
 wc_species <- species |> 
@@ -62,11 +63,15 @@ wc_species <- species |>
 ```
 
 ### Creating a color pallete
+
 Here I identify the unique biological categories in west coast naitonal parks.
+
 ```{r}
 unique(wc_species$CategoryName)
 ```
+
 I use ChatGPT to create a color scheme based of off htese biological categories that will be easy to see in a waffle chart.
+
 ```{r}
 custom_palette <- c(
   "Bacteria" = "#FF6347",            
@@ -83,9 +88,10 @@ custom_palette <- c(
 )
 ```
 
-
 ## Plotting
+
 I plot a waffle chart that shows the biodiversity of biological groups amoung the three west coast naitonal parks in the dataset.
+
 ```{r}
 wc_species |> 
   mutate(ParkName = str_extract(ParkName, ".*(?= National Park)")) |> 
@@ -108,5 +114,3 @@ theme(
        title = "Biodiversity in West Coast National Parks",
        subtitle = "Each Square Represents 10 Species by Biological Category")
 ```
-
-
