@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Kevin Valdivia">
+<meta name="dcterms.date" content="2024-09-17">
 
-<title>Kevin Valdivia - How MORENA Came to Control Mexico</title>
+<title>Kevin Valdivia - Documentation And More Details About The Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -69,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="Kevin Valdivia - How MORENA Came to Control Mexico">
+<meta property="og:title" content="Kevin Valdivia - Documentation And More Details About The Data">
 <meta property="og:description" content="How AMLO’s MORENA Took Over Mexican Politics">
 <meta property="og:site_name" content="Kevin Valdivia">
 <meta property="og:locale" content="en_US">
@@ -162,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">How MORENA Came to Control Mexico</h1>
+<h1 class="title">Documentation And More Details About The Data</h1>
 <p class="subtitle lead">How AMLO’s MORENA Took Over Mexican Politics</p>
 </div>
 
@@ -170,7 +172,19 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kevin Valdivia </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 17, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -180,39 +194,69 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="results-of-the-2024-election-in-mexico" class="level1">
-<h1>Results of the 2024 Election In Mexico</h1>
-<div class="columns">
-<div class="column" style="width:49%;">
-<section id="camara-de-diputados" class="level2">
-<h2 class="anchored" data-anchor-id="camara-de-diputados">Camara de Diputados</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="amlo_page_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="latinobarometro" class="level3">
+<h3 class="anchored" data-anchor-id="latinobarometro">Latinobarometro</h3>
 </section>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:49%;">
-<section id="senado-de-la-republica" class="level2">
-<h2 class="anchored" data-anchor-id="senado-de-la-republica">Senado de La Republica</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="amlo_page_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</div>
-</div>
+<section id="codebook-for-latinobarómetro-data" class="level1">
+<h1>Codebook for Latinobarómetro Data</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 73%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>JudiciaryIndependence</code></td>
+<td><em>Por favor, dígame si está muy de acuerdo (1), de acuerdo (2), en desacuerdo (3) o muy en desacuerdo (4), con las siguientes afirmaciones. El poder judicial debe ser independiente del ejecutivo.</em> <br> <strong>English:</strong> Please tell me if you strongly agree (1), agree (2), disagree (3), or strongly disagree (4) with the following statements. The judiciary should be independent of the executive.</td>
+</tr>
+<tr class="even">
+<td><code>MediaControlPresident</code></td>
+<td><em>Por favor, dígame si está muy de acuerdo (1), de acuerdo (2), en desacuerdo (3) o muy en desacuerdo (4), con las siguientes afirmaciones. En caso de dificultades está bien que el presidente controle los medios de comunicación.</em> <br> <strong>English:</strong> Please tell me if you strongly agree (1), agree (2), disagree (3), or strongly disagree (4) with the following statements. In case of difficulties, it’s okay for the president to control the media.</td>
+</tr>
+<tr class="odd">
+<td><code>SupportForMilitaryGovernment</code></td>
+<td><em>Apoyaría un gobierno militar si las cosas se ponen muy difíciles.</em> <br> <strong>English:</strong> Would you support a military government if things get very difficult?</td>
+</tr>
+<tr class="even">
+<td><code>PresidentialApproval</code></td>
+<td><em>¿Ud. aprueba o no aprueba la gestión del gobierno que encabeza el presidente (nombre)?</em> <br> <strong>English:</strong> Do you approve or disapprove of the management of the government led by the president (name)?</td>
+</tr>
+<tr class="odd">
+<td><code>PoliticalSelfPositioning</code></td>
+<td><em>En política, la gente normalmente habla de “izquierda” y “derecha”. En una escala donde 0 es la izquierda y 10 es la derecha, ¿dónde te ubicarías?</em> <br> <strong>English:</strong> In politics, people usually talk about “left” and “right.” On a scale where 0 is left and 10 is right, where would you place yourself?</td>
+</tr>
+<tr class="even">
+<td><code>CongressTrust</code></td>
+<td><em>Por favor, mire esta tarjeta y dígame, para cada uno de los grupos, instituciones o personas de la lista ¿cuánta confianza tiene usted en ellas: mucha (1), algo (2), poca (3) o ninguna confianza (4) en…? Congreso</em> <br> <strong>English:</strong> Please look at this card and tell me, for each of the groups, institutions, or people on the list, how much trust you have in them: a lot (1), some (2), little (3), or no trust (4) in…? Congress.</td>
+</tr>
+<tr class="odd">
+<td><code>JudiciaryTrust</code></td>
+<td><em>Por favor, mire esta tarjeta y dígame, para cada uno de los grupos, instituciones o personas de la lista ¿cuánta confianza tiene usted en ellas: mucha (1), algo (2), poca (3) o ninguna confianza (4) en…? Poder Judicial</em> <br> <strong>English:</strong> Please look at this card and tell me, for each of the groups, institutions, or people on the list, how much trust you have in them: a lot (1), some (2), little (3), or no trust (4) in…? Judiciary.</td>
+</tr>
+<tr class="even">
+<td><code>PresidentialTrust</code></td>
+<td><em>Por favor, mire esta tarjeta y dígame, para cada uno de los grupos, instituciones o personas de la lista ¿cuánta confianza tiene usted en ellas: mucha (1), algo (2), poca (3) o ninguna confianza (4) en…? El presidente</em> <br> <strong>English:</strong> Please look at this card and tell me, for each of the groups, institutions, or people on the list, how much trust you have in them: a lot (1), some (2), little (3), or no trust (4) in…? The president.</td>
+</tr>
+<tr class="odd">
+<td><code>ElectoralInstitutionTrust</code></td>
+<td><em>Por favor, mire esta tarjeta y dígame, para cada uno de los grupos, instituciones o personas de la lista ¿cuánta confianza tiene usted en ellas: mucha (1), algo (2), poca (3) o ninguna confianza (4) en…? {la institución Electoral del país}</em> <br> <strong>English:</strong> Please look at this card and tell me, for each of the groups, institutions, or people on the list, how much trust you have in them: a lot (1), some (2), little (3), or no trust (4) in…? The electoral institution of the country.</td>
+</tr>
+<tr class="even">
+<td><code>PoliticalPartiesTrust</code></td>
+<td><em>Por favor, mire esta tarjeta y dígame, para cada uno de los grupos, instituciones o personas de la lista ¿cuánta confianza tiene usted en ellas: mucha (1), algo (2), poca (3) o ninguna confianza (4) en…? Los partidos políticos</em> <br> <strong>English:</strong> Please look at this card and tell me, for each of the groups, institutions, or people on the list, how much trust you have in them: a lot (1), some (2), little (3), or no trust (4) in…? Political parties.</td>
+</tr>
+<tr class="odd">
+<td><code>GovernanceByPowerGroups</code></td>
+<td><em>En términos generales ¿Diría usted que {PAÍS} está gobernado por unos cuantos grupos poderosos en su propio beneficio, o que está gobernado para el bien de todo el pueblo?</em> <br> <strong>English:</strong> In general, would you say that {COUNTRY} is governed by a few powerful groups for their own benefit, or that it is governed for the good of all the people?</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
