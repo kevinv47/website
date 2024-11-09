@@ -1,0 +1,55 @@
+---
+title: "Creating a Word Map With Custom Shapes"
+subtitle: "Dataset is About The Words Used in Shakespeare's Romeo & Juliet"
+date: "Sep 17, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College. Analysis based on [\@deepdk](https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38)***
+
+## Loading relevant libraries
+```{r}
+library(tidyverse)
+```
+
+
+## Loading the data
+```{r}
+cia <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-22/cia_factbook.csv') |> 
+    mutate(
+    iso_a3 = countrycode::countrycode(
+      country,
+      origin = "country.name",
+      destination = "iso3c"
+    )) |> 
+  drop_na(iso_a3)
+```
+
+## World map
+```{r}
+world_data <- map_data("world") |> 
+  mutate(
+      iso_a3 = countrycode::countrycode(
+      region,
+      origin = "country.name",
+      destination = "iso3c")) |> 
+  drop_na(iso_a3)
+
+data4map <- world_data |> 
+  left_join(cia, by = "iso_a3")
+```
+
+## Make a single plot
+```{r}
+data4map |> 
+  ggplot(aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = infant_mortality_rate)) +
+  theme_void()
+```
+
+

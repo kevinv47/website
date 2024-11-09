@@ -11,6 +11,7 @@ execute:
 ---
 
 ### Libraries used
+
 ```{r}
 # Libraries used
 library(tidyverse)
@@ -21,7 +22,9 @@ library(readxl)
 ```
 
 ### Importation of Latinobarometro data
+
 Below I made latinobarometro cleaning scirpt and I called it `lapop_cleaner` which will clean the data for data analysis puposes.
+
 ```{r}
 lapop_cleaner <- function(file_path, object_name) {
   read_excel(file_path) |> 
@@ -81,13 +84,10 @@ GovernanceByPowerGroups <- lapop_cleaner(
   "latinobarometro/LAT_PAIS_gobernado_por_unos_cuantos_grupos_poderosos_en_su_propio_beneficio_o_para_el_bien_de_todo_el_pueblo.xlsx")
 ```
 
-
-
-
-
 ### Establishing Party Order and Colors
 
 Establishing party order from left to right
+
 ```{r}
 party_order <- list(
   "PT",          # Far-left
@@ -133,6 +133,7 @@ coalition_colors <- list(
 ### Chamber of Deputies
 
 Setting up the deputies data
+
 ```{r}
 deputies <- read.csv("deputies_00_24.csv") |> 
   mutate(party = factor(party, levels = party_order)) |> 
@@ -146,6 +147,7 @@ deputies <- read.csv("deputies_00_24.csv") |>
 ```
 
 Putting the data into a ggparliament data structure
+
 ```{r}
 # Use ggparliament's data structure to prepare the parliament plot
 deputy_2024_data <- parliament_data(
@@ -156,6 +158,7 @@ deputy_2024_data <- parliament_data(
 ```
 
 Creating a ggplot parliament with the previous datasturcture
+
 ```{r, fig.width=10, fig.height=6}
 # The above fig dimensions were changed to avoid narrowing of the graph
 deputy_2024_data |> 
@@ -170,6 +173,7 @@ deputy_2024_data |>
 ### Senate
 
 Setting up the deputies data
+
 ```{r}
 senate <- read.csv("senate_00_24.csv") |> 
   mutate(party = factor(party, levels = party_order)) |> 
@@ -183,6 +187,7 @@ senate <- read.csv("senate_00_24.csv") |>
 ```
 
 Putting the data into a ggparliament data structure
+
 ```{r}
 # Use ggparliament's data structure to prepare the parliament plot
 senate_2024_data <- parliament_data(
@@ -193,6 +198,7 @@ senate_2024_data <- parliament_data(
 ```
 
 Creating a ggplot parliament with the previous datasturcture
+
 ```{r, fig.width=10, fig.height=6}
 # The above fig dimensions were changed to avoid narrowing of the graph
 senate_2024_data |> 
@@ -205,8 +211,8 @@ senate_2024_data |>
 
 ```
 
-
 Expeirmental to make it gif
+
 ```{r, eval=FALSE}
 deputies <- read.csv("deputies_00_24.csv") %>%
   mutate(party = factor(party, levels = party_order),

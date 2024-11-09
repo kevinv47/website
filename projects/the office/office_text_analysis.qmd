@@ -10,10 +10,11 @@ execute:
   message: false
   error: false
 ---
-![](the_office.png)
-[Image from peacock website](https://www.peacocktv.com/stream-tv/the-office)
+
+![](the_office.png) [Image from peacock website](https://www.peacocktv.com/stream-tv/the-office)
 
 ### Loading Packages
+
 The only package I use is the tidyverse
 
 ```{r}
@@ -21,7 +22,8 @@ library(tidyverse)
 ```
 
 ## Loading the Dataset
-The dataset comes from a Kaggle user [Fabrizio Cominetti](https://www.kaggle.com/fabriziocominetti) who acuried the data from scrapping officequotes.net. I downloaded the csv and loaded it into my directory for accsses. 
+
+The dataset comes from a Kaggle user [Fabrizio Cominetti](https://www.kaggle.com/fabriziocominetti) who acuried the data from scrapping officequotes.net. I downloaded the csv and loaded it into my directory for accsses.
 
 ```{r}
 office <- read.csv("the-office_lines.csv")
@@ -29,6 +31,7 @@ colnames(office)
 ```
 
 ### Dataset Manipulation For Graphing Character Mentions Overtime
+
 This R chunk aims to create a dataset called **main_4_mentions**. First, a variable representing each character's name is created, with a value of 1 if that character is mentioned in a line and 0 otherwise. The data is then grouped by episode and season, summarizing the mentions per episode. Next, the data is pivoted to create a variable called **character** and another variable called **count**, indicating how many times each character is mentioned. Additionally, a new variable called **season_episode** is created, which only contains values for the first episode of each season; this will serve as a marker for the start of each season in the ggplot.
 
 ```{r}
@@ -63,9 +66,10 @@ vline_positions <- main_4_mentions |>
 print(vline_positions)
 ```
 
-
 ## Graph of the main four characters overtime
+
 The data is now plotted using the **geom_smooth** function, which captures the general patterns over the episodes and seasons. We find that Michael is the most mentioned character until the later seasons. Mentions of Jim remain relatively stable over time, while mentions of Pam and Dwight decline around seasons 5 and 6 before starting to trend upward.
+
 ```{r}
 main_4_mentions |> 
   ggplot(aes(x = season_episode_num, y = count, color = character)) +
@@ -114,7 +118,9 @@ head(ontask)
 ```
 
 ### Creating a custom color palette (experimental)
+
 I asked ChatGPT to create a custom color palette for the characters of *The Office*. The colors are intended to capture each character's "essence" for plotting purposes.
+
 ```{r}
 palette <- c("Michael" = "#7FB3D5", "Jim" = "#8B8B8B", "Pam" = "#FF8DAA", 
              "Dwight" = "#FFD700", "Ryan" = "#28A745", "Angela" = "#5B2C6F", 
@@ -124,7 +130,9 @@ palette <- c("Michael" = "#7FB3D5", "Jim" = "#8B8B8B", "Pam" = "#FF8DAA",
 ```
 
 ## Plotting
+
 I created a graph showing the percentage of "work-related" lines by office character. Toby has the most work-related lines, with a score of 0.9% higher than Dwight, who comes in second. Kevin has the fewest work-related lines. The percentages displayed on the graph are rounded to the nearest tenth, while the bar lengths represent the exact proportions. This explains why, for example, Stanley and Meredith have the same percentage label but different bar lengths.
+
 ```{r}
 ontask |> 
   ggplot(aes(x = reorder(Character, prop), y = prop, fill = Character)) +
@@ -147,12 +155,12 @@ ontask |>
 
 ```
 
-
 ## Analyzing which character has the longest average lines
 
 ### Data preparation
 
 I will use the same 15 key characters from the previous analysis. I'll create a variable called **avg_line** to represent the average length of a line. To count the words per line, I will apply a regular expression. Finally, I will summarize the dataset.
+
 ```{r}
 avg_line_length <- office |> 
   filter(Character %in% main_characters) |> 
@@ -165,7 +173,9 @@ avg_line_length
 ```
 
 ## Plotting of average amount of words in a line
+
 This graph illustrates the average number of words per character's line, highlighting which characters dominate conversations and which tend to be interrupted mid-thought. However, shorter lines may simply indicate they have less to say. Michael has the longest lines, followed by Andy and Dwight, while Phyllis and Meredith, the two female characters, have the shortest lines.
+
 ```{r}
 avg_line_length |> 
   ggplot(aes(x = reorder(Character, avg_line), y = avg_line, fill = Character)) +

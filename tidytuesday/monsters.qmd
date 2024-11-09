@@ -1,0 +1,120 @@
+---
+title: "Monster Movie Generes"
+subtitle: "Dataset is About The Words Used in Shakespeare's Romeo & Juliet"
+date: "Sep 17, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+### Libraries
+```{r}
+library(tidyverse)
+
+# install.packages("devtools") 
+# devtools::install_github("haleyjeppson/ggmosaic")
+library(ggmosaic)
+library(tidymodels)
+library(rpart.plot)
+```
+
+
+```{r}
+monster_movie_genres <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-29/monster_movie_genres.csv')
+monster_movies <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-29/monster_movies.csv') |> 
+  separate_rows(genres, sep = ",") |> 
+  mutate(value = 1) |> 
+  pivot_wider(names_from = genres, values_from = value, values_fill = 0)
+
+```
+
+
+```{r}
+plot_data <- monster_movies |>
+    mutate(title_type = str_to_title(title_type)) |> 
+    mutate(decade = (year %/% 10) * 10) |> 
+    filter(decade >= 1960) |> 
+    drop_na(title_type, decade) |>
+    count(title_type, decade)
+  
+  
+plot_data |>
+    ggplot() +
+    
+    # Geoms
+    geom_mosaic(aes(weight = n, x = product(decade), 
+                    fill = title_type)) +
+    theme_void() +
+    labs(title = "Proportion") +
+    theme(axis.text.x = element_text(),
+          axis.text.y = element_text(),
+          legend.position = "none") +
+    scale_y_continuous() +
+    annotate( "text",
+              x = .55, y = .5, label = "Movie",
+              color = "white", size = 7, vjust = 1, hjust = 0) +
+      annotate("text",
+                x = .52, y = .8, label = "TV Movie",
+                color = "white", size = 7, vjust = 1, hjust = 0) +
+      annotate( "text",
+                x = .55, y = .95, label = "Video",
+                color = "white", size = 7, vjust = 1, hjust = 0) +
+    scale_fill_brewer(palette = "Dark2")
+```
+
+
+```{r}
+monster_model <- monster_movies |>
+  select(primary_title, year, runtime_minutes, average_rating,
+         num_votes, Comedy:Music, Short:War)
+
+movie_rec <- recipe(average_rating ~ ., 
+                    data = monster_model) |>
+  update_role(primary_title, new_role = "ID")
+
+movie_mod_lm <- linear_reg() |>
+  set_engine(engine = "lm") |>
+  set_mode(mode = "regression")
+
+movie_wflow_lm <- workflow() |> 
+  add_model(movie_mod_lm) |> 
+  add_recipe(movie_rec)
+
+movie_wflow_lm |> 
+  fit(data = monster_model) |> 
+  predict(new_data = monster_model) |> 
+  cbind(monster_model) |> 
+  ggplot(aes(x = average_rating, y = .pred)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1)
+```
+
+
+```{r}
+movie_mod_cart <- decision_tree() |> 
+  set_engine(engine = "rpart") |> 
+  set_mode(mode = "regression")
+
+movie_wflow_cart <- workflow() |> 
+  add_model(movie_mod_cart) |> 
+  add_recipe(movie_rec)
+
+movie_wflow_cart |> 
+  fit(data = monster_model) |> 
+  predict(new_data = monster_model) |> 
+  cbind(monster_model) |> 
+  ggplot(aes(x = average_rating, y = .pred)) +
+  geom_point()
+```
+
+```{r}
+movies_tree <- movie_wflow_cart |> 
+  fit(data = monster_model) |> 
+  extract_fit_parsnip()
+
+rpart.plot(movies_tree$fit)
+```
+

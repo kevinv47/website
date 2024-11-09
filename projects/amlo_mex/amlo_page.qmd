@@ -8,7 +8,9 @@ execute:
   message: false
   echo: false
 ---
+
 # Results of the 2024 Election In Mexico
+
 ```{r}
 # Libraries used
 library(tidyverse)
@@ -16,6 +18,8 @@ library(ggparliament)
 library(gganimate)
 library(janitor)
 library(readxl)
+library(patchwork)
+library(ggiraph)
 ```
 
 ```{r}
@@ -91,17 +95,17 @@ senate2024 <- senate |>
   prepare_parliament_data(6)
 ```
 
-
 ::: columns
 ::: {.column width="49%"}
 ## Camara de Diputados
+
 ```{r, fig.width=10, fig.height=6}
-deputies2024 |> 
+deputies2024 |>
   ggplot(aes(x = x, y = y)) +
     geom_parliament_seats(size = 7, aes(color = party)) + # party colors
     # scale_colour_manual(values = party_colors) + # party colors
     scale_colour_manual(values = coalition_colors) + # coalition colors
-    theme_void() + 
+    theme_void() +
     theme(legend.position = "null")
 ```
 :::
@@ -111,19 +115,43 @@ deputies2024 |>
 
 ::: {.column width="49%"}
 ## Senado de La Republica
+
 ```{r, fig.width=10, fig.height=6}
-senate2024 |> 
+senate2024 |>
   ggplot(aes(x = x, y = y)) +
     geom_parliament_seats(size = 14, aes(color = party)) + # party colors
     # scale_colour_manual(values = party_colors) + # party colors
     scale_colour_manual(values = coalition_colors) + # coalition colors
-    theme_void() + 
+    theme_void() +
     theme(legend.position = "null")
 ```
 :::
 :::
 
+```{r}
+# Interactive deputies plot
+# p1_interactive <- deputies2024 |>
+#   ggplot(aes(x = x, y = y)) +
+#   geom_parliament_seats_interactive(
+#     size = 7, 
+#     aes(color = party, tooltip = party, data_id = party)  # Add tooltip and data_id
+#   ) + 
+#   scale_colour_manual(values = coalition_colors) +  # coalition colors
+#   theme_void() +
+#   theme(legend.position = "null")
 
-
-
-
+# # Interactive senate plot
+# p2_interactive <- senate2024 |>
+#   ggplot(aes(x = x, y = y)) +
+#   geom_parliament_seats_interactive(
+#     size = 14, 
+#     aes(color = party, tooltip = party, data_id = party)  # Add tooltip and data_id
+#   ) +
+#   scale_colour_manual(values = coalition_colors) +  # coalition colors
+#   theme_void() +
+#   theme(legend.position = "null")
+# 
+# # Render interactive plots
+# girafe(ggobj = p1_interactive)
+# girafe(ggobj = p2_interactive)
+```
