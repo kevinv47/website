@@ -20,6 +20,8 @@ website:
             text: "Text Analysis: *The Office*"
           - href: projects/simulation_study/permutation_experiment.qmd
             text: "Mini Experiment: *Room Draw Permutation*"
+          - href: projects/peso/peso.qmd
+            text: "30 Years of The Peso"
       - text: "Tidytuesday"
         menu:
           - href: tidytuesday/school_income.qmd

@@ -46,7 +46,7 @@ room_assign_helper <- function(color_pref, room_occ, r_rooms, b_rooms, g_rooms) 
   g_occ <- room_occ[[3]]
 
   if (color_pref == "red") {
-    if (length(r_rooms) < r_occ) {
+    if (r_rooms < r_occ) {
       return("red")
     } else {
       return("no")
@@ -54,7 +54,7 @@ room_assign_helper <- function(color_pref, room_occ, r_rooms, b_rooms, g_rooms) 
   }
   
   if (color_pref == "blue") {
-    if (length(b_rooms) < b_occ) {
+    if (b_rooms < b_occ) {
       return("blue")
     } else {
       return("no")
@@ -62,7 +62,7 @@ room_assign_helper <- function(color_pref, room_occ, r_rooms, b_rooms, g_rooms) 
   }
   
   if (color_pref == "green") {
-    if (length(g_rooms) < g_occ) {
+    if (g_rooms < g_occ) {
       return("green")
     } else {
       return("no")
@@ -99,9 +99,9 @@ room_assignment <- function(pref_order, room_occ, r_rooms, b_rooms, g_rooms) {
 
 ```{r}
 my_room <- function(lottery_num, pref_probs, room_occ) {
-  r_rooms <- c()
-  b_rooms <- c()
-  g_rooms <- c()
+  r_rooms <- 0
+  b_rooms <- 0
+  g_rooms <- 0
   room_list <- map(1:lottery_num, function(num) {
     
     if (num == lottery_num) {
@@ -111,15 +111,15 @@ my_room <- function(lottery_num, pref_probs, room_occ) {
     pref_order <- room_pref(pref_probs[[1]], pref_probs[[2]], pref_probs[[3]])
     room <- room_assignment(pref_order, room_occ, r_rooms, b_rooms, g_rooms)
     if (room == "red") {
-      r_rooms <<- append(r_rooms, "A")
+      r_rooms <<- r_rooms + 1
       return("F")
     }
     if (room == "blue") {
-      b_rooms <<- append(b_rooms, "A")
+      b_rooms <<- b_rooms + 1
       return("F")
     }
     if (room == "green") {
-      g_rooms <<- append(g_rooms, "A")
+      g_rooms <<- g_rooms + 1
       return("F")
     }
   })
@@ -175,7 +175,7 @@ set.seed(47)
 
 pref_probs <- c(0.6, 0.3, 0.1)
 room_occ <- c(30, 30, 40)
-draws <- 1000
+draws <- 200
 
 
 type <- "single"
@@ -236,4 +236,3 @@ single_data |>
 ```
 
 As we increase the number of room draws, the proportions tend to stabilize around certain values. Therefore, we can expect the probability of getting a red room to be around 50%, a green room around 30%, and a blue room around 20%.
-

@@ -1,0 +1,114 @@
+---
+title: "SQL Mini Project"
+subtitle: "Should We Praise A Strong Peso?"
+date: "Nov 19th, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+  eval: false
+---
+
+
+
+```{r}
+library(tidyverse)
+library(RMariaDB)
+con_wai <- dbConnect(
+  MariaDB(), host = "scidb.smith.edu",
+  user = "waiuser", password = "smith_waiDB", 
+  dbname = "wai"
+)
+Measurements <- tbl(con_wai, "Measurements")
+PI_Info <- tbl(con_wai, "PI_Info")
+Subjects <- tbl(con_wai, "Subjects")
+
+# collect(Measurements)
+```
+
+
+```{sql}
+#| connection: con_wai
+SHOW TABLES;
+```
+
+```{sql}
+#| connection: con_wai
+DESCRIBE Measurements;
+
+```
+
+
+```{sql}
+#| connection: con_wai
+SELECT *
+FROM Measurements
+LIMIT 0, 5;
+```
+
+```{r}
+query <- "
+SELECT 
+    Identifier,
+    Frequency,
+    Instrument,
+    AVG(Absorbance) as mean_absorbance
+FROM Measurements
+GROUP BY Identifier, Instrument, Frequency;
+"
+
+avgs <- dbGetQuery(con_wai, query)
+```
+
+```{r}
+unique(avgs$Identifier)
+```
+
+
+```{r}
+custom_colors <- c(
+  "#5C4E9E",  # For "Abur_2014"
+  "#387BBC",  # For "Feeney_2017"
+  "#5FB8A9",  # For "Groon_2015"
+  "#99D59F",  # For "Lewis_2015"
+  "#D9F0A7",  # For "Liu_2008"
+  "#ECF5AF",  # For "Rosowski_2012"
+  "#F7EEAF",  # For "Shahnaz_2006"
+  "#F8D37E",  # For "Shaver_2013"
+  "#EC9D57",  # For "Sun_2016"
+  "#E46647",  # For "Voss_1994"
+  "#C9384D",  # For "Voss_2010"
+  "#9C2045"   # For "Werner_2010"
+)
+
+avgs |> 
+  filter(Identifier %in% c("Abur_2014",
+                           "Feeney_2017",
+                           "Groon_2015",
+                           "Lewis_2015",
+                           "Liu_2008",
+                           "Rosowski_2012",
+                           "Shahnaz_2006",
+                           "Shaver_2013",
+                           "Sun_2016",
+                           "Voss_1994",
+                           "Voss_2010",
+                           "Werner_2010"),
+         Frequency <= 8000 & Frequency >= 200) |> 
+  ggplot(aes(x = Frequency, y = mean_absorbance, color = Identifier)) +
+  geom_line(size = 1) +
+  scale_x_continuous(
+    trans = "log10",               # Apply logarithmic transformation
+    breaks = c(200, 400, 600, 800, 1000, 2000, 4000, 6000, 8000), # Custom breaks
+    labels = scales::label_number() # Keep original units
+  ) +
+  scale_color_manual(values = custom_colors) +
+  labs(
+    x = "Frequency (Hz)", # Updated axis label
+    y = "Mean Absorbance"
+  )
+```
+
+

@@ -1,0 +1,320 @@
+---
+title: "30 Years of the Mexican Peso: History & Opportunities"
+subtitle: "Setbacks and Opportunities"
+date: "Nov 22, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: true # Table of contents
+execute: 
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+title_variable = ""
+y_title = "Exchange Rate (MXN to USD)"
+x_title = "Date"
+
+library(tidyverse)
+library(lubridate)
+library(plotly)
+library(htmlwidgets)
+library(janitor)
+
+exchange <- read.csv("exrate.csv") |> 
+  mutate(FIX = as.numeric(FIX)) |> 
+  filter(!is.na(FIX)) |> 
+  select(exchange = FIX, date = Date) |> 
+  mutate(date = mdy(date)) |> 
+  mutate(exchange = round(exchange, digits = 2))
+
+
+# Filter the data to start from 1993
+exchange <- exchange[exchange$date >= as.Date("1993-01-01"), ]
+
+# Create the plot using Plotly
+p <- plot_ly(
+  data = exchange, 
+  x = ~date, 
+  y = ~exchange, 
+  type = 'scatter', 
+  mode = 'lines',
+  text = ~paste("Date: ", 
+                format(date, "%B %d, %Y"), 
+                "<br>MXN/USD: ", 
+                exchange), 
+  hoverinfo = 'text')
+
+# Add transparent scatter traces for red regions with descriptive text
+p <- p |> 
+  add_trace(
+    x = c(as.Date("2014-08-01"), as.Date("2017-03-01")),
+    y = c(12.5, 12.5),
+    type = "scatter",
+    mode = "markers",
+    marker = list(opacity = 0, size = 1),  # Fully transparent marker
+    text = "<b>Economic Slowdown & Political Uncertainty</b>",
+    hoverinfo = "text",
+    showlegend = FALSE  # Hide legend for this trace
+  ) |> 
+  add_trace(
+    x = c(as.Date("1994-01-01"), as.Date("1996-01-01")),
+    y = c(12.5, 12.5),
+    type = "scatter",
+    mode = "markers",
+    marker = list(opacity = 0, size = 1),
+    text = "<b>The Peso Crisis</b>",
+    hoverinfo = "text",
+    showlegend = FALSE  # Hide legend for this trace
+  ) |> 
+  add_trace(
+    x = c(as.Date("2008-01-01"), as.Date("2009-07-01")),
+    y = c(12.5, 12.5),
+    type = "scatter",
+    mode = "markers",
+    marker = list(opacity = 0, size = 1),
+    text = "<b>The Global financial Crisis</b>",
+    hoverinfo = "text",
+    showlegend = FALSE  # Hide legend for this trace
+  ) |>
+  add_trace(
+    x = c(as.Date("2020-01-01"), as.Date("2021-01-01")),
+    y = c(12.5, 12.5),
+    type = "scatter",
+    mode = "markers",
+    marker = list(opacity = 0, size = 1),
+    text = "<b>COVID-19 Pandemic</b>",
+    hoverinfo = "text",
+    showlegend = FALSE  # Hide legend for this trace
+  ) |>
+  add_trace(
+    x = c(as.Date("2024-05-01"), as.Date("2024-11-22")),
+    y = c(12.5, 12.5),
+    type = "scatter",
+    mode = "markers",
+    marker = list(opacity = 0, size = 1),
+    text = "<b>The 2024 MX Elections</b>",
+    hoverinfo = "text",
+    showlegend = FALSE  # Hide legend for this trace
+  )
+
+# Add shapes for red regions
+p |> 
+  layout(
+    title = title_variable,
+    xaxis = list(
+      title = x_title,
+      tickformat = "%Y",  # Format x-axis as year
+      tickangle = 45,  # Rotate x-axis labels
+      dtick = "M12",  # Tick every 12 months
+      showgrid = TRUE
+    ),
+    yaxis = list(
+      title = y_title,
+      tickvals = seq(1, 25, by = 1),  # Custom y-axis ticks
+      showgrid = TRUE,
+      range = c(0, 25)  # Set the y-axis range
+    ),
+    shapes = list(
+      list(
+        type = "rect", 
+        x0 = as.Date("2014-08-01"), x1 = as.Date("2017-03-01"),
+        y0 = 0, y1 = 25,  
+        fillcolor = "red", opacity = 0.5, line = list(width = 0), layer = "below"
+      ),
+      list(
+        type = "rect", 
+        x0 = as.Date("1994-01-01"), x1 = as.Date("1996-01-01"),
+        y0 = 0, y1 = 25,  
+        fillcolor = "red", opacity = 0.5, line = list(width = 0), layer = "below"
+      ),
+      list(
+        type = "rect", 
+        x0 = as.Date("2008-01-01"), x1 = as.Date("2009-07-01"),
+        y0 = 0, y1 = 25,  
+        fillcolor = "red", opacity = 0.5, line = list(width = 0), layer = "below"
+      ),
+      list(
+        type = "rect", 
+        x0 = as.Date("2020-01-01"), x1 = as.Date("2021-01-01"),
+        y0 = 0, y1 = 25,  
+        fillcolor = "red", opacity = 0.5, line = list(width = 0), layer = "below"
+      ),
+      list(
+        type = "rect", 
+        x0 = as.Date("2024-05-01"), x1 = as.Date("2024-11-22"),
+        y0 = 0, y1 = 25,  
+        fillcolor = "red", opacity = 0.5, line = list(width = 0), layer = "below"
+      )
+    ),
+    hovermode = "x unified"  # Enable hovermode along the x-axis
+  )
+```
+
+Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
+
+# 30 Years of the MXN Peso
+
+![](usd_peso.jpg)Photo by [The Dallas Federal Reserve](https://www.dallasfed.org/research/economics/2023/0926)
+
+## Peso Crisis (1994 - 1996)
+
+```{r}
+#| eval: true
+exchange |> 
+  filter(date <= as.Date("1998-01-01")) |> 
+  ggplot(aes(x = date, y = exchange)) +
+  # geom_rect(
+  #   aes( xmin = as.Date("2014-08-01"), xmax = as.Date("2017-03-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("1994-01-01"), xmax = as.Date("1996-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  geom_rect(
+  aes( xmin = as.Date("1994-10-01"), xmax = as.Date("1996-01-01"),
+         ymin = -Inf, ymax = Inf),
+         fill = "#fa8e8e", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2008-01-01"), xmax = as.Date("2009-07-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2020-01-01"), xmax = as.Date("2021-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2024-05-01"), xmax = as.Date("2024-11-22"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  geom_line(size = 1) +  
+  labs( x = "Date",
+        y = "Exchange Rate",
+        title = ""#Exchange Rate Over Time (2010-2024)"
+        ) +
+  scale_x_date(
+    breaks = seq(from = min(exchange$date), 
+                 to = max(exchange$date), 
+                 by = "1 year"),
+    labels = scales::date_format("%Y")) +
+  scale_y_continuous(breaks = seq(1, 25, by = 1)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+The Mexican Peso Crisis involved a dramatic devaluation of the Mexican peso, which fell from 3 pesos per USD to 6 pesos per USD, effectively losing half its value. Before the crisis, Mexico had attempted to maintain a peg to the USD, allowing the peso to fluctuate within a specific range. However, this seemingly stable peg collapsed in December when the government finally allowed the peso to devalue, triggering a series of economic and political challenges. Below, we will explore some of the most significant political and economic factors during this period.
+
+### Assasinaitons & A Violent Mobilization
+
+Numerous destabilizing events occurred in 1994. I particularly appreciate the title of the El País article, "[México 1994: el año que pasó todo](https://elpais.com/mexico/2024-03-23/mexico-1994-el-ano-que-paso-todo.html)" ("The Year Everything Happened"). For brevity, I will focus on two key political factors that stressed the exchange rate and contributed to the December crisis: high-profile political assassinations and the eruption of the Zapatista movement.
+
+First, to understand the assassinations and their impact, some context is necessary. Mexico's dominant political party, the PRI (Institutional Revolutionary Party), had controlled the country since the 1930s, effectively creating a one-party system. However, by the 1990s, the PRI’s grip on power was weakening, culminating in the election of the first non-PRI president in 2000. ![](donaldo.jpg)
+
+Photo by [Infobae](https://www.infobae.com/mexico/2024/01/30/quien-mato-a-luis-donaldo-colosio-estas-han-sido-las-principales-lineas-de-investigacion-a-lo-largo-de-los-anos/)
+
+At the time, sitting presidents selected their successors to run as the PRI’s presidential candidate. Luis Donaldo Colosio, chosen by President Salinas de Gortari, was widely expected to reform the party from within. However, on March 23, Colosio was assassinated in Tijuana, triggering a chaotic scramble to find a replacement just months before the election.
+
+This process was complicated by the Mexican Constitution, which prohibits individuals holding high office within the previous six months from running for president. Despite this, Ernesto Zedillo was selected as the new PRI candidate and later oversaw the peso devaluation in December.
+
+The instability deepened when, on September 28, José Francisco Ruiz Massieu, the PRI’s general secretary—a position wielding significant influence over the party and national politics—was also assassinated.
+
+While neither Colosio nor Ruiz Massieu held active government roles at the time, their positions at the helm of the PRI were crucial. These events shook confidence in a party already under pressure from increasingly competitive smaller parties.
+
+Stable political regimes are essential for fostering predictable economic environments. For decades, the PRI had artificially maintained political stability, but by 1994, this stability was unraveling. The assassinations signaled threats to political order, unsettling markets. Although the PRI sought to reassure markets by swiftly transitioning to a new presidential candidate, this effort added pressure to an already fragile system, setting the stage for the December economic crisis.
+
+![](zapatista.jpg)Photo by Eduardo Verdugo for [The AP](https://apnews.com/article/mexico-zapatistas-chiapas-indigenous-45717af5e7a39dea67be39693c2ec303)
+
+Second, it is crucial to note that [NAFTA](https://documents1.worldbank.org/curated/fr/212651468325813685/pdf/774940JRN020050BLIC00Foreign0Direct.pdf) (the North American Free Trade Agreement) came into effect on January 1, 1994. This agreement brought great optimism about Mexico's economic potential, encouraging investors to view the country as a promising destination for economic activity. This renewed attention increased demand for the peso.
+
+However, on the same day, January 1, 1994, the [Zapatista movement](https://english.elpais.com/international/2024-01-01/and-they-shouted-enough-the-30-year-long-indigenous-uprising-that-rewrote-mexican-history.html) emerged on the national stage. Composed primarily of indigenous militias from Chiapas, the movement opposed the government’s economic liberalization policies, including NAFTA, which they believed marginalized their communities and threatened their traditional way of life. This resistance raised concerns about the stability of Mexico’s economic trajectory.
+
+The Zapatista uprising involved violent confrontations, with over a hundred fatalities in the initial clashes, casting doubt in investors' minds about Mexico’s ability to sustain economic growth without significant disruption. The government faced pressure to crack down on the movement, which it did, but this heavy-handed response underscored the resistance to investor-friendly reforms.
+
+This opposition to economic liberalization, coupled with violence and unrest, created uncertainty about the viability of Mexico's economic policies. It also increased pressure on the peso peg, a cornerstone of the government’s economic strategy, contributing to the strain that ultimately led to the December crisis.
+
+### The Tesobonos and Economic Factors
+
+To understand the Peso Crisis, one key factor is the role of *tesobonos*. These were short-term bonds with a fixed exchange rate, payable in USD. They offered investors the dual benefit of currency stability and higher interest rates than U.S. bonds. By linking returns to USD, the Mexican government aimed to attract foreign investors and inspire confidence amid political instability. At the same time, this strategy aligned with Mexico's economic goals under NAFTA and its push for more open trade policies.
+
+With the peso pegged to the U.S. dollar, it became overvalued over time, making trade more expensive and requiring increasingly large amounts of foreign reserves to maintain the peg. The loss of the peg, or the solution that was eventually used—allowing the peso to float freely against the dollar—was necessary to ease the pressure on imports and the central bank. However, since it was an election year, and with growing political competition, the PRI (Institutional Revolutionary Party) wanted to avoid changing the currency until after the elections. Once Ernesto Zedillo took office, he faced mounting pressure from the peso’s overvaluation and finally allowed the peso to float. This decision, however, led to a sharp depreciation of the peso, as investors panicked and sold off their holdings.
+
+```{r}
+tot_resrv <- read_csv("reserves_no_gold.csv") |> 
+  clean_names() |> 
+  filter(country_name == "Mexico") |> 
+  pivot_longer(cols = x1960:last_col(),
+               names_to = "date",
+               values_to = "total_reserve") |> 
+  select(date, total_reserve)
+
+merged_1994_data <- read_csv("reserves_over_debt.csv") |> 
+  clean_names() |> 
+  filter(country_name == "Mexico") |> 
+  pivot_longer(cols = x1960:last_col(),
+               names_to = "date",
+               values_to = "reserve_debt") |> 
+  select(date, reserve_debt) |> 
+  full_join(tot_resrv, by = "date") |> 
+  mutate(date = as.numeric(str_remove(date, "x"))) |> 
+  filter(date >= 1980 & date <= 2010) |> 
+  mutate(reserve_debt = round(reserve_debt, digits = 1),
+         total_reserve = round(total_reserve / 1000000, digits = 1)
+  )
+
+# Create the plotly plot for reserve_debt
+p1_interactive <- plot_ly(
+  data = merged_1994_data, 
+  x = ~date, 
+  y = ~reserve_debt, 
+  type = 'scatter', 
+  mode = 'lines+markers', 
+  line = list(color = 'royalblue', width = 2), 
+  marker = list(color = 'royalblue', size = 6),
+  text = ~paste("Year: ", date, "<br>Reserve Debt: ", reserve_debt),  # Custom hover label
+  hoverinfo = 'text'  # Show custom text when hovering
+) %>% layout(
+  title = "Foreign Reserves To Foreign Debt (1980 - 2010)",
+  xaxis = list(title = 'Years'),
+  yaxis = list(title = 'Foreign Reserves To Foreign Debt Ratio'),
+  hovermode = "x unified",
+  shapes = list(
+    list(
+      type = "rect",
+      x0 = 1993,  # Start year of the rectangle
+      x1 = 1996,  # End year of the rectangle
+      y0 = -Inf,  # Set the lower boundary for the y-axis
+      y1 = 41,  # Set the upper boundary for the y-axis
+      fillcolor = "red",  # Color of the rectangle
+      opacity = 0.3,  # Transparency of the rectangle
+      line = list(color = "red", width = 2)  # Rectangle border color and width
+    )
+  )
+)
+
+# Show the interactive plot
+p1_interactive
+```
+
+It's important to remember the nature of tesobonos, which were government-issued debt instruments with a fixed exchange rate and were promised to be paid out in U.S. dollars. As the value of the debt exceeded the value of Mexico’s foreign reserves, investors began to worry about Mexico's ability to repay the loans. The graph above illustrates the dramatic decline in the ratio of Mexico’s foreign reserves to foreign debt. As a result, investors began to offload their Mexican assets, contributing to the peso losing half of its value.
+
+## 2008 Recession
+
+Place Holder
+
+## Economic Slowdown & Trump
+
+Place Holder
+
+## Covid-19 Pandemic
+
+Place Holder
+
+## 2024 Elections
+
+Place Holder
+
+# The Future?
+
+Place Holder

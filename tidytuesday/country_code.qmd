@@ -1,0 +1,73 @@
+---
+title: "Country Codes"
+subtitle: "Country Code"
+date: "Nov 12, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(plotly)
+```
+
+
+
+```{r}
+countries <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/countries.csv')
+country_subdivisions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/country_subdivisions.csv')
+former_countries <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/former_countries.csv')
+```
+
+
+```{r}
+former <- former_countries |> 
+  mutate(date = case_when(
+    nchar(date_withdrawn) == 4 ~ ymd(paste0(date_withdrawn, "-01-01")),
+    TRUE ~ ymd(date_withdrawn))) |> 
+  mutate(yval = sample(5:20, nrow(former_countries), replace = TRUE)) |> 
+  arrange(date) |> 
+  mutate(decade = as.character((((year(date) %% 100)) %/% 10) * 10)) |> 
+  mutate(decade = case_when(decade == "0" ~ "00",
+                            TRUE ~ decade)) |> 
+  mutate(decade = factor(decade, levels = c("70", "80", "90", "00", "10", "20"))) |> 
+  mutate(name = paste0(year(date), ": ", name))
+  
+  
+```
+
+
+
+```{r}
+# Define custom colors for each decade
+decade_colors <- c("70" = "#1f3a6c", 
+                   "80" = "#6a1b9a", 
+                   "90" = "#e53946", 
+                   "00" = "#f57c00", 
+                   "10" = "#43a047", 
+                   "20" = "#00897b")
+
+# Reorder `name` by `date`
+former <- former |> 
+  mutate(alpha_3 = fct_reorder(alpha_3, date))
+
+# Create the plot
+p <- former |> 
+  ggplot(aes(x = alpha_3, y = date)) +
+  geom_segment(aes(xend = alpha_3, yend = min(date), color = decade)) +
+  geom_point(aes(text = name, color = decade), size = 4) +
+  scale_color_manual(values = decade_colors) +  # Apply custom color palette
+  theme_minimal() +
+  labs(title = "Interactive Lollipop Plot", x = "Country", y = "Date") +
+  coord_flip()
+
+# Make it interactive
+ggplotly(p, tooltip = "text")
+
+```
+
