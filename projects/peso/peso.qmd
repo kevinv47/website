@@ -203,6 +203,7 @@ exchange |>
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
 
 The Mexican Peso Crisis involved a dramatic devaluation of the Mexican peso, which fell from 3 pesos per USD to 6 pesos per USD, effectively losing half its value. Before the crisis, Mexico had attempted to maintain a peg to the USD, allowing the peso to fluctuate within a specific range. However, this seemingly stable peg collapsed in December when the government finally allowed the peso to devalue, triggering a series of economic and political challenges. Below, we will explore some of the most significant political and economic factors during this period.
 
@@ -275,9 +276,9 @@ p1_interactive <- plot_ly(
   text = ~paste("Year: ", date, "<br>Reserve Debt: ", reserve_debt),  # Custom hover label
   hoverinfo = 'text'  # Show custom text when hovering
 ) %>% layout(
-  title = "Foreign Reserves To Foreign Debt (1980 - 2010)",
+  title = "Total Reserves To Foreign Debt (1980 - 2010)",
   xaxis = list(title = 'Years'),
-  yaxis = list(title = 'Foreign Reserves To Foreign Debt Ratio'),
+  yaxis = list(title = 'Total Reserves To Foreign Debt Ratio'),
   hovermode = "x unified",
   shapes = list(
     list(
@@ -297,7 +298,9 @@ p1_interactive <- plot_ly(
 p1_interactive
 ```
 
-It's important to remember the nature of tesobonos, which were government-issued debt instruments with a fixed exchange rate and were promised to be paid out in U.S. dollars. As the value of the debt exceeded the value of Mexico’s foreign reserves, investors began to worry about Mexico's ability to repay the loans. The graph above illustrates the dramatic decline in the ratio of Mexico’s foreign reserves to foreign debt. As a result, investors began to offload their Mexican assets, contributing to the peso losing half of its value.
+Source: [The World Bank](https://data.worldbank.org/indicator/FI.RES.TOTL.DT.ZS?end=2022&start=2022&view=bar)
+
+It's important to remember the nature of tesobonos, which were government-issued debt instruments with a fixed exchange rate and were promised to be paid out in U.S. dollars. As the value of the debt exceeded the value of Mexico’s foreign reserves, investors began to worry about Mexico's ability to repay the loans. The graph above illustrates the dramatic decline in the ratio of Mexico’s total reserves to foreign debt. As a result, investors began to offload their Mexican assets, contributing to the peso losing half of its value.
 
 ## 2008 Recession
 
