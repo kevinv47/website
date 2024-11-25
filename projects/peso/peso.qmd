@@ -1,6 +1,6 @@
 ---
 title: "30 Years of the Mexican Peso: History & Opportunities"
-subtitle: "Setbacks and Opportunities"
+subtitle: "Three Periods of Setbacks Unique to Mexico"
 date: "Nov 22, 2024"
 author: "Kevin Valdivia"
 format: html
@@ -133,13 +133,13 @@ p |>
         type = "rect", 
         x0 = as.Date("2008-01-01"), x1 = as.Date("2009-07-01"),
         y0 = 0, y1 = 25,  
-        fillcolor = "red", opacity = 0.5, line = list(width = 0), layer = "below"
+        fillcolor = "orange", opacity = 0.5, line = list(width = 0), layer = "below"
       ),
       list(
         type = "rect", 
         x0 = as.Date("2020-01-01"), x1 = as.Date("2021-01-01"),
         y0 = 0, y1 = 25,  
-        fillcolor = "red", opacity = 0.5, line = list(width = 0), layer = "below"
+        fillcolor = "orange", opacity = 0.5, line = list(width = 0), layer = "below"
       ),
       list(
         type = "rect", 
@@ -302,15 +302,9 @@ Source: [The World Bank](https://data.worldbank.org/indicator/FI.RES.TOTL.DT.ZS?
 
 It's important to remember the nature of tesobonos, which were government-issued debt instruments with a fixed exchange rate and were promised to be paid out in U.S. dollars. As the value of the debt exceeded the value of Mexico’s foreign reserves, investors began to worry about Mexico's ability to repay the loans. The graph above illustrates the dramatic decline in the ratio of Mexico’s total reserves to foreign debt. As a result, investors began to offload their Mexican assets, contributing to the peso losing half of its value.
 
-## 2008 Recession
-
-Place Holder
+The government needed to allow the peso to depreciate to ease pressure on foreign reserves and make Mexican exports more competitive, which could help address the current account deficit. However, the Zedillo administration could not reassure investors that it could sustain the peso's depreciation due to the structure of tesobonos, whose value could exceed Mexico's foreign reserves, risking default. This loss of investor confidence further devalued the peso and raised doubts about Mexico's ability to meet its obligations.
 
 ## Economic Slowdown & Trump
-
-Place Holder
-
-## Covid-19 Pandemic
 
 Place Holder
 
