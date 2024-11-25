@@ -1,5 +1,5 @@
 ---
-title: "30 Years of the Mexican Peso: History & Opportunities"
+title: "The Mexican Peso: History & Opportunities"
 subtitle: "Three Periods of Setbacks Unique to Mexico"
 date: "Nov 22, 2024"
 author: "Kevin Valdivia"
@@ -154,7 +154,9 @@ p |>
 
 Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
 
-# 30 Years of the MXN Peso
+The chart above shows the MXN peso to USD exchange rate since 1993. Highlighted areas represent periods of peso devaluation relative to the dollar. As the U.S. is Mexico's largest trading partner, this exchange rate is crucial to Mexico's economy and broader economic plans. The orange zones indicate global economic instability, such as the 2008 financial crisis and the 2020 COVID-19 pandemic. In contrast, the red zones highlight devaluations unique to Mexico, which are the focus of this article.
+
+# Three Period in 30 Years of the MXN Peso
 
 ![](usd_peso.jpg)Photo by [The Dallas Federal Reserve](https://www.dallasfed.org/research/economics/2023/0926)
 
