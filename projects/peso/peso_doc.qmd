@@ -152,15 +152,9 @@ p |>
   )
 ```
 
-Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
-
 The chart above shows the MXN peso to USD exchange rate since 1993. Highlighted areas represent periods of peso devaluation relative to the dollar. As the U.S. is Mexico's largest trading partner, this exchange rate is crucial to Mexico's economy and broader economic plans. The orange zones indicate global economic instability, such as the 2008 financial crisis and the 2020 COVID-19 pandemic. In contrast, the red zones highlight devaluations unique to Mexico, which are the focus of this article.
 
-# Three Period in 30 Years of the MXN Peso
-
-![](usd_peso.jpg)Photo by [The Dallas Federal Reserve](https://www.dallasfed.org/research/economics/2023/0926)
-
-## Peso Crisis (1994 - 1996)
+# Peso Crisis (1994 - 1996)
 
 ```{r}
 #| eval: true
@@ -205,11 +199,12 @@ exchange |>
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
 Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
 
 The Mexican Peso Crisis involved a dramatic devaluation of the Mexican peso, which fell from 3 pesos per USD to 6 pesos per USD, effectively losing half its value. Before the crisis, Mexico had attempted to maintain a peg to the USD, allowing the peso to fluctuate within a specific range. However, this seemingly stable peg collapsed in December when the government finally allowed the peso to devalue, triggering a series of economic and political challenges. Below, we will explore some of the most significant political and economic factors during this period.
 
-### Assasinaitons & A Violent Mobilization
+## Assasinaitons & A Violent Mobilization
 
 Numerous destabilizing events occurred in 1994. I particularly appreciate the title of the El País article, "[México 1994: el año que pasó todo](https://elpais.com/mexico/2024-03-23/mexico-1994-el-ano-que-paso-todo.html)" ("The Year Everything Happened"). For brevity, I will focus on two key political factors that stressed the exchange rate and contributed to the December crisis: high-profile political assassinations and the eruption of the Zapatista movement.
 
@@ -237,7 +232,7 @@ The Zapatista uprising involved violent confrontations, with over a hundred fata
 
 This opposition to economic liberalization, coupled with violence and unrest, created uncertainty about the viability of Mexico's economic policies. It also increased pressure on the peso peg, a cornerstone of the government’s economic strategy, contributing to the strain that ultimately led to the December crisis.
 
-### The Tesobonos and Economic Factors
+## The Tesobonos and Economic Factors
 
 To understand the Peso Crisis, one key factor is the role of *tesobonos*. These were short-term bonds with a fixed exchange rate, payable in USD. They offered investors the dual benefit of currency stability and higher interest rates than U.S. bonds. By linking returns to USD, the Mexican government aimed to attract foreign investors and inspire confidence amid political instability. At the same time, this strategy aligned with Mexico's economic goals under NAFTA and its push for more open trade policies.
 
@@ -306,14 +301,218 @@ It's important to remember the nature of tesobonos, which were government-issued
 
 The government needed to allow the peso to depreciate to ease pressure on foreign reserves and make Mexican exports more competitive, which could help address the current account deficit. However, the Zedillo administration could not reassure investors that it could sustain the peso's depreciation due to the structure of tesobonos, whose value could exceed Mexico's foreign reserves, risking default. This loss of investor confidence further devalued the peso and raised doubts about Mexico's ability to meet its obligations.
 
-## Economic Slowdown & Trump
+# Economic Slowdown & The Rise of Trumpism
 
-Place Holder
+```{r}
+#| eval: true
+exchange |> 
+  filter(date >= as.Date("2011-11-01") & date <= as.Date("2017-10-01")) |> 
+  ggplot(aes(x = date, y = exchange)) +
+  geom_rect(
+    aes( xmin = as.Date("2014-08-01"), xmax = as.Date("2017-03-01"),
+         ymin = -Inf, ymax = Inf),
+         fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("1994-01-01"), xmax = as.Date("1996-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("1994-10-01"), xmax = as.Date("1996-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "#fa8e8e", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2008-01-01"), xmax = as.Date("2009-07-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2020-01-01"), xmax = as.Date("2021-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2024-05-01"), xmax = as.Date("2024-11-22"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  geom_line(size = 1) +  
+  labs( x = "Date",
+        y = "Exchange Rate",
+        title = ""#Exchange Rate Over Time (2010-2024)"
+        ) +
+  scale_x_date(
+    breaks = seq(from = min(exchange$date), 
+                 to = max(exchange$date), 
+                 by = "1 year"),
+    labels = scales::date_format("%Y")) +
+  scale_y_continuous(breaks = seq(1, 25, by = 1)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
-## 2024 Elections
+Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
 
-Place Holder
+Between mid-2014 and early 2017, the peso experienced a steady devaluation against the USD, starting at around 13 pesos per US dollar and ending at 20 pesos. This represented a devaluation of 53.9%. Several factors contributed to this decline, both economic, such as fluctuations in gas prices, and political, including the 2016 U.S. presidential election and the victory of Donald Trump. In this discussion, we will explore some of the key factors behind this devaluation.
 
-# The Future?
+## Oil Prices & Economic Uncertainty
 
-Place Holder
+```{r}
+# Read and process the data
+oil_data <- read.csv("oil_price.csv") |> 
+  filter(avg_annual_opec_crude_oil_price_usd_per_barrel <= 2020 & 
+           avg_annual_opec_crude_oil_price_usd_per_barrel >= 1998) |> 
+  rename(year = avg_annual_opec_crude_oil_price_usd_per_barrel) |> 
+  mutate(year = as.numeric(year))
+
+# Create the plotly plot for reserve_debt
+p1_interactive <- plot_ly(
+  data = oil_data, 
+  x = ~year, 
+  y = ~price, 
+  type = 'scatter', 
+  mode = 'lines+markers', 
+  line = list(color = 'royalblue', width = 2), 
+  marker = list(color = 'royalblue', size = 6),
+  text = ~paste0("Year: ", year, "<br>Price: $", price),  # Custom hover label
+  hoverinfo = 'text'  # Show custom text when hovering
+) %>% layout(
+  title = "Average OPEC Oil Prices Overtime",
+  xaxis = list(
+    title = 'Year',
+    tickmode = 'linear',  # Ensures all ticks are placed
+    dtick = 1,  # This sets the tick interval to 1 year
+    tickvals = seq(min(oil_data$year), max(oil_data$year), by = 1),  # Ensure ticks are placed for each year
+    tickangle = 45  # Rotate x-axis labels by 45 degrees
+  ),
+  yaxis = list(title = 'Average OPEC Oil Prices (USD per Barrel)'),
+  hovermode = "x unified",
+  shapes = list(
+    list(
+      type = "rect",
+      x0 = 2014,  # Start year of the rectangle
+      x1 = 2016,  # End year of the rectangle
+      y0 = -Inf,  # Set the lower boundary for the y-axis
+      y1 = 118,  # Set the upper boundary for the y-axis
+      fillcolor = "red",  # Color of the rectangle
+      opacity = 0.3,  # Transparency of the rectangle
+      line = list(color = "red", width = 2)  # Rectangle border color and width
+    )
+  )
+)
+
+# Show the interactive plot
+p1_interactive
+```
+
+Source: [Statista](https://www.statista.com/statistics/262858/change-in-opec-crude-oil-prices-since-1960/)
+
+Oil prices have been rising dramatically since the turn of the century, as evidenced by OPEC oil prices. The only significant dip occurred during the Great Recession, but prices quickly recovered, reaching new heights in 2012, when the average annual cost of a barrel of oil exceeded \$109. However, just four years later, the price plummeted to less than \$41, resulting in a loss of more than half its value.
+
+What does this mean for Mexico, which has a very large oil and gas sector? The oil industry in Mexico is nationalized by the government and serves as a significant source of government revenue. It meant an unprecedented plummet that would devalue a portion of Mexico's GDP.
+
+```{r}
+oil_gdp_share <- read.csv("oil_extraction_share.csv") |> 
+  rename(year = percent_oil_extraction_secotr_share_of_GDP,
+         share = X) |> 
+  mutate(year = as.numeric(year))
+
+# Create the plotly plot for reserve_debt
+p1_interactive <- plot_ly(
+  data = oil_gdp_share, 
+  x = ~year, 
+  y = ~share, 
+  type = 'scatter', 
+  mode = 'lines+markers', 
+  line = list(color = 'royalblue', width = 2), 
+  marker = list(color = 'royalblue', size = 6),
+  text = ~paste0("Year: ", year, "<br>Share: ", share, "%"),  # Custom hover label
+  hoverinfo = 'text'  # Show custom text when hovering
+) %>% layout(
+  title = "Oil & Gas sector as share of GDP in Mexico Overtime",
+  xaxis = list(
+    title = 'Year',
+    tickmode = 'linear',  # Ensures all ticks are placed
+    dtick = 1,  # This sets the tick interval to 1 year
+    tickvals = seq(min(oil_data$year), max(oil_data$year), by = 1),  # Ensure ticks are placed for each year
+    tickangle = 45  # Rotate x-axis labels by 45 degrees
+  ),
+  yaxis = list(title = 'Percent Share of GDP'),
+  hovermode = "x unified",
+  shapes = list(
+    list(
+      type = "rect",
+      x0 = 2014,  # Start year of the rectangle
+      x1 = 2016,  # End year of the rectangle
+      y0 = -Inf,  # Set the lower boundary for the y-axis
+      y1 = 7,  # Set the upper boundary for the y-axis
+      fillcolor = "red",  # Color of the rectangle
+      opacity = 0.3,  # Transparency of the rectangle
+      line = list(color = "red", width = 2)  # Rectangle border color and width
+    )
+  )
+)
+
+# Show the interactive plot
+p1_interactive
+
+```
+
+Source: [Statista](https://www.statista.com/statistics/1173837/gdp-share-oil-gas-sector-mexico/#:~:text=In%202023%2C%20the%20oil%20and,percent%20in%20the%20previous%20year.)
+
+In 2014, the oil and gas sector accounted for approximately 5% of GDP, but by 2016, it had fallen to just 2%, primarily due to a dramatic decline in oil prices. This sharp drop significantly impacted federal government revenue, as oil-related income made up [30%](https://www.bakerinstitute.org/research/mexico-oil-prices-slump) of the federal budget in 2016. Such a decline created ripple effects across the economy, raising concerns among investors about the stability and potential risks of investing in the Mexican economy.
+
+```{r}
+gdp <- read.csv("mex_gdp.csv") |> 
+  rename(gdp = MKTGDPMXA646NWDB,
+         date = DATE) |> 
+  mutate(date = ymd(date),
+         gdp = gdp/1000000000) |> 
+  mutate(date = as.numeric(year(date)))
+# in billions
+gdp_2014 <- gdp |> 
+  filter(date >= 2009 & date <= 2019)
+
+# Create the plotly plot for reserve_debt
+p1_interactive <- plot_ly(
+  data = gdp_2014, 
+  x = ~date, 
+  y = ~gdp, 
+  type = 'scatter', 
+  mode = 'lines+markers', 
+  line = list(color = 'royalblue', width = 2), 
+  marker = list(color = 'royalblue', size = 6),
+  text = ~paste0("Year: ", date, "<br>Share: ", gdp, " Billion USD"),  # Custom hover label
+  hoverinfo = 'text'  # Show custom text when hovering
+) %>% layout(
+  title = "Mexico's GDP betwen 2009 and 2019",
+  xaxis = list(
+    title = 'Year',
+    tickmode = 'linear',  # Ensures all ticks are placed
+    dtick = 1,  # This sets the tick interval to 1 year
+    tickvals = seq(min(oil_data$year), max(oil_data$year), by = 1),  # Ensure ticks are placed for each year
+    tickangle = 45  # Rotate x-axis labels by 45 degrees
+  ),
+  yaxis = list(title = 'GDP in Billions of USD'),
+  hovermode = "x unified",
+  shapes = list(
+    list(
+      type = "rect",
+      x0 = 2014,  # Start year of the rectangle
+      x1 = 2016,  # End year of the rectangle
+      y0 = -Inf,  # Set the lower boundary for the y-axis
+      y1 = 1400,  # Set the upper boundary for the y-axis
+      fillcolor = "red",  # Color of the rectangle
+      opacity = 0.3,  # Transparency of the rectangle
+      line = list(color = "red", width = 2)  # Rectangle border color and width
+    )
+  )
+)
+
+# Show the interactive plot
+p1_interactive
+
+```
+
+Finally, as seen in GDP during this period, the Mexican economy was in decline, which can help explain the peso's depreciation during this time. The decline of the Mexican economy reflects poorly on investor confidence and could result in fewer investment opportunities, leading to reduced demand for Mexican financial assets. This contributed to the steady depreciation of the peso against the USD that we observed.
+
+### Trump
+![](usmca_trump.jpg)Photo by Saul Loeb in [CNN](https://www.cnn.com/2024/10/14/politics/usmca-trump-renegotiate/index.html)
+
+Entering 2015, a new wave of political tension emerged as Donald Trump’s rhetoric toward Mexico gained traction in the United States. This hostility, coupled with the progressive economic decline leading up to the U.S. elections and Trump's inauguration, heightened investor concerns about the future of Mexican assets. Trump's vocal criticism of NAFTA and calls for its renegotiation added further uncertainty. Until the renegotiation was completed, markets remained unsure of Mexico's economic prospects. [Overall](https://www.france24.com/en/20161109-mexico-usa-peso-plunges-trump-presidential-win), the instability during the early Trump administration exacerbated these challenges, contributing to the depreciation of the peso and increasing economic uncertainty.

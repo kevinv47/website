@@ -8,10 +8,7 @@ toc: false # Table of contents
 execute: 
   warning: false
   message: false
-  eval: false
 ---
-
-
 
 ```{r}
 library(tidyverse)
@@ -28,7 +25,6 @@ Subjects <- tbl(con_wai, "Subjects")
 # collect(Measurements)
 ```
 
-
 ```{sql}
 #| connection: con_wai
 SHOW TABLES;
@@ -39,7 +35,6 @@ SHOW TABLES;
 DESCRIBE Measurements;
 
 ```
-
 
 ```{sql}
 #| connection: con_wai
@@ -65,7 +60,6 @@ avgs <- dbGetQuery(con_wai, query)
 ```{r}
 unique(avgs$Identifier)
 ```
-
 
 ```{r}
 custom_colors <- c(
@@ -110,5 +104,3 @@ avgs |>
     y = "Mean Absorbance"
   )
 ```
-
-

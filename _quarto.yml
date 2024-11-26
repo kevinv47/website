@@ -14,8 +14,8 @@ website:
 #        text: About
       - text: "Projects"
         menu:
-          - href: projects/amlo_mex/amlo_page.qmd
-            text: "AMLO Project (under development)"
+          #- href: projects/amlo_mex/amlo_page.qmd
+          #  text: "AMLO Project (under development)"
           - href: projects/the office/office_text_analysis.qmd
             text: "Text Analysis: *The Office*"
           - href: projects/simulation_study/permutation_experiment.qmd
