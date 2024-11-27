@@ -54,7 +54,7 @@ p <- p |>
     type = "scatter",
     mode = "markers",
     marker = list(opacity = 0, size = 1),  # Fully transparent marker
-    text = "<b>Economic Slowdown & Political Uncertainty</b>",
+    text = "<b>Economic Troubles & Trumpism</b>",
     hoverinfo = "text",
     showlegend = FALSE  # Hide legend for this trace
   ) |> 
@@ -153,6 +153,12 @@ p |>
 ```
 
 The chart above shows the MXN peso to USD exchange rate since 1993. Highlighted areas represent periods of peso devaluation relative to the dollar. As the U.S. is Mexico's largest trading partner, this exchange rate is crucial to Mexico's economy and broader economic plans. The orange zones indicate global economic instability, such as the 2008 financial crisis and the 2020 COVID-19 pandemic. In contrast, the red zones highlight devaluations unique to Mexico, which are the focus of this article. This article focuses on the primary economic and political drivers behind the currency devaluation during this period.
+
+In summary this will be a sruvey of the salient factors behind the peso depreciation in the following periods:
+
+- Peso Crisis (1994 - 1996)
+- Economic Troubles & Trumpism (2014 - 2016)
+- 2024 Elections (June 2024 - Present)
 
 # Peso Crisis (1994 - 1996)
 
@@ -301,7 +307,7 @@ It's important to remember the nature of tesobonos, which were government-issued
 
 The government needed to allow the peso to depreciate to ease pressure on foreign reserves and make Mexican exports more competitive, which could help address the current account deficit. However, the Zedillo administration could not reassure investors that it could sustain the peso's depreciation due to the structure of tesobonos, whose value could exceed Mexico's foreign reserves, risking default. This loss of investor confidence further devalued the peso and raised doubts about Mexico's ability to meet its obligations.
 
-# Economic Slowdown & The Rise of Trumpism
+# Economic Troubles & Trumpism
 
 ```{r}
 #| eval: true
@@ -567,6 +573,11 @@ exchange |>
 
 Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
 
+
+The main factor that triggered the depreciation of the peso was the June 2nd general election in Mexico, which saw an increase in violent incidents involving political candidates during regional elections. Additionally, the election resulted in the party MORENA gaining even greater control over the country's governmental institutions.
+
+## 2024 Mexican General Elections
+
 ::: columns
 ::: {.column width="49%"}
 ### Chamber Of Deputies
@@ -676,3 +687,15 @@ senate2024 |>
 :::
 
 Source: [IPU Parline](https://data.ipu.org/parliament/MX/MX-LC01/)
+
+The graph above shows the results of the Mexican general elections. Maroon represents the coalition dominated by Morena, "Sigamos Haciendo Historia," while orange represents the Movimiento Naranja party, and pink represents Fuerza y Corazón por México, a coalition of institutional parties in Mexico. 
+
+The remarkable achievement of [securing](https://www.reuters.com/world/americas/mexico-electoral-authority-ratifies-ruling-coalitions-lower-house-supermajority-2024-08-23/) more than two-thirds of the congressional seats means this bloc has the power to amend the constitution without needing cooperation from opposing parties in the Chamber of Deputies and requires only two votes in the Senate. Not to mention MORENA candidate Claudia Sheinbaum becoming the first woman president this year. Controversial reforms, such as those proposed by former President AMLO—like [restructuring](https://www.wilsoncenter.org/event/electoral-reform-mexico-threat-democracy) the body in charge of elections—and reforms already implemented, such as allowing [judges to be elected](https://www.npr.org/2024/09/10/g-s1-20967/mexico-judicial-reform-elect-judges-constition-change), are among the proposals seen as threats to democracy. These developments have made [investors wary](https://www.bloomberg.com/graphics/2024-mexico-election-results/) of Mexican assets.
+
+![](mex_elections.jpg)Photo by Fernando Llano for the [AP](https://www.nytimes.com/2024/05/25/world/americas/mexico-election-candidates-killed.html)
+
+In the lead-up to the elections, there was also a record-breaking amount of homicides of political candidates, which did not help the appearance of stability in Mexican democracy. This, along with the dominance that MORENA has secured at the federal level, caused concern among investors about the future of democracy in Mexico.
+
+Finally, there are also the 2024 U.S. presidential elections, which saw the victory of Republicans gaining a majority in the House and the Senate, with Donald Trump as president. The peso is not likely to respond well to this in the coming weeks, and we are only beginning to see some of the rhetoric that may affect the value of Mexican assets, potentially depreciating the peso. President-elect Donald Trump, for example, has said that he wants to add a 25% tariff on Mexican imports, to which President Claudia Sheinbaum said, ['For every tariff, there will be a response in kind.'](https://www.politico.com/live-updates/2024/11/26/congress/trump-tariffs-mexico-00191702)
+
+The duration of the current depreciation of the peso remains uncertain, as the Trump administration won't begin implementing its policies for several months. In the meantime, the policies that MORENA adopts in the coming months will likely also have a significant impact on reassuring investors that democracy is not at risk in Mexico.
