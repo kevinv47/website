@@ -152,7 +152,7 @@ p |>
   )
 ```
 
-The chart above shows the MXN peso to USD exchange rate since 1993. Highlighted areas represent periods of peso devaluation relative to the dollar. As the U.S. is Mexico's largest trading partner, this exchange rate is crucial to Mexico's economy and broader economic plans. The orange zones indicate global economic instability, such as the 2008 financial crisis and the 2020 COVID-19 pandemic. In contrast, the red zones highlight devaluations unique to Mexico, which are the focus of this article.
+The chart above shows the MXN peso to USD exchange rate since 1993. Highlighted areas represent periods of peso devaluation relative to the dollar. As the U.S. is Mexico's largest trading partner, this exchange rate is crucial to Mexico's economy and broader economic plans. The orange zones indicate global economic instability, such as the 2008 financial crisis and the 2020 COVID-19 pandemic. In contrast, the red zones highlight devaluations unique to Mexico, which are the focus of this article. This article focuses on the primary economic and political drivers behind the currency devaluation during this period.
 
 # Peso Crisis (1994 - 1996)
 
@@ -513,6 +513,166 @@ p1_interactive
 Finally, as seen in GDP during this period, the Mexican economy was in decline, which can help explain the peso's depreciation during this time. The decline of the Mexican economy reflects poorly on investor confidence and could result in fewer investment opportunities, leading to reduced demand for Mexican financial assets. This contributed to the steady depreciation of the peso against the USD that we observed.
 
 ### Trump
+
 ![](usmca_trump.jpg)Photo by Saul Loeb in [CNN](https://www.cnn.com/2024/10/14/politics/usmca-trump-renegotiate/index.html)
 
 Entering 2015, a new wave of political tension emerged as Donald Trump’s rhetoric toward Mexico gained traction in the United States. This hostility, coupled with the progressive economic decline leading up to the U.S. elections and Trump's inauguration, heightened investor concerns about the future of Mexican assets. Trump's vocal criticism of NAFTA and calls for its renegotiation added further uncertainty. Until the renegotiation was completed, markets remained unsure of Mexico's economic prospects. [Overall](https://www.france24.com/en/20161109-mexico-usa-peso-plunges-trump-presidential-win), the instability during the early Trump administration exacerbated these challenges, contributing to the depreciation of the peso and increasing economic uncertainty.
+
+# 2024 Elections
+
+```{r}
+#| eval: true
+exchange |> 
+  filter(date >= as.Date("2021-11-01")) |> 
+  ggplot(aes(x = date, y = exchange)) +
+  # geom_rect(
+  #   aes( xmin = as.Date("2014-08-01"), xmax = as.Date("2017-03-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("1994-01-01"), xmax = as.Date("1996-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("1994-10-01"), xmax = as.Date("1996-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "#fa8e8e", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2008-01-01"), xmax = as.Date("2009-07-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  # geom_rect(
+  # aes( xmin = as.Date("2020-01-01"), xmax = as.Date("2021-01-01"),
+  #        ymin = -Inf, ymax = Inf),
+  #        fill = "red", alpha = 0.002) +
+  geom_rect(
+  aes( xmin = as.Date("2024-05-01"), xmax = as.Date("2024-11-22"),
+         ymin = -Inf, ymax = Inf),
+         fill = "red", alpha = 0.002) +
+  geom_line(size = 1) +  
+  labs( x = "Date",
+        y = "Exchange Rate",
+        title = ""#Exchange Rate Over Time (2010-2024)"
+        ) +
+  scale_x_date(
+    breaks = seq(from = min(exchange$date), 
+                 to = max(exchange$date), 
+                 by = "1 year"),
+    labels = scales::date_format("%Y")) +
+  scale_y_continuous(breaks = seq(1, 25, by = 1)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+Source: [Banco de México](https://www.banxico.org.mx/indexen.html)
+
+::: columns
+::: {.column width="49%"}
+### Chamber Of Deputies
+
+```{r, fig.width=10, fig.height=6}
+library(ggparliament)
+library(janitor)
+library(patchwork)
+
+# Party order somewhat ordered by political ideology but also on the left is the coalition headed by MORENA and on the further right are more of the institutional parties. In the middle MC is mostly alligned with the insitutal parties but was not in a coalition this election cycle.
+
+party_order <- list(
+  "PT",          # Far-left
+  "MORENA",      # Left
+  "VERDE",       # Center-left
+  "MC",          # Center to Center-left
+  "PRD",         # Center-left
+  "PRI",         # Center-right
+  "PAN",         # Right
+  "PES",         # Far-right
+  "Other_Parties" # Other/Unknown
+)
+
+
+# Party colors asignment
+party_colors <- list(
+  PT = "#f02b19",           # Red
+  MORENA = "#b5261f",       # Dark Red
+  VERDE = "#38a700",        # Green
+  MC = "#f57c00",           # Orange
+  PRD = "#ffcc00",          # Yellow
+  PRI = "#006847",          # Green (plus Red/White in their logo)
+  PAN = "#004a98",          # Blue
+  PES = "#5c246e",          # Purple
+  Other_Parties = "#b2b2b2" # Grey for other/unknown parties
+)
+
+# Colors for the coalitions in 2024 election cycle
+coalition_colors <- list(
+  PT = "#a41e34",           # Red
+  MORENA = "#a41e34",       # Dark Red
+  VERDE = "#a41e34",        # Green
+  MC = "#f57c00",           # Orange
+  PRD = "#ec4891",          # Yellow
+  PRI = "#ec4891",          # Green (plus Red/White in their logo)
+  PAN = "#ec4891",          # Blue
+  PES = "#5c246e",          # Purple
+  Other_Parties = "#b2b2b2" # Grey for other/unknown parties
+)
+
+
+
+# Importing the congressional data
+deputies <- read.csv("deputies_00_24.csv") |> 
+  mutate(party = factor(party, levels = party_order)) |> 
+  arrange(party) |> 
+  rename(seats = elected)
+senate <- read.csv("senate_00_24.csv") |> 
+  mutate(party = factor(party, levels = party_order)) |> 
+  arrange(party) |> 
+  rename(seats = elected)
+
+# Function preparing parliamntary data structure
+prepare_parliament_data <- function(par_data, rows_num) {
+  parliament_data(
+    election_data = par_data,
+    type = "semicircle",  # This sets the semicircular layout
+    parl_rows = rows_num        # Number of rows in the semicircle
+  )
+}
+
+# Taking only the year 2024
+deputies2024 <- deputies |> 
+  filter(year == 2024) |> 
+  prepare_parliament_data(11)
+
+senate2024 <- senate |> 
+  filter(year == 2024) |> 
+  prepare_parliament_data(6)
+
+deputies2024 |>
+  ggplot(aes(x = x, y = y)) +
+    geom_parliament_seats(size = 7, aes(color = party)) + # party colors
+    # scale_colour_manual(values = party_colors) + # party colors
+    scale_colour_manual(values = coalition_colors) + # coalition colors
+    theme_void() +
+    theme(legend.position = "null")
+```
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="49%"}
+### The Senate
+
+```{r, fig.width=10, fig.height=6}
+senate2024 |>
+  ggplot(aes(x = x, y = y)) +
+    geom_parliament_seats(size = 14, aes(color = party)) + # party colors
+    # scale_colour_manual(values = party_colors) + # party colors
+    scale_colour_manual(values = coalition_colors) + # coalition colors
+    theme_void() +
+    theme(legend.position = "null")
+```
+:::
+:::
+
+Source: [IPU Parline](https://data.ipu.org/parliament/MX/MX-LC01/)

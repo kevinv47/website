@@ -1,7 +1,7 @@
 ---
 title: "SQL Mini Project"
-subtitle: "Should We Praise A Strong Peso?"
-date: "Nov 19th, 2024"
+subtitle: "Using SQL With WAI Database"
+date: "Nov 26, 2024"
 author: "Kevin Valdivia"
 format: html
 toc: false # Table of contents
@@ -10,9 +10,25 @@ execute:
   message: false
 ---
 
+### Objective
+
+- **Replicate Figure 1 from [Voss (2020)](https://pmc.ncbi.nlm.nih.gov/articles/PMC7093226/)** using SQL and R:
+  - Query the WAI Database to build a dataset.
+  - Pipe it into `ggplot()` to recreate Figure 1.
+
+- **Analyze the Lewis (2015) study by sex**:
+  - Plot frequency vs. mean absorbance by sex for the Lewis (2015) data.
+
+### Libraries
+The libraries used in the project are the `tidyverse` and `RMariaDB`.
 ```{r}
 library(tidyverse)
 library(RMariaDB)
+```
+
+## Setting Up Connection
+I will use the [Wideband Acoustic Immittance (WAI) Database](https://www.science.smith.edu/wai-database/), which I will access through SQL. The following is the connection.
+```{r}
 con_wai <- dbConnect(
   MariaDB(), host = "scidb.smith.edu",
   user = "waiuser", password = "smith_waiDB", 
@@ -21,86 +37,130 @@ con_wai <- dbConnect(
 Measurements <- tbl(con_wai, "Measurements")
 PI_Info <- tbl(con_wai, "PI_Info")
 Subjects <- tbl(con_wai, "Subjects")
-
-# collect(Measurements)
 ```
-
+## Exploring The Database
+There are seven datasets in the database. To achieve our objectives, we will use the `Measurements`, `Subjects`, and `PI_Info` datasets.
 ```{sql}
 #| connection: con_wai
 SHOW TABLES;
 ```
 
+From the `Measurements` database, I will use the `Identifier` variable to join with the `PI_Info` dataset. I will also use the variables `Frequency` and `Absorbance` for plotting. Additionally, I will analyze the variables `Ear` and `Instrument` to determine the number of ears and the types of instruments used in each study.
+
 ```{sql}
 #| connection: con_wai
 DESCRIBE Measurements;
-
 ```
+
+We will use the `PI_Info` dataset by joining it with the `Measurements` dataset using the `Identifier` variable. From this dataset, we will extract the `Year` of the study and the `AuthorsShortList` to include in the legend.
+```{sql}
+#| connection: con_wai
+DESCRIBE PI_Info;
+```
+
+# Research Replication
+
+I will begin by replicating the graph from Voss (2020). To do this, I will join the datasets `Measurements` and `PI_Info` using the `Identifier` key variable. I will extract the variable     and calculate the mean of `Absorbance` for each value of `Frequency.` Additionally, I will create a label for each study using the relevant information from the datasets. Finally, I will save the resulting dataset as replication_data.
 
 ```{sql}
 #| connection: con_wai
-SELECT *
-FROM Measurements
-LIMIT 0, 5;
-```
-
-```{r}
-query <- "
+#| output.var: "replication_data"
 SELECT 
-    Identifier,
-    Frequency,
-    Instrument,
-    AVG(Absorbance) as mean_absorbance
-FROM Measurements
-GROUP BY Identifier, Instrument, Frequency;
-"
+    m.Frequency,
+    AVG(m.Absorbance) as mean_absorbance,
+    CONCAT(pi.AuthorsShortList, " (", pi.Year, ") N=", COUNT(DISTINCT m.SubjectNumber, m.Ear), "; ", m.Instrument) AS label
+FROM Measurements as m
+INNER JOIN PI_Info AS pi ON m.Identifier=pi.Identifier
+WHERE m.Identifier IN ( "Abur_2014", "Feeney_2017", "Groon_2015", 
+                        "Lewis_2015", "Liu_2008", "Rosowski_2012",
+                        "Shahnaz_2006", "Shaver_2013", "Sun_2016",
+                        "Voss_1994", "Voss_2010", "Werner_2010") 
+                  AND m.Frequency <= 8000 AND m.Frequency >= 200
+GROUP BY m.Identifier, Instrument, Frequency;
 
-avgs <- dbGetQuery(con_wai, query)
 ```
 
-```{r}
-unique(avgs$Identifier)
-```
-
+I created a custom color palette to match the lines in the graphs I am replicating.
 ```{r}
 custom_colors <- c(
-  "#5C4E9E",  # For "Abur_2014"
-  "#387BBC",  # For "Feeney_2017"
-  "#5FB8A9",  # For "Groon_2015"
-  "#99D59F",  # For "Lewis_2015"
-  "#D9F0A7",  # For "Liu_2008"
-  "#ECF5AF",  # For "Rosowski_2012"
-  "#F7EEAF",  # For "Shahnaz_2006"
-  "#F8D37E",  # For "Shaver_2013"
-  "#EC9D57",  # For "Sun_2016"
-  "#E46647",  # For "Voss_1994"
-  "#C9384D",  # For "Voss_2010"
-  "#9C2045"   # For "Werner_2010"
+  "#5C4E9E",
+  "#387BBC",
+  "#5FB8A9",
+  "#99D59F",
+  "#D9F0A7",
+  "#ECF5AF",
+  "#F7EEAF",
+  "#F8D37E",
+  "#EC9D57",
+  "#E46647",
+  "#C9384D",
+  "#9C2045"
 )
 
-avgs |> 
-  filter(Identifier %in% c("Abur_2014",
-                           "Feeney_2017",
-                           "Groon_2015",
-                           "Lewis_2015",
-                           "Liu_2008",
-                           "Rosowski_2012",
-                           "Shahnaz_2006",
-                           "Shaver_2013",
-                           "Sun_2016",
-                           "Voss_1994",
-                           "Voss_2010",
-                           "Werner_2010"),
-         Frequency <= 8000 & Frequency >= 200) |> 
-  ggplot(aes(x = Frequency, y = mean_absorbance, color = Identifier)) +
+color_map <- setNames(custom_colors, unique(replication_data$label))
+```
+
+
+Now, I will use the `replication_data` to create a graph that replicates the original. I will use the `color_map` variable to apply the custom color template.
+```{r, fig.width=10, fig.height=6}
+replication_data |> 
+  ggplot(aes(x = Frequency, y = mean_absorbance, color = label)) +
   geom_line(size = 1) +
   scale_x_continuous(
-    trans = "log10",               # Apply logarithmic transformation
-    breaks = c(200, 400, 600, 800, 1000, 2000, 4000, 6000, 8000), # Custom breaks
-    labels = scales::label_number() # Keep original units
-  ) +
-  scale_color_manual(values = custom_colors) +
+    trans = "log10",               
+    breaks = c(200, 400, 600, 800, 1000, 2000, 4000, 6000, 8000),
+    labels = scales::label_number()) +
+  theme_light() +
+  scale_color_manual(values = color_map) +
+  guides(color = guide_legend(ncol = 1)) +
+  theme(
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 8),
+    legend.key.size = unit(0.5, "cm"),
+    legend.spacing.y = unit(0.5, "cm")) +  
   labs(
-    x = "Frequency (Hz)", # Updated axis label
-    y = "Mean Absorbance"
+    x = "Frequency (Hz)", 
+    y = "Mean Absorbance",
+    title = "Mean absorbance from each publication in WAI database",
+    color = "")
+```
+
+
+# Graphing by Sex
+In the `Subjects` database, we will use the `Identifier` as a key to connect the datasets. Additionally, we will use the variable `Sex` to analyze the difference in mean absorbance by sex. We will join this database with Measurments database.
+```{sql}
+#| connection: con_wai
+DESCRIBE Subjects;
+```
+
+Now, I will join the `Subjects` dataset with the `Measurement` dataset to plot a similar graph, but focusing only on the research from `Lewis_2015` and grouped by `Sex`.
+```{sql}
+#| connection: con_wai
+#| output.var: "absorbance_by_sex"
+SELECT 
+    m.Identifier,
+    m.Frequency,
+    AVG(m.Absorbance) as mean_absorbance,
+    s.Sex
+FROM Measurements as m
+INNER JOIN Subjects AS s ON m.SubjectNumber=s.SubjectNumber AND 
+                            m.Identifier=s.Identifier
+WHERE m.Identifier IN ("Lewis_2015") AND m.Frequency <= 8000 AND m.Frequency >= 200
+GROUP BY Identifier, Frequency, Sex;
+```
+
+Now, I will graph the `mean_absorbance` against `Frequency`, grouped by `Sex`, for the `Lewis_2015` research data.
+```{r}
+absorbance_by_sex |> 
+  ggplot(aes(x = Frequency, y = mean_absorbance, color = Sex)) +
+  geom_line(size = 1.25)+  
+  theme_minimal() +
+  labs(
+    x = "Frequency (Hz)", 
+    y = "Mean Absorbance",
+    title = "Mean absorbance by Sex For Lewis (2015)",
+    color = "Sex"
   )
 ```
+
+The graph follows a similar pattern to the previously replicated graph. However, males have slightly higher mean absorbance at the start, and then there is a slight increase in mean absorbance for males around 6000. Finally, at the rightmost end, females show a much higher mean absorbance.

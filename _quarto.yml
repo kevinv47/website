@@ -22,6 +22,8 @@ website:
             text: "Mini Experiment: *Room Draw Permutation*"
           - href: projects/peso/peso_doc.qmd
             text: "The Peso In Crisis"
+          - href: projects/sql_mini_project/sql_project.qmd
+            text: "SQL Replication Project"
       - text: "Tidytuesday"
         menu:
           - href: tidytuesday/school_income.qmd
