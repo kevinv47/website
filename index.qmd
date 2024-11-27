@@ -7,7 +7,7 @@ about:
   links:
     - text: LinkedIn
       icon: linkedin
-      url: https://www.linkedin.com/in/
+      url: www.linkedin.com/in/kevin-v47
     - text: GitHub
       icon: github
       url: https://github.com/
