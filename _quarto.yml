@@ -12,32 +12,28 @@ website:
         text: Home
 #      - href: about.qmd
 #        text: About
-      - text: "Projects"
+      - text: "Essays"
         menu:
-          #- href: projects/amlo_mex/amlo_page.qmd
-          #  text: "AMLO Project (under development)"
-          - href: projects/the office/office_text_analysis.qmd
-            text: "Text Analysis: *The Office*"
-          - href: projects/simulation_study/permutation_experiment.qmd
-            text: "Mini Experiment: *Room Draw Permutation*"
+          - href: essays/mex_ine/electoral_reforms.qmd
+            text: "Behind AMLO’s Electoral Reforms"
+          - href: essays/mex_ed/mexican_education.qmd
+            text: "The Mexican Education System"
+          - href: essays/cfa_zone/cfa_zone.qmd
+            text: "Economic Integration in Francophone Africa"
+          - href: essays/westphalia/westphalia.qmd
+            text: "Beyond Westphalia"
           - href: projects/peso/peso_doc.qmd
             text: "The Peso In Crisis"
+      - text: "Projects"
+        menu:
+          - href: projects/the office/office_text_analysis.qmd
+            text: "**Text Analysis:** *The Office*"
+          - href: projects/simulation_study/permutation_experiment.qmd
+            text: "**Permutation Analysis**: *Room Draw*"
           - href: projects/sql_mini_project/sql_project.qmd
-            text: "SQL Replication Project"
-      - text: "Tidytuesday"
-        menu:
-          - href: tidytuesday/school_income.qmd
-            text: "Student Income Status at Elite Schools"
-          - href: tidytuesday/shakespeare_words.qmd
-            text: "Shakespeare Word Cloud"
-          - href: tidytuesday/chess_matches.qmd
-            text: "Chess Matches"
-          - href: tidytuesday/biodiversity_national_parks.qmd
-            text: "Biodiversity In National Parks"
-      - text: "Practice"
-        menu:
-          - href: practice/ggplot_practice.qmd
-            text: "ggplot Practice"
+            text: "**Graph Replication**: With SQL"
+      - href: tidytuesday/tidytuesday.qmd
+        text: "**Tidytuesday Adventures**"
   open-graph:
     locale: en_US
   comments:

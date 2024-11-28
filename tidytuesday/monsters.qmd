@@ -11,6 +11,7 @@ execute:
 ---
 
 ### Libraries
+
 ```{r}
 library(tidyverse)
 
@@ -21,7 +22,6 @@ library(tidymodels)
 library(rpart.plot)
 ```
 
-
 ```{r}
 monster_movie_genres <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-29/monster_movie_genres.csv')
 monster_movies <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-29/monster_movies.csv') |> 
@@ -30,7 +30,6 @@ monster_movies <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
   pivot_wider(names_from = genres, values_from = value, values_fill = 0)
 
 ```
-
 
 ```{r}
 plot_data <- monster_movies |>
@@ -65,7 +64,6 @@ plot_data |>
     scale_fill_brewer(palette = "Dark2")
 ```
 
-
 ```{r}
 monster_model <- monster_movies |>
   select(primary_title, year, runtime_minutes, average_rating,
@@ -92,7 +90,6 @@ movie_wflow_lm |>
   geom_abline(intercept = 0, slope = 1)
 ```
 
-
 ```{r}
 movie_mod_cart <- decision_tree() |> 
   set_engine(engine = "rpart") |> 
@@ -117,4 +114,3 @@ movies_tree <- movie_wflow_cart |>
 
 rpart.plot(movies_tree$fit)
 ```
-

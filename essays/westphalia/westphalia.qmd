@@ -1,0 +1,89 @@
+---
+title: "Beyond Westphalia"
+subtitle: 'Redefining "The State" in the Age of Globalization'
+date: "October 19, 2023"
+author: "Kevin Valdivia"
+format: html
+toc: true # Table of contents
+execute: 
+  warning: false
+  message: false
+  error: false
+---
+
+The international order appears to revolve around a 'traditional' state-based system. States seem to be autonomous political actors who make decisions for their clearly demarcated territory. However, this 'traditional' Westphalian model of state systems has never truly existed, and its facade is deteriorating. The erosion of the traditional state system is primarily due to globalizing forces, which have complicated the straightforward conception of the state. To understand this  erosion, three aspects of globalization must be considered: political influences, institutional influences, and influences from non-state actors.
+
+# Background
+
+To identify the growth of the complex state system and the departure from the 'traditional' sovereign state system, one must first understand the idea of a 'traditional' sovereign state. The Westphalian model of the state system is taken to be the defining moment for this conception of the modern sovereign state, and it defines the characteristics of a state to be “autonomy and territory” (Krasner, 1995). In this context, autonomy refers to a right to non-interference at the domestic level of another state. Territory is the territorial demarcation lines that divide legitimate control over territory. To demonstrate the departure from the 'traditional' sovereign state, we will illustrate the complexities surrounding territorial sovereignty and political autonomy.
+
+Simply put, the Westphalian model portrays state power and influence ending where the next one begins, with minimal involvement in each other's political processes. However, globalizing forces have blurred this division of political power. Globalization has made states so deeply intertwined that there is a blurring and subsequent erosion of the ‘traditional’ sovereign state lines. This transformation is evident in three key elements: states' direct political involvement in other states' affairs, state involvement through institutional processes, and the evolution of non-state influences on states' power. States cannot function autonomously when powerful actors exert significant influence over their decision-making, because it undermines their autonomy as governing bodies of territories.
+
+## Political Influence
+
+States use their power to influence other states, especially those with significant political and economic resources. When power extends beyond borders in decision-making, the Westphalian model of state autonomy is compromised. States may appear to make decisions independently, but they are often influenced in their decision-making process. Political influences manifest prominently in three forms. First, great powers align the political conduct of states in their spheres of influence to their agendas. Second, states use economic wealth to manipulate other states into desired political conduct. Third, states use soft power to push their national ideology onto other states.
+
+Great powers use their political influence to control states in their alliances and in their sphere of interest. This international political involvement violates the traditional meaning of Westphalian autonomy. The actions taken by the United States, the US, during the Cold War era are a prime example of how states leveraged their political influence. The US implemented the Marshall Plan, providing $13.3 billion (equivalent to $150 billion when adjusted for inflation) to assist sixteen European states. This was done because the U.S. believed that high levels of poverty in war-torn Europe would "strengthen the appeal of communism and fascism"(National Museum of American Diplomacy, n.d.). To prevent changes in the political leanings of these European partners, the US boosted their economies and brought them into an alliance to deter them from choosing communism. Great powers are competing to shape political ideologies within their jurisdiction of influence. This very competition is eroding the traditional sovereign state. 
+
+States have also used their economic wealth in a quid quo pro manner, especially through investment, to interfere in other states' political processes. China's "Dollar Diplomacy" strategy provides stimulus packages and other investment opportunities for countries in exchange for diplomatic recognition. For example, in 2020 it provided $187 million dollars to Pacific island states in exchange for diplomatic recognition (Chinese Aid to the Pacific, 2023). This illustrates China's influence in the political affairs of politically weaker states. Global powers exert their influence within their respective spheres of control by interfering in the internal processes of other states, thereby complicating the concept of state autonomy. In a similar vein, Chinese "debt trap" diplomacy involves providing seemingly benevolent loans for the construction of infrastructure projects in the global South. However, when these recipient states become unable to repay these loans, they are compelled to negotiate with the Chinese government (Bradsher, 2022). This negotiation may include ceding territory to the Chinese government, as was the case for a Sri Lankan port in 2018 (Abi-Habib, 2018). In these situations, China has leveraged its economic might to infringe upon the territorial sovereignty of these states, illustrating the erosion of the traditional concept of sovereign statehood. 
+
+The pervasive influence of soft power, on the other hand, is an indirect tool with clear but unmeasurable effects on state operations. For example, McDonald's has 38,000 locations in over 100 countries, which influences the regions in which they operate by exporting American culture through food (Franchising Overview, n.d.). McDonald's is a tool under which the US operates to globally promote pro-American ideals and soft power influence. Another example is how American television is broadcast all over the world and in turn, propagates an American mentality. Through soft power, states and their nationals are psychologically influenced by an American mentality, changing their approach to governance and diplomacy. When states are impacted by this soft power influence, the fully autonomous narrative of the traditional state is threatened.
+
+## Institutional Influence
+
+The authority of increasingly powerful international institutions has eroded the traditional Westphalian notion of state systems. International institutions complicate state autonomy in three ways: international institutions gain a unique legitimate authority for intervention, great powers use international bodies to influence other states, and the implementation of regional integration.
+
+International organizations have cultivated a reputation as legitimate global authorities. From a constructivist viewpoint that emphasizes norms, it becomes clear that institutions such as the United Nations (UN) acquire distinctive legitimacy to intervene in humanitarian conflicts when its membership deems it necessary. When there is consensus across states to intervene, it can be assumed that the intervention is just and necessary. The UN can then send peacekeeping missions or commission a specific coalition of states to intervene in a state conflict. However, intervention directly contradicts the Westphalian model of respect for the political process occurring within a state. For example, in 1995, Operation Deliberate Force was a UN-supported NATO (North Atlantic Treaty Organization) bombing of Serbian forces in Yugoslavia (Beale, 1997). UN approval bestowed the mission with a justified humanitarian image that took precedence over considerations of Yugoslavian autonomy. International organizations are increasingly acquiring the legitimate capacity to intervene in state affairs. This development contradicts the Westphalian model's principle of states maintaining unambiguous autonomous control over their territory.
+
+Through international organs, great powers take advantage of the legitimacy of international organizations to project their influence on other states. For instance, the composition of the UN's Security Council, which features five permanent members with veto power, underscores the continued dominance of states within a vital international organization. It is  also important to note that one of the members with veto power, the US, contributes 12.5 billion dollars to the UN (CFR.org Editors, 2023). These great powers shape international organizations to suit their interest and cooperate with them to the extent they desire. These bodies serve as an extension for great powers to exert their influence on the world stage, demonstrating how states are not only limited to their physical territory. Another example of the US using its economic might to influence organizations is the International Monetary Fund (IMF). States fund this institution and have the authority to weigh in on the use of the funds proportionally to their funding. The United States contributes to 17.43% of the IMF's funds; this contribution, in turn, grants veto power in IMF decision-making (Congressional Research Service, 2022). Through international institutions, the United States and other great powers can mandate policy adoption in other countries in exchange for loans.
+
+Efforts at regional integration through the establishment of supranational institutions defy both Westphalian criteria of autonomous control and territorial demarcation. For example, regional integration in West Africa in the form of the ECOWAS (Economic Community of West African States) is attempting to create a single currency, called the ECO in 2027 (West African Regional Bloc Adopts New Plan to Launch Eco Single Currency in 2027, 2021). However, a shared currency will create a supranational governing body that would manage the monetary policy in the states. Supranational organizations, like the ECOWAS, do not fit in the Westphalian model of autonomy because there are numerous organizations with authority in the decision-making of a state. Now focusing on territorial complexities, the European Union (EU) also operates under a supranational system, but they have the principles of freedom of movement with the region (McBride, 2022). This means individuals and commerce can move freely within the region. Territorial divisions are less important in the age of supranational organizations, such as the EU, where there is a concerted effort to facilitate movement across these borders. The simplistic territorial divisions in the Westphalian states no longer apply with the introduction of new models for regional integration.
+
+## Non-State Influences
+
+Previous examples have primarily centered on how states and institutions employ political tools to exert influence on the policies of other states. Nonetheless, non-state actors also influence states to the extent that they are no longer autonomously in decision-making but, instead, are subject to external influences. These non-state actors encompass lobbyists and multinational corporations.
+Lobbyists employ significant sums of money to advocate for and influence policy-making in state institutions, impeding genuine state autonomy. In the US, more than 4.09 billion dollars are used by organizations to lobby the government (Total Lobbying Spending U.S. 2022, 2023). As illustrated in Figure 1, the increasing prevalence of lobbying indicates that states are becoming less autonomous actors and more conduits for external influence. States no longer make autonomous decisions; rather, they serve as vehicles for lobbyists to enact their agencies.
+
+**Figure 1** 
+*Total lobbying spending in the United States from 1998 to 2023 (in billion U.S. dollars)*
+![](lobbying.png)
+<small>*Notes.* There has been a consistent rise in US lobbying expenditure (Total Lobbying Spending U.S. 2022, 2023).</small>
+
+Multinational corporations, especially those based in great powers, have had a strong influence on the political processes of other states. One example of this interference was the banana companies in Central American countries. At its peak, the United Fruit Company owned 42% of Guatemalan land (RS#01: Background on the Guatemalan Coup of 1954, n.d.). The Guatemalan government did not have Westphalian control of this territory, when multinational corporations had such expansive ownership of the land.
+
+# Conclusion
+This essay has illustrated that the traditional sovereign state is undergoing erosion due to globalizing forces in three distinct ways: politically, institutionally, and through the actions of non-state actors. Understanding this departure from the traditional sovereign state can provide insights into the emerging complexities of statehood.
+
+---
+
+# Works Cited
+
+- Abi-Habib, M. (2018, June 25). How China Got Sri Lanka to Cough Up a Port. *The New York Times*. [Link](https://www.nytimes.com/2018/06/25/world/asia/china-sri-lanka-port.html)
+  
+- Beale, M. O. (1997). Operation Deliberate Force (Bombs over Bosnia, pp. 31–41). *Air University Press*. [Link](https://www.jstor.org/stable/resrep13772.10)
+  
+- Bradsher, K. (2022, October 6). In Global Slowdown, China Holds Sway Over Countries’ Fates. *The New York Times*. [Link](https://www.nytimes.com/2022/10/06/business/china-debt-economy-global-slowdown.html)
+  
+- CFR.org Editors. (2023, August 22). How Much Does the U.S. Contribute to the UN? *Council on Foreign Relations*. [Link](https://www.cfr.org/article/funding-united-nations-what-impact-do-us-contributions-have-un-agencies-and-programs)
+  
+- Chinese aid to the Pacific: Decreasing, but not disappearing | Lowy Institute. (2023, January 25). [Link](https://www.lowyinstitute.org/the-interpreter/chinese-aid-pacific-decreasing-not-disappearing)
+  
+- Congressional Research Service. (2022a). *CFR.org Editors, 2023*. [Link](https://sgp.fas.org/crs/misc/IF10676.pdf)
+  
+- Congressional Research Service. (2022b). The International Monetary Fund. [Link](https://sgp.fas.org/crs/misc/IF10676.pdf)
+  
+- Franchising Overview. (n.d.). *Corporate.Mcdonalds.Com*. Retrieved October 19, 2023, from [Link](https://www.mcdonalds.com/corpmcd/franchising-overview.html)
+  
+- Krasner, S. D. (1995). Compromising Westphalia. *International Security*, 20(3), 115–151. [Link](https://doi.org/10.2307/2539141)
+  
+- McBride, J. (2022, March 11). How Does the European Union Work? *Council on Foreign Relations*. [Link](https://www.cfr.org/backgrounder/how-does-european-union-work)
+  
+- National Museum of American Diplomacy. (n.d.). The Marshall Plan. *The National Museum of American Diplomacy*. Retrieved October 19, 2023, from [Link](https://diplomacy.state.gov/online-exhibits/diplomacy-is-our-mission/development/the-marshall-plan/)
+  
+- RS#01: Background on the Guatemalan Coup of 1954. (n.d.). *Baltimore County History Labs Program*. [Link](https://www2.umbc.edu/che/tahlessons/pdf/historylabs/Guatemalan_Coup_student:RS01.pdf)
+  
+- Total lobbying spending U.S. 2022. (2023, February). *Statista*. [Link](https://www.statista.com/statistics/257337/total-lobbying-spending-in-the-us/)
+  
+- West African regional bloc adopts new plan to launch Eco single currency in 2027. (2021, June 19). *France 24*. [Link](https://www.france24.com/en/africa/20210619-west-african-regional-bloc-adopts-new-plan-to-launch-eco-single-currency-in-2027)
+
+

@@ -15,6 +15,6 @@ about:
 
 ## Bio
 
-I'm Kevin, an International Relations major at Pomona College, graduating in May 2026, with a focus on Latin America. Before college, I never imagined myself getting into data science or programming, but after taking a Political Statistics class in R, I discovered my passion for it. Now, I love working with R and am excited to continue developing my skills in Python. I am now interested in pursuing a career in data science.
+I’m Kevin, an International Relations major at Pomona College (class of 2026) with a focus on Latin America. After discovering my passion for data science through a Political Statistics class using R, I’ve been developing my skills in data analysis and programming, particularly in R and Python. I'm excited to apply my growing expertise to data-driven problem solving and explore career opportunities in data science.
 
 On this site I keep a list of some of my projects.
