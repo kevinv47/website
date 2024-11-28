@@ -12,22 +12,25 @@ execute:
 
 ### Objective
 
-- **Replicate Figure 1 from [Voss (2020)](https://pmc.ncbi.nlm.nih.gov/articles/PMC7093226/)** using SQL and R:
-  - Query the WAI Database to build a dataset.
-  - Pipe it into `ggplot()` to recreate Figure 1.
-
-- **Analyze the Lewis (2015) study by sex**:
-  - Plot frequency vs. mean absorbance by sex for the Lewis (2015) data.
+-   **Replicate Figure 1 from [Voss (2020)](https://pmc.ncbi.nlm.nih.gov/articles/PMC7093226/)** using SQL and R:
+    -   Query the WAI Database to build a dataset.
+    -   Pipe it into `ggplot()` to recreate Figure 1.
+-   **Analyze the Lewis (2015) study by sex**:
+    -   Plot frequency vs. mean absorbance by sex for the Lewis (2015) data.
 
 ### Libraries
+
 The libraries used in the project are the `tidyverse` and `RMariaDB`.
+
 ```{r}
 library(tidyverse)
 library(RMariaDB)
 ```
 
 ## Setting Up Connection
+
 I will use the [Wideband Acoustic Immittance (WAI) Database](https://www.science.smith.edu/wai-database/), which I will access through SQL. The following is the connection.
+
 ```{r}
 con_wai <- dbConnect(
   MariaDB(), host = "scidb.smith.edu",
@@ -38,8 +41,11 @@ Measurements <- tbl(con_wai, "Measurements")
 PI_Info <- tbl(con_wai, "PI_Info")
 Subjects <- tbl(con_wai, "Subjects")
 ```
+
 ## Exploring The Database
+
 There are seven datasets in the database. To achieve our objectives, we will use the `Measurements`, `Subjects`, and `PI_Info` datasets.
+
 ```{sql}
 #| connection: con_wai
 SHOW TABLES;
@@ -53,6 +59,7 @@ DESCRIBE Measurements;
 ```
 
 We will use the `PI_Info` dataset by joining it with the `Measurements` dataset using the `Identifier` variable. From this dataset, we will extract the `Year` of the study and the `AuthorsShortList` to include in the legend.
+
 ```{sql}
 #| connection: con_wai
 DESCRIBE PI_Info;
@@ -60,7 +67,7 @@ DESCRIBE PI_Info;
 
 # Research Replication
 
-I will begin by replicating the graph from Voss (2020). To do this, I will join the datasets `Measurements` and `PI_Info` using the `Identifier` key variable. I will extract the variable     and calculate the mean of `Absorbance` for each value of `Frequency.` Additionally, I will create a label for each study using the relevant information from the datasets. Finally, I will save the resulting dataset as replication_data.
+I will begin by replicating the graph from Voss (2020). To do this, I will join the datasets `Measurements` and `PI_Info` using the `Identifier` key variable. I will extract the variable and calculate the mean of `Absorbance` for each value of `Frequency.` Additionally, I will create a label for each study using the relevant information from the datasets. Finally, I will save the resulting dataset as replication_data.
 
 ```{sql}
 #| connection: con_wai
@@ -81,6 +88,7 @@ GROUP BY m.Identifier, Instrument, Frequency;
 ```
 
 I created a custom color palette to match the lines in the graphs I am replicating.
+
 ```{r}
 custom_colors <- c(
   "#5C4E9E",
@@ -100,8 +108,8 @@ custom_colors <- c(
 color_map <- setNames(custom_colors, unique(replication_data$label))
 ```
 
-
 Now, I will use the `replication_data` to create a graph that replicates the original. I will use the `color_map` variable to apply the custom color template.
+
 ```{r, fig.width=10, fig.height=6}
 replication_data |> 
   ggplot(aes(x = Frequency, y = mean_absorbance, color = label)) +
@@ -125,15 +133,17 @@ replication_data |>
     color = "")
 ```
 
-
 # Graphing by Sex
+
 In the `Subjects` database, we will use the `Identifier` as a key to connect the datasets. Additionally, we will use the variable `Sex` to analyze the difference in mean absorbance by sex. We will join this database with Measurments database.
+
 ```{sql}
 #| connection: con_wai
 DESCRIBE Subjects;
 ```
 
 Now, I will join the `Subjects` dataset with the `Measurement` dataset to plot a similar graph, but focusing only on the research from `Lewis_2015` and grouped by `Sex`.
+
 ```{sql}
 #| connection: con_wai
 #| output.var: "absorbance_by_sex"
@@ -150,6 +160,7 @@ GROUP BY Identifier, Frequency, Sex;
 ```
 
 Now, I will graph the `mean_absorbance` against `Frequency`, grouped by `Sex`, for the `Lewis_2015` research data.
+
 ```{r}
 absorbance_by_sex |> 
   ggplot(aes(x = Frequency, y = mean_absorbance, color = Sex)) +
