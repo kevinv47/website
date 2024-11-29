@@ -1,7 +1,7 @@
 ---
-title: "Monster Movie Generes"
-subtitle: "Dataset is About The Words Used in Shakespeare's Romeo & Juliet"
-date: "Sep 17, 2024"
+title: "Monster Movies"
+subtitle: 'Dataset of videos with "monster" in the title'
+date: "Oct 29, 2024"
 author: "Kevin Valdivia"
 format: html
 toc: false # Table of contents
@@ -10,25 +10,30 @@ execute:
   message: false
 ---
 
+
+![](horror.jpg)
+Photo by <a href="https://unsplash.com/es/@mwrona?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">m wrona</a> on <a href="https://unsplash.com/es/fotos/casa-de-madera-gris-cubierta-por-la-niebla-pCgxm-HDMNs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College.***
+
 ### Libraries
-
 ```{r}
-library(tidyverse)
-
 # install.packages("devtools") 
 # devtools::install_github("haleyjeppson/ggmosaic")
 library(ggmosaic)
 library(tidymodels)
 library(rpart.plot)
+library(tidyverse)
 ```
 
+This Tidytuesday dataset was curated by [Jon Harmon](https://github.com/jonthegeek) and comes from [IMD](https://developer.imdb.com/non-commercial-datasets/)
 ```{r}
 monster_movie_genres <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-29/monster_movie_genres.csv')
+
 monster_movies <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-29/monster_movies.csv') |> 
   separate_rows(genres, sep = ",") |> 
   mutate(value = 1) |> 
   pivot_wider(names_from = genres, values_from = value, values_fill = 0)
-
 ```
 
 ```{r}
@@ -42,12 +47,10 @@ plot_data <- monster_movies |>
   
 plot_data |>
     ggplot() +
-    
-    # Geoms
     geom_mosaic(aes(weight = n, x = product(decade), 
                     fill = title_type)) +
     theme_void() +
-    labs(title = "Proportion") +
+    labs(title = "Proportions of Mediums With the Monster In The Title") +
     theme(axis.text.x = element_text(),
           axis.text.y = element_text(),
           legend.position = "none") +
@@ -63,6 +66,8 @@ plot_data |>
                 color = "white", size = 7, vjust = 1, hjust = 0) +
     scale_fill_brewer(palette = "Dark2")
 ```
+
+We will now develop a predictive model to estimate IMDb ratings. The model will consider key factors such as the movie's genres, the number of votes it received, and its release year. These variables are chosen for their potential influence on a movie's rating and will form the foundation of our analysis.
 
 ```{r}
 monster_model <- monster_movies |>
@@ -83,14 +88,38 @@ movie_wflow_lm <- workflow() |>
 
 movie_wflow_lm |> 
   fit(data = monster_model) |> 
+  tidy()
+```
+
+
+```{r}
+# Fit the model and predict
+movie_wflow_lm_fit <- movie_wflow_lm |> 
+  fit(data = monster_model)
+
+# Generate predictions
+predictions <- movie_wflow_lm_fit |> 
   predict(new_data = monster_model) |> 
-  cbind(monster_model) |> 
-  ggplot(aes(x = average_rating, y = .pred)) +
+  bind_cols(monster_model) |> 
+  mutate(residual = abs(average_rating - .pred))  # Calculate residuals (absolute error)
+
+# Create the plot with color based on the residuals
+ggplot(predictions, aes(x = average_rating, y = .pred, color = residual)) +
   geom_point() +
-  geom_abline(intercept = 0, slope = 1)
+  geom_abline(intercept = 0, slope = 1) +  # Add the identity line
+  scale_color_gradient(low = "blue", high = "red") +  # Blue for close, red for far
+  theme_minimal() +
+  labs(
+    x = "Actual Rating",
+    y = "Predicted Rating",
+    title = "Actual Rating vs. Predicted Rating",
+    color = "Deviation from Line"
+    )
 ```
 
 ```{r}
+#| echo: false
+#| eval: false
 movie_mod_cart <- decision_tree() |> 
   set_engine(engine = "rpart") |> 
   set_mode(mode = "regression")
@@ -106,8 +135,17 @@ movie_wflow_cart |>
   ggplot(aes(x = average_rating, y = .pred)) +
   geom_point()
 ```
+Graphical tree format for the predictive tree, illustrating how different variables affect our predictions for ratings.
 
 ```{r}
+movie_mod_cart <- decision_tree() |> 
+  set_engine(engine = "rpart") |> 
+  set_mode(mode = "regression")
+
+movie_wflow_cart <- workflow() |> 
+  add_model(movie_mod_cart) |> 
+  add_recipe(movie_rec)
+
 movies_tree <- movie_wflow_cart |> 
   fit(data = monster_model) |> 
   extract_fit_parsnip()

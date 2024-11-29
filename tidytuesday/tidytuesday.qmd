@@ -11,6 +11,7 @@ execute:
   message: false
 ---
 
+```{=html}
 <style>
 .chip-link {
     display: inline-block;
@@ -26,13 +27,14 @@ execute:
     background-color: #e0e0e0;
 }
 </style>
-
+```
 The following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor [Jo Hardin](https://hardin47.netlify.app) and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday `.qmd` files every week because I don’t always have time, but I will try my best to share them when I can.
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
 
 ## October '24
 
+-   **October 29, 2024** <a href="monsters.qmd" class="chip-link">Monster Movies ⚰️👻</a>
 -   **October 8, 2024**: <a href="biodiversity_national_parks.qmd" class="chip-link">National Park Species 🌲🦉</a>
 -   **October 1, 2024**: <a href="chess_matches.qmd" class="chip-link">Chess Games ♟️🎯</a>
 

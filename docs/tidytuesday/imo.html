@@ -133,54 +133,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-essays" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Essays</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-essays">    
+        <li>
+    <a class="dropdown-item" href="../essays/mex_ine/electoral_reforms.html">
+ <span class="dropdown-text">Behind AMLO’s Electoral Reforms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../essays/mex_ed/mexican_education.html">
+ <span class="dropdown-text">The Mexican Education System</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../essays/cfa_zone/cfa_zone.html">
+ <span class="dropdown-text">Economic Integration in Francophone Africa</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../essays/westphalia/westphalia.html">
+ <span class="dropdown-text">Beyond Westphalia</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/peso/peso_doc.html">
+ <span class="dropdown-text">The Peso In Crisis</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Projects</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-projects">    
         <li>
-    <a class="dropdown-item" href="../projects/amlo_mex/amlo_page.html">
- <span class="dropdown-text">AMLO Project (under development)</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="../projects/the office/office_text_analysis.html">
- <span class="dropdown-text">Text Analysis: <em>The Office</em></span></a>
+ <span class="dropdown-text"><strong>Text Analysis:</strong> <em>The Office</em></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/simulation_study/permutation_experiment.html">
+ <span class="dropdown-text"><strong>Permutation Analysis</strong>: <em>Room Draw</em></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/sql_mini_project/sql_project.html">
+ <span class="dropdown-text"><strong>Graph Replication</strong>: With SQL</span></a>
   </li>  
     </ul>
   </li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tidytuesday" role="button" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Tidytuesday</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-tidytuesday">    
-        <li>
-    <a class="dropdown-item" href="../tidytuesday/school_income.html">
- <span class="dropdown-text">Student Income Status at Elite Schools</span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="../tidytuesday/tidytuesday.html"> 
+<span class="menu-text"><strong>Tidytuesday Adventures</strong></span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../tidytuesday/shakespeare_words.html">
- <span class="dropdown-text">Shakespeare Word Cloud</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../tidytuesday/chess_matches.html">
- <span class="dropdown-text">Chess Matches</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../tidytuesday/biodiversity_national_parks.html">
- <span class="dropdown-text">Biodiversity In National Parks</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-practice" role="button" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Practice</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-practice">    
-        <li>
-    <a class="dropdown-item" href="../practice/ggplot_practice.html">
- <span class="dropdown-text">ggplot Practice</span></a>
-  </li>  
-    </ul>
-  </li>
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
@@ -229,16 +230,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># ggplot, lubridate, dplyr, stringr, readr...</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(praise)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>country_results_df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/country_results_df.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>individual_results_df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/individual_results_df.csv'</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#timeline_df &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/timeline_df.csv')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>timeline_df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/timeline_df.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In 2024, there were 609 people competing from 109 different countries.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>indiv_country <span class="ot">&lt;-</span> individual_results_df <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">country2 =</span> <span class="fu">ifelse</span>(<span class="fu">str_detect</span>(country, <span class="st">"C[0-9]"</span>), <span class="st">"Russia"</span>, country)) </span>
@@ -246,71 +247,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>indiv_country <span class="sc">|&gt;</span> </span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">distinct_countries =</span> <span class="fu">n_distinct</span>(country2), <span class="at">n_countries =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 2
-  distinct_countries n_countries
-               &lt;int&gt;       &lt;int&gt;
-1                109         609</code></pre>
-</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>indiv_country <span class="ot">&lt;-</span> indiv_country <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country2, year) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(individual_rank) <span class="sc">|&gt;</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(year)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, country2, individual_rank, award) <span class="sc">|&gt;</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">country3 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"United States of America"</span> <span class="sc">~</span> <span class="st">"USA"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"People's Republic of China"</span> <span class="sc">~</span> <span class="st">"China"</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Türkiye"</span> <span class="sc">~</span> <span class="st">"Turkey"</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Islamic Republic of Iran"</span> <span class="sc">~</span> <span class="st">"Iran"</span>,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Republic of Korea"</span> <span class="sc">~</span> <span class="st">"South Korea"</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Islamic Republic of Iran"</span> <span class="sc">~</span> <span class="st">"Iran"</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Turkish Republic of Northern Cyprus"</span> <span class="sc">~</span> <span class="st">"Cyprus"</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Democratic People's Republic of Korea"</span> <span class="sc">~</span> <span class="st">"North Korea"</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"United Kingdom"</span> <span class="sc">~</span> <span class="st">"UK"</span>,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> country2</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">award =</span> <span class="fu">as.factor</span>(<span class="fu">case_when</span>(</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_detect</span>(award, <span class="st">"Gold"</span>) <span class="sc">~</span> <span class="st">"Gold"</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_detect</span>(award, <span class="st">"Silver"</span>) <span class="sc">~</span> <span class="st">"Silver"</span>,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_detect</span>(award, <span class="st">"Bronze"</span>) <span class="sc">~</span> <span class="st">"Bronze"</span>,</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>         <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">award =</span> <span class="fu">fct_relevel</span>(award, <span class="fu">c</span>(<span class="st">"Gold"</span>, <span class="st">"Silver"</span>, <span class="st">"Bronze"</span>)))</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>indiv_country</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3,781 × 5
-# Groups:   country2, year [3,781]
-    year country2   individual_rank award  country3  
-   &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt; &lt;fct&gt;  &lt;chr&gt;     
- 1  2024 Albania                252 Bronze Albania   
- 2  2024 Algeria                 47 Gold   Algeria   
- 3  2024 Argentina               82 Silver Argentina 
- 4  2024 Armenia                182 Bronze Armenia   
- 5  2024 Australia               29 Gold   Australia 
- 6  2024 Austria                 90 Silver Austria   
- 7  2024 Azerbaijan             252 Bronze Azerbaijan
- 8  2024 Bangladesh             216 Bronze Bangladesh
- 9  2024 Belarus                 11 Gold   Belarus   
-10  2024 Belgium                147 Silver Belgium   
-# ℹ 3,771 more rows</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>indiv_country <span class="ot">&lt;-</span> indiv_country <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country2, year) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(individual_rank) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(year)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, country2, individual_rank, award) <span class="sc">|&gt;</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">country3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"United States of America"</span> <span class="sc">~</span> <span class="st">"USA"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"People's Republic of China"</span> <span class="sc">~</span> <span class="st">"China"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Türkiye"</span> <span class="sc">~</span> <span class="st">"Turkey"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Islamic Republic of Iran"</span> <span class="sc">~</span> <span class="st">"Iran"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Republic of Korea"</span> <span class="sc">~</span> <span class="st">"South Korea"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Islamic Republic of Iran"</span> <span class="sc">~</span> <span class="st">"Iran"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Turkish Republic of Northern Cyprus"</span> <span class="sc">~</span> <span class="st">"Cyprus"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"Democratic People's Republic of Korea"</span> <span class="sc">~</span> <span class="st">"North Korea"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    country2 <span class="sc">==</span> <span class="st">"United Kingdom"</span> <span class="sc">~</span> <span class="st">"UK"</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> country2</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">award =</span> <span class="fu">as.factor</span>(<span class="fu">case_when</span>(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_detect</span>(award, <span class="st">"Gold"</span>) <span class="sc">~</span> <span class="st">"Gold"</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_detect</span>(award, <span class="st">"Silver"</span>) <span class="sc">~</span> <span class="st">"Silver"</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_detect</span>(award, <span class="st">"Bronze"</span>) <span class="sc">~</span> <span class="st">"Bronze"</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>         <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">award =</span> <span class="fu">fct_relevel</span>(award, <span class="fu">c</span>(<span class="st">"Gold"</span>, <span class="st">"Silver"</span>, <span class="st">"Bronze"</span>)))</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>indiv_country</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>world_data <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">"world"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>world_data <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarize</span>(<span class="fu">n_distinct</span>(region))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  n_distinct(region)
-1                252</code></pre>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>world_data <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">"world"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>world_data <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">n_distinct</span>(region))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plot_imo <span class="ot">&lt;-</span> world_data <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(indiv_country, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"region"</span> <span class="ot">=</span> <span class="st">"country3"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plot_imo <span class="ot">&lt;-</span> world_data <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(indiv_country, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"region"</span> <span class="ot">=</span> <span class="st">"country3"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>library(gganimate) my_breaks &lt;- c(1, 10, 50, 200, 600)</p>
-<p>plot_imo |&gt; mutate(year = as.factor(year)) |&gt; #filter(year == 1979 | !is.na(individual_rank)) |&gt; filter(!is.na(individual_rank)) |&gt; ggplot(aes(x = long, y = lat, group = group)) + geom_polygon(data = world_data, aes(x = long, y = lat, group = group), color = “black”, fill = “white”) + geom_polygon(aes(fill = individual_rank, color = award)) + scale_fill_gradient(name = “best individual rank”, trans = “log”, low = “#71797E”, high = “#E6E6E6”, breaks = my_breaks, labels = my_breaks) + scale_color_manual(values = c(“#FFD700”, “#C0C0C0”, “#CE8946”), na.value=“black”, breaks = c(“Gold”, “Silver”, “Bronze”)) + gganimate::transition_states(year, state_length = 5, transition_length = 10) + labs(title = ‘Math Olympiad top scorer in {closest_state}’)</p>
+<p>plot_imo |&gt; mutate(year = as.factor(year)) |&gt; #filter(year == 1979 | !is.na(individual_rank)) |&gt; filter(!is.na(individual_rank)) |&gt; ggplot(aes(x = long, y = lat, group = group)) + geom_polygon(aes(fill = individual_rank, color = award)) + scale_fill_gradient(name = “best individual rank”, trans = “log”, low = “#71797E”, high = “#E6E6E6”, breaks = my_breaks, labels = my_breaks) + gganimate::transition_states(year, state_length = 5, transition_length = 10) + labs(title = ‘Math Olympiad top scorer in {closest_state}’)</p>
 
 
 

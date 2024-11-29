@@ -8,21 +8,21 @@ toc: false # Table of contents
 execute: 
   warning: false
   message: false
+  eval: false
 ---
 
 ```{r}
-library(tidyverse)
-library(gganimate)
+library(tidyverse) # ggplot, lubridate, dplyr, stringr, readr...
+library(praise)
 library(maps)
+library(gganimate)
 ```
 
 ```{r}
 country_results_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/country_results_df.csv')
 individual_results_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/individual_results_df.csv')
-#timeline_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/timeline_df.csv')
+timeline_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/timeline_df.csv')
 ```
-
-In 2024, there were 609 people competing from 109 different countries.
 
 ```{r}
 indiv_country <- individual_results_df |> 
@@ -64,12 +64,16 @@ indiv_country
 
 ```{r}
 world_data <- map_data("world")
-world_data |>
- summarize(n_distinct(region))
+
+world_data |> 
+  summarize(n_distinct(region))
+```
+
+```{r}
 plot_imo <- world_data |> 
   left_join(indiv_country, by = c("region" = "country3")) 
 ```
 
 library(gganimate) my_breaks \<- c(1, 10, 50, 200, 600)
 
-plot_imo \|\> mutate(year = as.factor(year)) \|\> #filter(year == 1979 \| !is.na(individual_rank)) \|\> filter(!is.na(individual_rank)) \|\> ggplot(aes(x = long, y = lat, group = group)) + geom_polygon(data = world_data, aes(x = long, y = lat, group = group), color = "black", fill = "white") + geom_polygon(aes(fill = individual_rank, color = award)) + scale_fill_gradient(name = "best individual rank", trans = "log", low = "#71797E", high = "#E6E6E6", breaks = my_breaks, labels = my_breaks) + scale_color_manual(values = c("#FFD700", "#C0C0C0", "#CE8946"), na.value="black", breaks = c("Gold", "Silver", "Bronze")) + gganimate::transition_states(year, state_length = 5, transition_length = 10) + labs(title = 'Math Olympiad top scorer in {closest_state}')
+plot_imo \|\> mutate(year = as.factor(year)) \|\> #filter(year == 1979 \| !is.na(individual_rank)) \|\> filter(!is.na(individual_rank)) \|\> ggplot(aes(x = long, y = lat, group = group)) + geom_polygon(aes(fill = individual_rank, color = award)) + scale_fill_gradient(name = "best individual rank", trans = "log", low = "#71797E", high = "#E6E6E6", breaks = my_breaks, labels = my_breaks) + gganimate::transition_states(year, state_length = 5, transition_length = 10) + labs(title = 'Math Olympiad top scorer in {closest_state}')
