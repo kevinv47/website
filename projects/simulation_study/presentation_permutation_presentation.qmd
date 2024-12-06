@@ -1,0 +1,208 @@
+---
+title: "Room Draw"
+subtitle: "Permutation Experiment"
+author: "Kevin Valdivia"
+date: "12/6/2024"
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    show-slide-number: all
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Objectives
+
+*Simulate the average probability of getting my preferred room across random room draw over number of draws*
+
+* **Room types**: red (1st choice), blue (2nd), green (3rd)
+* **Preferences**: 60% prefer red, 30% blue, 10% green
+* **Room availability**: 30 red, 30 blue, 40 green
+* **Total students**: 100 (all in the same room)  
+
+## Functions Used
+
+* `room_pref`: Assigns **prefrences** to people before me
+* `space_identifier`: Checks for room **availability**
+* `room_assignment`: Assigns **rooms** to people before me
+* `my_room`: Returns **my room assignment** in one random draw
+* `room_draws`: Returns a tibble with # of room draws & avg probabilites of me getting each room
+
+```{r}
+#| echo: false
+read.csv("room_data.csv")
+```
+
+## `room_pref`
+
+* **Preferences**: 60% prefer red, 30% blue, 10% green
+
+```{r}
+room_pref <- function(red_p, blue_p, green_p) {
+  dorms <- c("red", "blue", "green")
+  prob <- c(red_p, blue_p, green_p)
+  sample(dorms, size = 3, replace = FALSE, prob = prob)
+}
+```
+
+It orders a list of dorm preference ranks by our desired likely probability for each person
+
+![](room_pref.jpg)
+
+## `space_identifier`
+
+```{r}
+space_identifier <- function(color_pref, room_occ, r_rooms, b_rooms, g_rooms) {
+  occ <- c(r_rooms, b_rooms, g_rooms)
+  
+  colors <- c("red", "blue", "green")
+  color_num <- match(color_pref, colors)
+  
+  if (occ[color_num] < room_occ[color_num]) {
+    return(colors[color_num])
+  }
+  return("no")
+}
+```
+
+![](space_identifier.jpg)
+
+## `room_assignment`
+
+```{r}
+room_assignment <- function(pref_order, room_occ, r_rooms, b_rooms, g_rooms) {
+  for (pref in pref_order) {
+    room <- space_identifier(pref, room_occ, r_rooms, b_rooms, g_rooms)
+    if (room != "no") return(room)
+  }
+}
+```
+
+![](room_assignment.jpg)
+
+## `my_room`
+
+```{r}
+my_room <- function(lottery_num, pref_probs, room_occ) {
+  r_rooms <- 0
+  b_rooms <- 0
+  g_rooms <- 0
+  my_room_color <- ""
+  map(1:lottery_num, function(num) {
+    
+    if (num == lottery_num) {
+      my_room_color <<- room_assignment(c("red", "blue", "green"), room_occ, r_rooms, b_rooms, g_rooms)
+    }
+    
+    # Getting Individual Room Prefs
+    pref_order <- room_pref(pref_probs[[1]], pref_probs[[2]], pref_probs[[3]])
+    
+    room <- room_assignment(pref_order, room_occ, r_rooms, b_rooms, g_rooms)
+    
+    if (room == "red") {r_rooms <<- r_rooms + 1}
+    if (room == "blue") {b_rooms <<- b_rooms + 1}
+    if (room == "green") {g_rooms <<- g_rooms + 1}
+  })
+  return(my_room_color)
+}
+```
+
+
+## My Room Draw 
+![](room_draw_2.jpg)
+
+## My Room Draw 
+![](room_draw_3.jpg)
+
+## My Room Draw 
+![](room_draw_4.jpg)
+
+## My Room Draw 
+![](room_draw_5.jpg)
+
+## My Room Draw 
+![](room_draw_6.jpg)
+
+
+
+```{r}
+#| echo: false
+# Define the function to calculate proportion
+calculate_proportion <- function(input_list, value) {
+  # Calculate the proportion of 'value' in 'input_list'
+  prop <- sum(input_list == value) / length(input_list)
+  return(prop)
+}
+```
+
+## `room_draws`
+
+```{r}
+room_draws <- function(draws, pref_probs, room_occ) {
+
+  room_given <- map(1:draws, function(draw) {
+      lottery_num = sample(1:sum(room_occ), 1, replace = FALSE)
+      my_room(lottery_num, pref_probs, room_occ) 
+    }
+  ) |> 
+    unlist()
+  tibble(
+    draws = c(draws),
+    red = c(calculate_proportion(room_given, "red")),
+    blue = c(calculate_proportion(room_given, "blue")),
+    green = c(calculate_proportion(room_given, "green"))
+  )
+}
+```
+
+
+## Room Draw
+![](room_draw.jpg)
+
+
+## Number of Draws To Proportions
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+
+set.seed(47)
+
+pref_probs <- c(0.6, 0.3, 0.1)
+room_occ <- c(30, 30, 40)
+draws <- 1000
+
+
+type <- "single"
+
+single_data <- map(1:draws, room_draws, pref_probs, room_occ) |> 
+  bind_rows() |> 
+  pivot_longer(
+    cols = red:green,
+    names_to = "room",
+    values_to = "proportion")
+
+pallete <- c("Red Room" = "#e74c3c", "Blue Room" = "#3498db", "Green Room" = "#2ecc71")
+
+single_data |> 
+  ggplot(aes(x = draws, y = proportion, color = case_when(
+      room == "red" ~ "Red Room",
+      room == "blue" ~ "Blue Room",
+      room == "green" ~ "Green Room"
+  ))) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(se = FALSE, method = "loess") +
+  labs(color = "Room Color",
+       x = "Number of Draws",
+       y = "Proportion of Room Assignments",
+       title = "Proportion of Room Colors Assigned To Me by Number of Draws",
+       subtitle = "Shows how the proportion of each room color changes as more draws are made") +
+  scale_color_manual(values = pallete) +
+  theme_minimal()
+
+```

@@ -12,9 +12,11 @@ execute:
 
 ![](college_photo.jpg) Photo by [Ryan Jacobson](https://unsplash.com/es/@lndtxphoto?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/es/fotos/bicicleta-negra-estacionada-frente-al-edificio-cXUOQWdRV4I?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
 
+[Link](presentation_permutation_presentation.qmd) to Slides Explaining Experiment
+
 # Experiment
 
-I plan to simulate the likelihood of getting my preferred room in a room draw. There are three types of rooms: red, blue, and green. My preference for these rooms is in that order, with 60% of people preferring red rooms, 30% preferring blue rooms, and 10% preferring green rooms. Each room type has a specific occupancy: there are 30 red rooms, 30 blue rooms, and 40 green rooms. In total, there are 100 students in this experiment. My goal is to determine the probability of me ending up with each type of housing. The order of turns in the room draw is assigned randomly.
+I plan to simulate the likelihood of getting my preferred room in a room draw. There are three types of rooms: red, blue, and green. My preference for these rooms is in that order, with 60% of people preferring red rooms, 30% preferring blue rooms, and 10% preferring green rooms. Each room type has a specific occupancy: there are 30 red rooms, 30 blue rooms, and 40 green rooms. In total, there are 100 students in this experiment. My goal is to determine the probability of me ending up with each type of housing. The order of turns in the room draw is assigned randomly. 
 
 ### Library
 
@@ -36,38 +38,19 @@ room_pref <- function(red_p, blue_p, green_p) {
 }
 ```
 
-`room_assign_helper` assists the `room_assignment` function and is specifically designed to check whether an individual's room preference can be accommodated based on the current occupancy of rooms.
+`space_identifier` assists the `room_assignment` function and is specifically designed to check whether an individual's room preference can be accommodated based on the current occupancy of rooms.
 
 ```{r}
-room_assign_helper <- function(color_pref, room_occ, r_rooms, b_rooms, g_rooms) {
-  # Assigning occupancy
-  r_occ <- room_occ[[1]]
-  b_occ <- room_occ[[2]]
-  g_occ <- room_occ[[3]]
-
-  if (color_pref == "red") {
-    if (r_rooms < r_occ) {
-      return("red")
-    } else {
-      return("no")
-    }
-  }
+space_identifier <- function(color_pref, room_occ, r_rooms, b_rooms, g_rooms) {
+  occ <- c(r_rooms, b_rooms, g_rooms)
   
-  if (color_pref == "blue") {
-    if (b_rooms < b_occ) {
-      return("blue")
-    } else {
-      return("no")
-    }
-  }
+  colors <- c("red", "blue", "green")
+  color_num <- match(color_pref, colors)
   
-  if (color_pref == "green") {
-    if (g_rooms < g_occ) {
-      return("green")
-    } else {
-      return("no")
-    }
+  if (occ[color_num] < room_occ[color_num]) {
+    return(colors[color_num])
   }
+  return("no")
 }
 ```
 
@@ -75,23 +58,10 @@ room_assign_helper <- function(color_pref, room_occ, r_rooms, b_rooms, g_rooms) 
 
 ```{r}
 room_assignment <- function(pref_order, room_occ, r_rooms, b_rooms, g_rooms) {
-  
-  first_pref <- room_assign_helper(pref_order[[1]], room_occ, r_rooms, b_rooms, g_rooms)
-  
-  if  (first_pref != "no") {
-    return(first_pref)
+  for (pref in pref_order) {
+    room <- space_identifier(pref, room_occ, r_rooms, b_rooms, g_rooms)
+    if (room != "no") return(room)
   }
-  
-  secon_pref <- room_assign_helper(pref_order[[2]], room_occ, r_rooms, b_rooms, g_rooms)
-  if  (secon_pref != "no") {
-    return(secon_pref)
-  } 
-  
-  third_pref <- room_assign_helper(pref_order[[3]], room_occ, r_rooms, b_rooms, g_rooms)
-  if  (third_pref != "no") {
-    return(third_pref)
-  } 
-    
 }
 ```
 
@@ -102,28 +72,29 @@ my_room <- function(lottery_num, pref_probs, room_occ) {
   r_rooms <- 0
   b_rooms <- 0
   g_rooms <- 0
-  room_list <- map(1:lottery_num, function(num) {
+  my_room_color <- ""
+  map(1:lottery_num, function(num) {
     
     if (num == lottery_num) {
-      return(room_assignment(c("red", "blue", "green"), room_occ, r_rooms, b_rooms, g_rooms))
+      my_room_color <<- room_assignment(c("red", "blue", "green"), room_occ, r_rooms, b_rooms, g_rooms)
     }
     
+    # Getting Individual Room Prefs
     pref_order <- room_pref(pref_probs[[1]], pref_probs[[2]], pref_probs[[3]])
+    
     room <- room_assignment(pref_order, room_occ, r_rooms, b_rooms, g_rooms)
+    
     if (room == "red") {
       r_rooms <<- r_rooms + 1
-      return("F")
     }
     if (room == "blue") {
       b_rooms <<- b_rooms + 1
-      return("F")
     }
     if (room == "green") {
       g_rooms <<- g_rooms + 1
-      return("F")
     }
   })
-  return(room_list[[lottery_num]])
+  return(my_room_color)
 }
 ```
 
@@ -141,16 +112,10 @@ calculate_proportion <- function(input_list, value) {
 The `room_draws` function will be the one we ultimately work with. It returns a tibble showing the proportion of assigned dorm colors based on the number of draws.
 
 ```{r}
-room_draws <- function(draws, pref_probs, room_occ, type = "single") {
+room_draws <- function(draws, pref_probs, room_occ) {
 
   room_given <- map(1:draws, function(draw) {
-      if (type == "single") {
-        lottery_num = sample(1:sum(room_occ), 1, replace = FALSE)
-      } else if (type == "worse_num") {
-        lottery_num <- max(sample(1:sum(room_occ), 2, replace = FALSE))
-      } else if (type == "best_num") {
-        lottery_num <- min(sample(1:sum(room_occ), 2, replace = FALSE))
-      }
+      lottery_num = sample(1:sum(room_occ), 1, replace = FALSE)
       my_room(lottery_num, pref_probs, room_occ) 
     }
   ) |> 
@@ -175,37 +140,20 @@ set.seed(47)
 
 pref_probs <- c(0.6, 0.3, 0.1)
 room_occ <- c(30, 30, 40)
-draws <- 200
+draws <- 300
 
 
 type <- "single"
 
-single_data <- map(1:draws, room_draws, pref_probs, room_occ, type) |> 
+single_data <- map(1:draws, room_draws, pref_probs, room_occ) |> 
   bind_rows() |> 
   pivot_longer(
     cols = red:green,
     names_to = "room",
     values_to = "proportion")
 
-# type <- "worse_num"
-# 
-# worst_data <- map(1:draws, room_draws, pref_probs, room_occ, type) |> 
-#   bind_rows() |> 
-#   pivot_longer(
-#     cols = red:green,
-#     names_to = "room",
-#     values_to = "proportion")
-# 
-# type <- "best_num"
-# 
-# best_data <- map(1:draws, room_draws, pref_probs, room_occ, type) |> 
-#   bind_rows() |> 
-#   pivot_longer(
-#     cols = red:green,
-#     names_to = "room",
-#     values_to = "proportion")
-
 single_data |> 
+  filter(draws > 100) |> 
   group_by(room) |> 
   summarize(avg_prop = mean(proportion))
 ```

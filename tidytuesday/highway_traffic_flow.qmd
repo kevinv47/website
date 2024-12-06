@@ -1,0 +1,73 @@
+---
+title: "National Highways Traffic Flow"
+subtitle: ""
+date: "Dec 3, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College. Thank you to [Nicola Rennie](https://github.com/nrennie) for curating this week's dataset. The data can be accessed via the [National Highways API](https://webtris.nationalhighways.co.uk/api/swagger/ui/index).***
+
+Libraries
+
+```{r}
+library(tidyverse)
+```
+
+Data
+
+```{r}
+A64_traffic <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-12-03/A64_traffic.csv') |> 
+  mutate(dow = wday(`Report Date`, label = TRUE)) |> 
+  mutate(holiday = ifelse(`Report Date` == ymd("2021-05-03") | `Report Date` == ymd("2021-05-31"), TRUE, FALSE)) |> 
+  mutate(status = ifelse(`Report Date` < "2021-05-17", "covid_strict", "covid_free")) |> 
+  mutate(label = case_when(
+    SiteId == 6867 ~ "Norton-on-Derwent",
+    SiteId == 7035 ~ "B1249 & A1039",
+    SiteId == 6867 ~ "York (north)",
+    SiteId == 6867 ~ "Filey"
+  ))
+```
+
+Englihs Bank Holidays on May 3rd and May 31st in 2021. We will compare Holiday Mondays with other Mondays.
+
+```{r}
+A64_traffic |> 
+  filter(dow == "Mon") |> 
+  filter(SiteId == 6867) |> 
+  ggplot(aes(x = `Time Period Ending`, y = `Total Volume`, color = holiday, group = `Report Date`, linetype = status)) + 
+  geom_line() +
+  labs()
+```
+
+```{r}
+#| fig-width: 13
+#| fig-height: 9
+#| fig-cap: Now you can write a caption
+
+A64_traffic |> 
+  ggplot(aes(x = hour(`Time Period Ending`), y = `0 - 520 cm`, group = `Report Date`, linetype = status)) + 
+  geom_smooth(se = FALSE, color = "darkorange") + 
+  geom_smooth(aes(y = `661 - 1160 cm`*10), color = "blue", se = FALSE) + 
+  facet_grid(SiteId~dow) + 
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = "Number of Cars",
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~./10, name="Number of Small Trucks"))  + 
+
+  theme(
+    axis.title.y = element_text(color = "darkorange", size=13),
+    axis.title.y.right = element_text(color = "blue", size=13)) +
+
+  labs(title = "More driving after Covid Restrictions Lifted") +
+  theme_minimal()
+```
+
+# Speed
