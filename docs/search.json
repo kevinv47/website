@@ -822,8 +822,8 @@
     "objectID": "projects/simulation_study/presentation_permutation_presentation.html#objectives",
     "href": "projects/simulation_study/presentation_permutation_presentation.html#objectives",
     "title": "Room Draw",
-    "section": "Objectives",
-    "text": "Objectives\nSimulate the average probability of getting my preferred room across random room draw over number of draws\n\nRoom types: red (1st choice), blue (2nd), green (3rd)\nPreferences: 60% prefer red, 30% blue, 10% green\nRoom availability: 30 red, 30 blue, 40 green\nTotal students: 100 (all in the same room)"
+    "section": "",
+    "text": "Simulate the average probability of getting my preferred room across random room draw over number of draws\n\nRoom types: red (1st choice), blue (2nd), green (3rd)\nPreferences: 60% prefer red, 30% blue, 10% green\nRoom availability: 30 red, 30 blue, 40 green\nTotal students: 100 (all in the same room)"
   },
   {
     "objectID": "projects/simulation_study/presentation_permutation_presentation.html#functions-used",
@@ -922,5 +922,12 @@
     "title": "Room Draw",
     "section": "Number of Draws To Proportions",
     "text": "Number of Draws To Proportions"
+  },
+  {
+    "objectID": "projects/simulation_study/presentation_permutation_presentation.html",
+    "href": "projects/simulation_study/presentation_permutation_presentation.html",
+    "title": "Room Draw",
+    "section": "",
+    "text": "Simulate the average probability of getting my preferred room across random room draw over number of draws\n\nRoom types: red (1st choice), blue (2nd), green (3rd)\nPreferences: 60% prefer red, 30% blue, 10% green\nRoom availability: 30 red, 30 blue, 40 green\nTotal students: 100 (all in the same room)"
   }
 ]
