@@ -34,7 +34,7 @@ website:
             text: "**Graph Replication**: With SQL"
           - href: projects/amlo_mex/amlo_page.qmd
             text: "**Under Development**: The Rise of AMLO"
-      - href: tidytuesday/tidytuesday.qmd
+      - href: dataviz.qmd
         text: "**Data Viz Adventures**"
   open-graph:
     locale: en_US
