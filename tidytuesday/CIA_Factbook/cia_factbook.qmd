@@ -1,0 +1,68 @@
+---
+title: "Presenting Global Indicies From the CIA Factbook Data"
+subtitle: "Shiny with map of each index"
+date: "Oct 22, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+  eval: true
+---
+We will be exploring the [CIA World Factbook](https://www.cia.gov/the-world-factbook/). The dataset this week comes from the CIA Factbook, [Country Comparisons, 2014](https://www.cia.gov/the-world-factbook/references/guide-to-country-comparisons/), via the {[openintro](https://openintrostat.github.io/openintro/)} R package, via the {[usdatasets](https://cran.r-project.org/web/packages/usdatasets/index.html)} R package, via this [post on LinkedIn](https://www.linkedin.com/posts/andrescaceresrossi_rstats-rstudio-opensource-activity-7249513444830318592-r395/).
+
+::: {.callout-note title="Shiny"}
+For this week's TidyTuesday, I created a Shiny app to display world indicators from Facebook. I've embedded the Shiny app below:
+:::
+
+<iframe width="850" height="500" src=https://kevin-valdivia.shinyapps.io/CIA_Factbook/ title="Sankey Prelim" data-external="1"></iframe>
+
+
+**Below is some of the preliminary single variable plot work that contributed to building the Shiny app above.**
+
+## Loading relevant libraries
+
+```{r}
+library(tidyverse)
+```
+
+## Loading the data
+
+```{r}
+cia <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-22/cia_factbook.csv') |> 
+    mutate(
+    iso_a3 = countrycode::countrycode(
+      country,
+      origin = "country.name",
+      destination = "iso3c"
+    )) |> 
+  drop_na(iso_a3)
+```
+
+## World map
+
+```{r}
+world_data <- map_data("world") |> 
+  mutate(
+      iso_a3 = countrycode::countrycode(
+      region,
+      origin = "country.name",
+      destination = "iso3c")) |> 
+  drop_na(iso_a3)
+
+data4map <- world_data |> 
+  left_join(cia, by = "iso_a3")
+```
+
+## Make a single plot for Infant Mortality rate
+
+```{r}
+data4map |> 
+  ggplot(aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = infant_mortality_rate)) +
+  scale_fill_gradient(low = "blue", high = "red", trans = "log", 
+                        labels = scales::label_comma(accuracy = 0.01))+
+  theme_void()
+```
+

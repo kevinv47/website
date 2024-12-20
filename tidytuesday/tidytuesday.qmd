@@ -35,6 +35,7 @@ Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/t
 ## October '24
 
 -   **October 29, 2024** <a href="monsters.qmd" class="chip-link">Monster Movies ⚰️👻</a>
+-   **October 22, 2024**: <a href="CIA_Factbook/cia_factbook.qmd" class="chip-link">CIA Country Comparison Indicators 📊🌍</a>
 -   **October 8, 2024**: <a href="biodiversity_national_parks.qmd" class="chip-link">National Park Species 🌲🦉</a>
 -   **October 1, 2024**: <a href="chess_matches.qmd" class="chip-link">Chess Games ♟️🎯</a>
 

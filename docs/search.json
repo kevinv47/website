@@ -184,9 +184,9 @@
   {
     "objectID": "projects/amlo_mex/amlo_page.html",
     "href": "projects/amlo_mex/amlo_page.html",
-    "title": "Project Under Development",
+    "title": "How MORENA Came to Control Mexico (page under construction)",
     "section": "",
-    "text": "Libraries used\n\n# Libraries used\nlibrary(tidyverse)\nlibrary(ggparliament)\nlibrary(gganimate)\nlibrary(janitor)\nlibrary(readxl)\n\n\n\nImportation of Latinobarometro data\nBelow I made latinobarometro cleaning scirpt and I called it lapop_cleaner which will clean the data for data analysis puposes.\n\nlapop_cleaner &lt;- function(file_path, object_name) {\n  read_excel(file_path) |&gt; \n    slice(-1:-3) |&gt;    # Remove first 3 rows\n    distinct() |&gt;      # Remove duplicates\n    row_to_names(row_number = 1) |&gt;  # Use the first row as column names\n    clean_names() |&gt;    # Clean column names to make them unique and valid\n    select(-2) |&gt;       # Remove the second column\n    rename(answer = 1) |&gt;   # Rename the first column to 'answer'\n    filter(!(answer %in% c(\"País -   México\",   \n                           \"País -  Total\", \n                            \"(N)\"))) |&gt; \n    pivot_longer(cols = -answer,\n                 names_to = \"year\",\n                 values_to = \"proportion\") |&gt; \n    mutate(year = as.numeric(str_extract(year, \"(?&lt;=x)\\\\d{4}(?=_)\"))) |&gt; \n    mutate(proportion = case_when(proportion == \"-\" ~ 0,\n                                  TRUE ~ as.numeric(proportion)))\n}\n\nLatinobarómetro is an annual public opinion survey that measures citizens’ attitudes and perceptions across various Latin American countries on topics such as democracy, governance, and economic conditions. Since its inception in 1995, it has provided valuable insights for researchers, policymakers, and organizations interested in understanding the social and political landscape of the region.\n\n# Assign each file path to its corresponding object name individually and clean the data\nJudiciaryIndependence &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_AcuerdoDesacuerdo_El_poder_judicial_debe_ser_independiente_del_ejecutivo.xlsx\")\n\nMediaControlPresident &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_AcuerdoDesacuerdo_En_caso_de_dificultades_esta_bien_que_el_presidente_controle_los_medios_de_comunicacion.xlsx\")\n\nSupportForMilitaryGovernment &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Apoyaria_un_gobierno_militar_si_las_cosas_se_ponen_muy_dificiles.xlsx\")\n\nPresidentialApproval &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Aprobacion_de_la_gestion_del_gobierno_que_encabeza_el_Presidente.xlsx\")\n\nPoliticalSelfPositioning &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Autoubicacion_en_escala_Izquierda-Derecha.xlsx\")\n\nCongressTrust &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Confianza_en_el_Congreso.xlsx\")\n\nJudiciaryTrust &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Confianza_en_el_Poder_Judicial.xlsx\")\n\nPresidentialTrust &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Confianza_en_el_Presidente.xlsx\")\n\nElectoralInstitutionTrust &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Confianza_en_la_institucion_electoral_del_pais.xlsx\")\n\nPoliticalPartiesTrust &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_Confianza_en_los_Partidos_Politicos.xlsx\")\n\nGovernanceByPowerGroups &lt;- lapop_cleaner(\n  \"latinobarometro/LAT_PAIS_gobernado_por_unos_cuantos_grupos_poderosos_en_su_propio_beneficio_o_para_el_bien_de_todo_el_pueblo.xlsx\")\n\n\n\nEstablishing Party Order and Colors\nEstablishing party order from left to right\n\nparty_order &lt;- list(\n  \"PT\",          # Far-left\n  \"MORENA\",      # Left\n  \"VERDE\",       # Center-left\n  \"MC\",          # Center to Center-left\n  \"PRD\",         # Center-left\n  \"PRI\",         # Center-right\n  \"PAN\",         # Right\n  \"PES\",         # Far-right\n  \"Other_Parties\" # Other/Unknown\n)\n\nParty colors and and coalition colors in the 2024 elections.\n\nparty_colors &lt;- list(\n  PT = \"#f02b19\",           # Red\n  MORENA = \"#b5261f\",       # Dark Red\n  VERDE = \"#38a700\",        # Green\n  MC = \"#f57c00\",           # Orange\n  PRD = \"#ffcc00\",          # Yellow\n  PRI = \"#006847\",          # Green (plus Red/White in their logo)\n  PAN = \"#004a98\",          # Blue\n  PES = \"#5c246e\",          # Purple\n  Other_Parties = \"#b2b2b2\" # Grey for other/unknown parties\n)\n\ncoalition_colors &lt;- list(\n  PT = \"#a41e34\",           # Red\n  MORENA = \"#b5261f\",       # Dark Red\n  VERDE = \"#a41e34\",        # Green\n  MC = \"#f57c00\",           # Orange\n  PRD = \"#ec4891\",          # Yellow\n  PRI = \"#ec4891\",          # Green (plus Red/White in their logo)\n  PAN = \"#ec4891\",          # Blue\n  PES = \"#5c246e\",          # Purple\n  Other_Parties = \"#b2b2b2\" # Grey for other/unknown parties\n)\n\n\n\nChamber of Deputies\nSetting up the deputies data\n\ndeputies &lt;- read.csv(\"deputies_00_24.csv\") |&gt; \n  mutate(party = factor(party, levels = party_order)) |&gt; \n  arrange(party) |&gt; \n  filter(year == 2024) |&gt; \n  rename(seats = elected) |&gt; \n  select(-year) |&gt; \n  mutate(coalition = case_when(party %in% c(\"MORENA\", \"PT\", \"VERDE\") ~ \"morenacoal\",\n                               party %in% c(\"PRD\", \"PRI\") ~ \"fcpmx\",\n                               TRUE ~ party))\n\nPutting the data into a ggparliament data structure\n\n# Use ggparliament's data structure to prepare the parliament plot\nmex_par_data &lt;- parliament_data(\n  election_data = deputies,\n  type = \"semicircle\",  # This sets the semicircular layout\n  parl_rows = 10        # Number of rows in the semicircle (adjust this based on number of seats)\n)\n\nCreating a ggplot parliament with the previous datasturcture\n\n# The above fig dimensions were changed to avoid narrowing of the graph\nmex_par_data |&gt; \n  ggplot(aes(x = x, y = y)) +\n    geom_parliament_seats(size = 6, aes(color = party)) + \n    scale_colour_manual(values = party_colors) + \n    theme_void() + \n    theme(legend.position = \"null\") +\n    labs(title = \"Deptuies Elected in the 2025 Mexican Election by Party\") \n\n\n\n\n\n\n\n\nExpeirmental to make it gif\n\ndeputies &lt;- read.csv(\"deputies_00_24.csv\") %&gt;%\n  mutate(party = factor(party, levels = party_order),\n         year = factor(year)) %&gt;%  # Convert year to a factor\n  arrange(party) %&gt;%\n  rename(seats = elected)\n\n\n# Create a function to prepare data for each year\nprepare_parliament_data &lt;- function(year_data) {\n  parliament_data(\n    election_data = year_data,\n    type = \"semicircle\",  # This sets the semicircular layout\n    parl_rows = 10        # Number of rows in the semicircle\n  )\n}\n\n# Specify a custom temporary directory\ntemp_dir &lt;- tempdir()\n\n# Create animated parliament plot\ndeputies %&gt;%\n  group_by(year) %&gt;%\n  nest() %&gt;%\n  mutate(par_data = map(data, prepare_parliament_data)) %&gt;%\n  unnest(par_data) %&gt;%\n  ggplot(aes(x = x, y = y)) +\n  geom_parliament_seats(size = 6, aes(color = party)) + \n  scale_colour_manual(values = party_colors) + \n  theme_void() + \n  theme(legend.position = \"null\") +\n  labs(title = \"Deputies Elected in the Mexican Election by Party ({frame_time})\") +\n  transition_time(year)  # Now will only show specified years\n\nanimate(animated_plot, renderer = gifski_renderer(temp_dir))"
+    "text": "# Libraries used\nlibrary(tidyverse)\nlibrary(ggparliament)\n\n\n# Party order somewhat ordered by political ideology but also on the left is the coalition headed by MORENA and on the further right are more of the institutional parties. In the middle MC is mostly alligned with the insitutal parties but was not in a coalition this election cycle.\n\nparty_order &lt;- list(\n  \"PT\",          # Far-left\n  \"MORENA\",      # Left\n  \"VERDE\",       # Center-left\n  \"MC\",          # Center to Center-left\n  \"PRD\",         # Center-left\n  \"PRI\",         # Center-right\n  \"PAN\",         # Right\n  \"PES\",         # Far-right\n  \"Other_Parties\" # Other/Unknown\n)\n\n# Party colors asignment\nparty_colors &lt;- list(\n  PT = \"#f02b19\",           # Red\n  MORENA = \"#b5261f\",       # Dark Red\n  VERDE = \"#38a700\",        # Green\n  MC = \"#f57c00\",           # Orange\n  PRD = \"#ffcc00\",          # Yellow\n  PRI = \"#006847\",          # Green (plus Red/White in their logo)\n  PAN = \"#004a98\",          # Blue\n  PES = \"#5c246e\",          # Purple\n  Other_Parties = \"#b2b2b2\" # Grey for other/unknown parties\n)\n\n# Colors for the coalitions in 2024 election cycle\ncoalition_colors &lt;- list(\n  PT = \"#a41e34\",           # Red\n  MORENA = \"#b5261f\",       # Dark Red\n  VERDE = \"#a41e34\",        # Green\n  MC = \"#f57c00\",           # Orange\n  PRD = \"#ec4891\",          # Yellow\n  PRI = \"#ec4891\",          # Green (plus Red/White in their logo)\n  PAN = \"#ec4891\",          # Blue\n  PES = \"#5c246e\",          # Purple\n  Other_Parties = \"#b2b2b2\" # Grey for other/unknown parties\n)\n\nData collected from IPU (2024). International Parliamentary Union. Retrieved from: https://data.ipu.org\n\n# Importing the congressional data\ndeputies &lt;- read.csv(\"deputies_00_24.csv\") |&gt; \n  mutate(party = factor(party, levels = party_order)) |&gt; \n  arrange(party) |&gt; \n  rename(seats = elected)\n\nhead(deputies)\n\n  party seats year\n1    PT    51 2024\n2    PT    37 2021\n3    PT    28 2018\n4    PT    15 2012\n5    PT    13 2009\n6    PT    16 2006\n\nsenate &lt;- read.csv(\"senate_00_24.csv\") |&gt; \n  mutate(party = factor(party, levels = party_order)) |&gt; \n  arrange(party) |&gt; \n  rename(seats = elected)\n\n# Function preparing parliamntary data structure\nprepare_parliament_data &lt;- function(par_data, rows_num) {\n  parliament_data(\n    election_data = par_data,\n    type = \"semicircle\",  # This sets the semicircular layout\n    parl_rows = rows_num        # Number of rows in the semicircle\n  )\n}\n\n# Taking only the year 2024\ndeputies2024 &lt;- deputies |&gt; \n  filter(year == 2024) |&gt; \n  prepare_parliament_data(11)\n\nsenate2024 &lt;- senate |&gt; \n  filter(year == 2024) |&gt; \n  prepare_parliament_data(6)\n\n\n\n\n\n\ndeputies2024 |&gt;\n  ggplot(aes(x = x, y = y)) +\n    geom_parliament_seats(size = 7, aes(color = party)) + # party colors\n    # scale_colour_manual(values = party_colors) + # party colors\n    scale_colour_manual(values = coalition_colors) + # coalition colors\n    theme_void() +\n    theme(legend.position = \"null\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsenate2024 |&gt;\n  ggplot(aes(x = x, y = y)) +\n    geom_parliament_seats(size = 14, aes(color = party)) + # party colors\n    # scale_colour_manual(values = party_colors) + # party colors\n    scale_colour_manual(values = coalition_colors) + # coalition colors\n    theme_void() +\n    theme(legend.position = \"null\")"
   },
   {
     "objectID": "tidytuesday/shakespeare_words.html",
@@ -592,7 +592,7 @@
     "href": "tidytuesday/tidytuesday.html#october-24",
     "title": "Tidytuesday Adventures",
     "section": "October ’24",
-    "text": "October ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯"
+    "text": "October ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯"
   },
   {
     "objectID": "tidytuesday/tidytuesday.html#september-24",
@@ -929,5 +929,68 @@
     "title": "Room Draw",
     "section": "",
     "text": "Simulate the average probability of getting my preferred room across random room draw over number of draws\n\nRoom types: red (1st choice), blue (2nd), green (3rd)\nPreferences: 60% prefer red, 30% blue, 10% green\nRoom availability: 30 red, 30 blue, 40 green\nTotal students: 100 (all in the same room)"
+  },
+  {
+    "objectID": "projects/amlo_mex/amlo_page.html#camara-de-diputados",
+    "href": "projects/amlo_mex/amlo_page.html#camara-de-diputados",
+    "title": "How MORENA Came to Control Mexico (page under construction)",
+    "section": "",
+    "text": "deputies2024 |&gt;\n  ggplot(aes(x = x, y = y)) +\n    geom_parliament_seats(size = 7, aes(color = party)) + # party colors\n    # scale_colour_manual(values = party_colors) + # party colors\n    scale_colour_manual(values = coalition_colors) + # coalition colors\n    theme_void() +\n    theme(legend.position = \"null\")"
+  },
+  {
+    "objectID": "projects/amlo_mex/amlo_page.html#senado-de-la-republica",
+    "href": "projects/amlo_mex/amlo_page.html#senado-de-la-republica",
+    "title": "How MORENA Came to Control Mexico (page under construction)",
+    "section": "",
+    "text": "senate2024 |&gt;\n  ggplot(aes(x = x, y = y)) +\n    geom_parliament_seats(size = 14, aes(color = party)) + # party colors\n    # scale_colour_manual(values = party_colors) + # party colors\n    scale_colour_manual(values = coalition_colors) + # coalition colors\n    theme_void() +\n    theme(legend.position = \"null\")"
+  },
+  {
+    "objectID": "tidytuesday/CIA_Factbook/cia_factobook.html",
+    "href": "tidytuesday/CIA_Factbook/cia_factobook.html",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "",
+    "text": "We will be exploring the CIA World Factbook. The dataset this week comes from the CIA Factbook, Country Comparisons, 2014, via the {openintro} R package, via the {usdatasets} R package, via this post on LinkedIn.\n\n\n\n\n\n\nShiny\n\n\n\nFor this week’s TidyTuesday, I created a Shiny app to display world indicators from Facebook. I’ve embedded the Shiny app below:"
+  },
+  {
+    "objectID": "tidytuesday/CIA_Factbook/cia_factbook.html",
+    "href": "tidytuesday/CIA_Factbook/cia_factbook.html",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "",
+    "text": "We will be exploring the CIA World Factbook. The dataset this week comes from the CIA Factbook, Country Comparisons, 2014, via the {openintro} R package, via the {usdatasets} R package, via this post on LinkedIn.\nBelow is some of the preliminary single variable plot work that contributed to building the Shiny app above."
+  },
+  {
+    "objectID": "tidytuesday/CIA_Factbook/cia_factbook.html#loading-relevant-libraries",
+    "href": "tidytuesday/CIA_Factbook/cia_factbook.html#loading-relevant-libraries",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "Loading relevant libraries",
+    "text": "Loading relevant libraries\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/CIA_Factbook/cia_factbook.html#loading-the-data",
+    "href": "tidytuesday/CIA_Factbook/cia_factbook.html#loading-the-data",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "Loading the data",
+    "text": "Loading the data\n\ncia &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-22/cia_factbook.csv') |&gt; \n    mutate(\n    iso_a3 = countrycode::countrycode(\n      country,\n      origin = \"country.name\",\n      destination = \"iso3c\"\n    )) |&gt; \n  drop_na(iso_a3)"
+  },
+  {
+    "objectID": "tidytuesday/CIA_Factbook/cia_factbook.html#world-map",
+    "href": "tidytuesday/CIA_Factbook/cia_factbook.html#world-map",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "World map",
+    "text": "World map\n\nworld_data &lt;- map_data(\"world\") |&gt; \n  mutate(\n      iso_a3 = countrycode::countrycode(\n      region,\n      origin = \"country.name\",\n      destination = \"iso3c\")) |&gt; \n  drop_na(iso_a3)\n\ndata4map &lt;- world_data |&gt; \n  left_join(cia, by = \"iso_a3\")"
+  },
+  {
+    "objectID": "tidytuesday/CIA_Factbook/cia_factbook.html#make-a-single-plot",
+    "href": "tidytuesday/CIA_Factbook/cia_factbook.html#make-a-single-plot",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "Make a single plot",
+    "text": "Make a single plot\n\ndata4map |&gt; \n  ggplot(aes(x = long, y = lat, group = group)) +\n  geom_polygon(aes(fill = infant_mortality_rate)) +\n  scale_fill_gradient(low = \"blue\", high = \"red\", trans = \"log\", \n                        labels = scales::label_comma(accuracy = 0.01))+\n  theme_void()"
+  },
+  {
+    "objectID": "tidytuesday/CIA_Factbook/cia_factbook.html#make-a-single-plot-for-infant-mortality-rate",
+    "href": "tidytuesday/CIA_Factbook/cia_factbook.html#make-a-single-plot-for-infant-mortality-rate",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "Make a single plot for Infant Mortality rate",
+    "text": "Make a single plot for Infant Mortality rate\n\ndata4map |&gt; \n  ggplot(aes(x = long, y = lat, group = group)) +\n  geom_polygon(aes(fill = infant_mortality_rate)) +\n  scale_fill_gradient(low = \"blue\", high = \"red\", trans = \"log\", \n                        labels = scales::label_comma(accuracy = 0.01))+\n  theme_void()"
   }
 ]

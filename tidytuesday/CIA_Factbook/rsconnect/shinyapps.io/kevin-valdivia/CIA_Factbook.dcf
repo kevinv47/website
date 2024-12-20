@@ -1,0 +1,12 @@
+name: CIA_Factbook
+title: CIA_Factbook
+username: kevin-valdivia
+account: kevin-valdivia
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13625981
+bundleId: 9547807
+url: https://kevin-valdivia.shinyapps.io/CIA_Factbook/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

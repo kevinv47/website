@@ -32,6 +32,8 @@ website:
             text: "**Permutation Analysis**: *Room Draw*"
           - href: projects/sql_mini_project/sql_project.qmd
             text: "**Graph Replication**: With SQL"
+          - href: projects/amlo_mex/amlo_page.qmd
+            text: "**Under Development**: The Rise of AMLO"
       - href: tidytuesday/tidytuesday.qmd
         text: "**Tidytuesday Adventures**"
   open-graph:
@@ -40,7 +42,7 @@ website:
     utterances:
       repo: yourusername/yourrepository  # Add your GitHub repo if using Utterances
   page-footer:
-    left: "© Copyright 2024 Kevin Valdivia. Except where otherwise noted, all text and images licensed CC-BY-NC 4.0."
+    left: "© Copyright 2024 Kevin Valdivia. Except where otherwise noted."
 
 format:
   html:
