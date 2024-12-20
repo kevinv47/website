@@ -562,9 +562,9 @@
   {
     "objectID": "tidytuesday/tidytuesday.html",
     "href": "tidytuesday/tidytuesday.html",
-    "title": "Tidytuesday Adventures",
+    "title": "Vizualizations With Python",
     "section": "",
-    "text": "Python Diabetes The following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor Jo Hardin and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday .qmd files every week because I don’t always have time, but I will try my best to share them when I can.\nHere is the official TidyTuesday repo"
+    "text": "Vizualizations With Python\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\nThe following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor Jo Hardin and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday .qmd files every week because I don’t always have time, but I will try my best to share them when I can.\nHere is the official TidyTuesday repo\n\nNovember ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/tidytuesday.html#tidy-tuesday-projects",
@@ -590,14 +590,14 @@
   {
     "objectID": "tidytuesday/tidytuesday.html#october-24",
     "href": "tidytuesday/tidytuesday.html#october-24",
-    "title": "Tidytuesday Adventures",
+    "title": "Data Vizualization Adventures",
     "section": "October ’24",
     "text": "October ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯"
   },
   {
     "objectID": "tidytuesday/tidytuesday.html#september-24",
     "href": "tidytuesday/tidytuesday.html#september-24",
-    "title": "Tidytuesday Adventures",
+    "title": "Data Vizualization Adventures",
     "section": "September ’24",
     "text": "September ’24\n\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
@@ -1045,7 +1045,7 @@
   {
     "objectID": "tidytuesday/tidytuesday.html#november-24",
     "href": "tidytuesday/tidytuesday.html#november-24",
-    "title": "Tidytuesday Adventures",
+    "title": "Data Vizualization Adventures",
     "section": "November ’24",
     "text": "November ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐"
   },
@@ -1104,5 +1104,19 @@
     "title": "Visualizing Synthetic Diabetes Data",
     "section": "Data Vizualizations",
     "text": "Data Vizualizations\nFirst, I will visualize the relationship between stress level and the assigned risk score. I will recode the stress_level variable from having numerical values to having categorical.\n\nstress_mapping = {0: 'Low', 1: 'Medium', 2: 'High'}\n\ndiabetes_cat = diabetes.copy()\n\ndiabetes_cat['stress_level'] = diabetes_cat['stress_level'].map(stress_mapping)\n\nAfter putting the data in the right format I can graph.\n\norder = ['Low', 'Medium', 'High']\n\ncolors = {'Low': '#CB78F7', 'Medium': '#B19CD9', 'High': '#9941C7'}\n\nsns.boxplot(diabetes_cat, \n            x='stress_level', \n            y='risk_score',\n            hue='stress_level',\n            order=order,\n            palette=colors) \nplt.title(\"Risk Score For Diabetes By Stress Level\\nBoxplot\", loc=\"left\")\nplt.xlabel(\"Stress Level\")\nplt.ylabel(\"Risk Score For Diabetes\")\nplt.show()\n\n\n\n\n\n\n\n\nHere is the same data but as a jittered strip plot.\n\nsns.stripplot(data=diabetes, \n              x='stress_level', \n              y='risk_score', \n              jitter=True,\n              color='#8931B9',\n              alpha=0.4)\n\nsns.regplot(data=diabetes, \n            x='stress_level', \n            y='risk_score', \n            scatter=False,\n            color='#4B096F')\n\nplt.title(\"Risk Score For Diabetes By Stress Level\")\nplt.xlabel(\"Stress Level\")\nplt.ylabel(\"Risk Score\")\n\nplt.show()\n\n\n\n\n\n\n\n\nIn this synthetic data, there appear to be more outliers for higher risk scores than usual in the medium stress level. I am curious about how this synthetic data was generated. With real-world data, I wonder how researchers categorize patients into stress level categories, as I imagine that most patients are likely to overestimate their stress levels rather than underestimate them. Perhaps researchers could use other indicators, such as hours at employment and type of employment, to more accurately categorize stress levels.\nNow I will look at the relationship between height and weight in the dataset.\n\nsns.scatterplot(data=diabetes,\n            x='height',\n            y='weight',\n            hue='risk_score')\n\nsns.regplot(data=diabetes, \n            x='height', \n            y='weight', \n            scatter=False,\n            color='#4F0576',\n            ci=None)\n     \nplt.title(\"Height and Weight in Relationship with Diabetes Risk Score\")\nplt.xlabel(\"Height (cm)\")\nplt.ylabel(\"Weight (kg)\")\nplt.legend(title=\"Risk Score\")\nplt.show()\n\n\n\n\n\n\n\n\nThere are a few observations we can make here. First, the data unexpectedly suggests that, on average, taller individuals tend to weigh less, which appears counterintuitive. Second, there seems to be a section in the middle of the plot, marked by a cluster of dots in a lighter pink color, that slopes upwards in the center. The synthetic data indicates that there may be an optimal weight-to-height region that is associated with a lower diabetes risk score."
+  },
+  {
+    "objectID": "tidytuesday/tidytuesday.html#vizualizations-with-python",
+    "href": "tidytuesday/tidytuesday.html#vizualizations-with-python",
+    "title": "Kevin Valdivia",
+    "section": "",
+    "text": "December 20, 2024 Synthetic Data: Diabetes ⚕💉️"
+  },
+  {
+    "objectID": "tidytuesday/tidytuesday.html#tidytuesdays-with-r",
+    "href": "tidytuesday/tidytuesday.html#tidytuesdays-with-r",
+    "title": "Kevin Valdivia",
+    "section": "Tidytuesdays With R",
+    "text": "Tidytuesdays With R\nThe following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor Jo Hardin and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday .qmd files every week because I don’t always have time, but I will try my best to share them when I can.\nHere is the official TidyTuesday repo\n\nNovember ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   }
 ]

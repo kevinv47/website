@@ -10,13 +10,12 @@ execute:
   message: false
 ---
 
+![](horror.jpg) Photo by <a href="https://unsplash.com/es/@mwrona?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">m wrona</a> on <a href="https://unsplash.com/es/fotos/casa-de-madera-gris-cubierta-por-la-niebla-pCgxm-HDMNs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 
-![](horror.jpg)
-Photo by <a href="https://unsplash.com/es/@mwrona?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">m wrona</a> on <a href="https://unsplash.com/es/fotos/casa-de-madera-gris-cubierta-por-la-niebla-pCgxm-HDMNs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-      
 ***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College.***
 
 ### Libraries
+
 ```{r}
 # install.packages("devtools") 
 # devtools::install_github("haleyjeppson/ggmosaic")
@@ -27,6 +26,7 @@ library(tidyverse)
 ```
 
 This Tidytuesday dataset was curated by [Jon Harmon](https://github.com/jonthegeek) and comes from [IMD](https://developer.imdb.com/non-commercial-datasets/)
+
 ```{r}
 monster_movie_genres <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-29/monster_movie_genres.csv')
 
@@ -91,7 +91,6 @@ movie_wflow_lm |>
   tidy()
 ```
 
-
 ```{r}
 # Fit the model and predict
 movie_wflow_lm_fit <- movie_wflow_lm |> 
@@ -135,6 +134,7 @@ movie_wflow_cart |>
   ggplot(aes(x = average_rating, y = .pred)) +
   geom_point()
 ```
+
 Graphical tree format for the predictive tree, illustrating how different variables affect our predictions for ratings.
 
 ```{r}

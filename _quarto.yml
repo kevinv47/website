@@ -35,7 +35,7 @@ website:
           - href: projects/amlo_mex/amlo_page.qmd
             text: "**Under Development**: The Rise of AMLO"
       - href: tidytuesday/tidytuesday.qmd
-        text: "**Tidytuesday Adventures**"
+        text: "**Data Viz Adventures**"
   open-graph:
     locale: en_US
   comments:
