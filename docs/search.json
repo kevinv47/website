@@ -564,7 +564,7 @@
     "href": "tidytuesday/tidytuesday.html",
     "title": "Tidytuesday Adventures",
     "section": "",
-    "text": "The following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor Jo Hardin and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday .qmd files every week because I don’t always have time, but I will try my best to share them when I can.\nHere is the official TidyTuesday repo"
+    "text": "Python Diabetes The following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor Jo Hardin and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday .qmd files every week because I don’t always have time, but I will try my best to share them when I can.\nHere is the official TidyTuesday repo"
   },
   {
     "objectID": "tidytuesday/tidytuesday.html#tidy-tuesday-projects",
@@ -1048,5 +1048,61 @@
     "title": "Tidytuesday Adventures",
     "section": "November ’24",
     "text": "November ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐"
+  },
+  {
+    "objectID": "python_projects/basic.html",
+    "href": "python_projects/basic.html",
+    "title": "Visualizing Synthetic Diabetes Data",
+    "section": "",
+    "text": "The data used here will come from user KevinTan701 at Kaggale. This dataset was synthetically generated to resemble real-world health information, covering data from 2021 to 2023.\nI will create visualizations to better understand some of the assumptions made in the synthetically generated data."
+  },
+  {
+    "objectID": "python_projects/basic.html#python-code-chunk",
+    "href": "python_projects/basic.html#python-code-chunk",
+    "title": "Python Visualization in Quarto",
+    "section": "",
+    "text": "import matplotlib.pyplot as plt import numpy as np"
+  },
+  {
+    "objectID": "python_projects/basic.html#python-visualization-with-quarto",
+    "href": "python_projects/basic.html#python-visualization-with-quarto",
+    "title": "Python Visualization in Quarto",
+    "section": "",
+    "text": "In this document, we will add a simple Python visualization using a code chunk.\n\n\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Generate data\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\n\n# Create the plot\nplt.plot(x, y)\nplt.title(\"A Simple Sine Wave Plot\")\nplt.xlabel(\"X Values\")\nplt.ylabel(\"Sine of X\")\nplt.show()"
+  },
+  {
+    "objectID": "python_projects/basic.html#libraries-and-data-importation",
+    "href": "python_projects/basic.html#libraries-and-data-importation",
+    "title": "Visualizing Synthetic Diabetes Data",
+    "section": "Libraries and Data Importation",
+    "text": "Libraries and Data Importation\n\n# For pulling the data\nimport kagglehub\n\n# For loading in the data and data manipulation\nimport pandas as pd\n\n# For making vizualizations\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nI will be pulling the data directly from kaggle using kagglehub.\n\n# Download latest version\npath = kagglehub.dataset_download(\"kevintan701/diabetes-prediction-datasets\")\n\ndiabetes = pd.read_csv(path + \"/diabetes_data.csv\")[['weight', 'height', 'stress_level', 'risk_score']]\nprint(diabetes.head())\n\n      weight      height  stress_level  risk_score\n0  77.450712  183.993554             1   38.000000\n1  67.926035  179.246337             2   39.162310\n2  79.715328  170.596304             0   31.481633\n3  92.845448  163.530632             1   45.000000\n4  66.487699  176.982233             0    4.717234"
+  },
+  {
+    "objectID": "python_projects/basic.html#data-vizualizations",
+    "href": "python_projects/basic.html#data-vizualizations",
+    "title": "Visualizing Synthetic Diabetes Data",
+    "section": "Data Vizualizations",
+    "text": "Data Vizualizations\nFirst, I will visualize the relationship between stress level and the assigned risk score. I will recode the stress_level variable from having numerical values to having categorical.\n\nstress_mapping = {0: 'Low', 1: 'Medium', 2: 'High'}\n\ndiabetes_cat = diabetes.copy()\n\ndiabetes_cat['stress_level'] = diabetes_cat['stress_level'].map(stress_mapping)\n\nAfter putting the data in the right format I can graph.\n\norder = ['Low', 'Medium', 'High']\n\ncolors = {'Low': '#CB78F7', 'Medium': '#B19CD9', 'High': '#9941C7'}\n\nsns.boxplot(diabetes_cat, \n            x='stress_level', \n            y='risk_score',\n            hue='stress_level',\n            order=order,\n            palette=colors) \nplt.title(\"Risk Score For Diabetes By Stress Level\\nBoxplot\", loc=\"left\")\nplt.xlabel(\"Stress Level\")\nplt.ylabel(\"Risk Score For Diabetes\")\nplt.show()\n\n\n\n\n\n\n\n\nHere is the same data but as a jittered strip plot.\n\nsns.stripplot(data=diabetes, \n              x='stress_level', \n              y='risk_score', \n              jitter=True,\n              color='#8931B9',\n              alpha=0.4)\n\nsns.regplot(data=diabetes, \n            x='stress_level', \n            y='risk_score', \n            scatter=False,\n            color='#4B096F')\n\nplt.title(\"Risk Score For Diabetes By Stress Level\")\nplt.xlabel(\"Stress Level\")\nplt.ylabel(\"Risk Score\")\n\nplt.show()\n\n\n\n\n\n\n\n\nIn this synthetic data, there appear to be more outliers for higher risk scores than usual in the medium stress level. I am curious about how this synthetic data was generated. With real-world data, I wonder how researchers categorize patients into stress level categories, as I imagine that most patients are likely to overestimate their stress levels rather than underestimate them. Perhaps researchers could use other indicators, such as hours at employment and type of employment, to more accurately categorize stress levels.\nNow I will look at the relationship between height and weight in the dataset.\n\nsns.scatterplot(data=diabetes,\n            x='height',\n            y='weight',\n            hue='risk_score')\n\nsns.regplot(data=diabetes, \n            x='height', \n            y='weight', \n            scatter=False,\n            color='#4F0576',\n            ci=None)\n     \nplt.title(\"Height and Weight in Relationship with Diabetes Risk Score\")\nplt.xlabel(\"Height (cm)\")\nplt.ylabel(\"Weight (kg)\")\nplt.legend(title=\"Risk Score\")\nplt.show()\n\n\n\n\n\n\n\n\nThere are a few observations we can make here. First, the data unexpectedly suggests that, on average, taller individuals tend to weigh less, which appears counterintuitive. Second, there seems to be a section in the middle of the plot, marked by a cluster of dots in a lighter pink color, that slopes upwards in the center. The synthetic data indicates that there may be an optimal weight-to-height region that is associated with a lower diabetes risk score."
+  },
+  {
+    "objectID": "python_projects/synthetic_diabetes_data.html",
+    "href": "python_projects/synthetic_diabetes_data.html",
+    "title": "Visualizing Synthetic Diabetes Data",
+    "section": "",
+    "text": "The data used here will come from user KevinTan701 at Kaggale. This dataset was synthetically generated to resemble real-world health information, covering data from 2021 to 2023.\nI will create visualizations to better understand some of the assumptions made in the synthetically generated data."
+  },
+  {
+    "objectID": "python_projects/synthetic_diabetes_data.html#libraries-and-data-importation",
+    "href": "python_projects/synthetic_diabetes_data.html#libraries-and-data-importation",
+    "title": "Visualizing Synthetic Diabetes Data",
+    "section": "Libraries and Data Importation",
+    "text": "Libraries and Data Importation\n\n# For pulling the data\nimport kagglehub\n\n# For loading in the data and data manipulation\nimport pandas as pd\n\n# For making vizualizations\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nI will be pulling the data directly from kaggle using kagglehub.\n\n# Download latest version\npath = kagglehub.dataset_download(\"kevintan701/diabetes-prediction-datasets\")\n\ndiabetes = pd.read_csv(path + \"/diabetes_data.csv\")[['weight', 'height', 'stress_level', 'risk_score']]\nprint(diabetes.head())\n\n      weight      height  stress_level  risk_score\n0  77.450712  183.993554             1   38.000000\n1  67.926035  179.246337             2   39.162310\n2  79.715328  170.596304             0   31.481633\n3  92.845448  163.530632             1   45.000000\n4  66.487699  176.982233             0    4.717234"
+  },
+  {
+    "objectID": "python_projects/synthetic_diabetes_data.html#data-vizualizations",
+    "href": "python_projects/synthetic_diabetes_data.html#data-vizualizations",
+    "title": "Visualizing Synthetic Diabetes Data",
+    "section": "Data Vizualizations",
+    "text": "Data Vizualizations\nFirst, I will visualize the relationship between stress level and the assigned risk score. I will recode the stress_level variable from having numerical values to having categorical.\n\nstress_mapping = {0: 'Low', 1: 'Medium', 2: 'High'}\n\ndiabetes_cat = diabetes.copy()\n\ndiabetes_cat['stress_level'] = diabetes_cat['stress_level'].map(stress_mapping)\n\nAfter putting the data in the right format I can graph.\n\norder = ['Low', 'Medium', 'High']\n\ncolors = {'Low': '#CB78F7', 'Medium': '#B19CD9', 'High': '#9941C7'}\n\nsns.boxplot(diabetes_cat, \n            x='stress_level', \n            y='risk_score',\n            hue='stress_level',\n            order=order,\n            palette=colors) \nplt.title(\"Risk Score For Diabetes By Stress Level\\nBoxplot\", loc=\"left\")\nplt.xlabel(\"Stress Level\")\nplt.ylabel(\"Risk Score For Diabetes\")\nplt.show()\n\n\n\n\n\n\n\n\nHere is the same data but as a jittered strip plot.\n\nsns.stripplot(data=diabetes, \n              x='stress_level', \n              y='risk_score', \n              jitter=True,\n              color='#8931B9',\n              alpha=0.4)\n\nsns.regplot(data=diabetes, \n            x='stress_level', \n            y='risk_score', \n            scatter=False,\n            color='#4B096F')\n\nplt.title(\"Risk Score For Diabetes By Stress Level\")\nplt.xlabel(\"Stress Level\")\nplt.ylabel(\"Risk Score\")\n\nplt.show()\n\n\n\n\n\n\n\n\nIn this synthetic data, there appear to be more outliers for higher risk scores than usual in the medium stress level. I am curious about how this synthetic data was generated. With real-world data, I wonder how researchers categorize patients into stress level categories, as I imagine that most patients are likely to overestimate their stress levels rather than underestimate them. Perhaps researchers could use other indicators, such as hours at employment and type of employment, to more accurately categorize stress levels.\nNow I will look at the relationship between height and weight in the dataset.\n\nsns.scatterplot(data=diabetes,\n            x='height',\n            y='weight',\n            hue='risk_score')\n\nsns.regplot(data=diabetes, \n            x='height', \n            y='weight', \n            scatter=False,\n            color='#4F0576',\n            ci=None)\n     \nplt.title(\"Height and Weight in Relationship with Diabetes Risk Score\")\nplt.xlabel(\"Height (cm)\")\nplt.ylabel(\"Weight (kg)\")\nplt.legend(title=\"Risk Score\")\nplt.show()\n\n\n\n\n\n\n\n\nThere are a few observations we can make here. First, the data unexpectedly suggests that, on average, taller individuals tend to weigh less, which appears counterintuitive. Second, there seems to be a section in the middle of the plot, marked by a cluster of dots in a lighter pink color, that slopes upwards in the center. The synthetic data indicates that there may be an optimal weight-to-height region that is associated with a lower diabetes risk score."
   }
 ]
