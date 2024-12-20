@@ -408,9 +408,9 @@
   {
     "objectID": "tidytuesday/country_code.html",
     "href": "tidytuesday/country_code.html",
-    "title": "Country Codes",
+    "title": "ISO Country Codes",
     "section": "",
-    "text": "library(tidyverse)\nlibrary(lubridate)\nlibrary(plotly)\n\n\ncountries &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/countries.csv')\ncountry_subdivisions &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/country_subdivisions.csv')\nformer_countries &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/former_countries.csv')\n\n\nformer &lt;- former_countries |&gt; \n  mutate(date = case_when(\n    nchar(date_withdrawn) == 4 ~ ymd(paste0(date_withdrawn, \"-01-01\")),\n    TRUE ~ ymd(date_withdrawn))) |&gt; \n  mutate(yval = sample(5:20, nrow(former_countries), replace = TRUE)) |&gt; \n  arrange(date) |&gt; \n  mutate(decade = as.character((((year(date) %% 100)) %/% 10) * 10)) |&gt; \n  mutate(decade = case_when(decade == \"0\" ~ \"00\",\n                            TRUE ~ decade)) |&gt; \n  mutate(decade = factor(decade, levels = c(\"70\", \"80\", \"90\", \"00\", \"10\", \"20\"))) |&gt; \n  mutate(name = paste0(year(date), \": \", name))\n\n\n# Define custom colors for each decade\ndecade_colors &lt;- c(\"70\" = \"#1f3a6c\", \n                   \"80\" = \"#6a1b9a\", \n                   \"90\" = \"#e53946\", \n                   \"00\" = \"#f57c00\", \n                   \"10\" = \"#43a047\", \n                   \"20\" = \"#00897b\")\n\n# Reorder `name` by `date`\nformer &lt;- former |&gt; \n  mutate(alpha_3 = fct_reorder(alpha_3, date))\n\n# Create the plot\np &lt;- former |&gt; \n  ggplot(aes(x = alpha_3, y = date)) +\n  geom_segment(aes(xend = alpha_3, yend = min(date), color = decade)) +\n  geom_point(aes(text = name, color = decade), size = 4) +\n  scale_color_manual(values = decade_colors) +  # Apply custom color palette\n  theme_minimal() +\n  labs(title = \"Interactive Lollipop Plot\", x = \"Country\", y = \"Date\") +\n  coord_flip()\n\n# Make it interactive\nggplotly(p, tooltip = \"text\")"
+    "text": "The dataset this week comes from the {ISOcodes} R package. My analysis will focus on the former_countries dataset which is of formerly used names of countries from ISO 3166-3.\nFor this TidyTuesday, I’m creating an interactive lollipop chart to show when different countries ceased to be countries using the former_countries dataset."
   },
   {
     "objectID": "projects/mex_peso/Sin título.html",
@@ -992,5 +992,61 @@
     "title": "Presenting Global Indicies From the CIA Factbook Data",
     "section": "Make a single plot for Infant Mortality rate",
     "text": "Make a single plot for Infant Mortality rate\n\ndata4map |&gt; \n  ggplot(aes(x = long, y = lat, group = group)) +\n  geom_polygon(aes(fill = infant_mortality_rate)) +\n  scale_fill_gradient(low = \"blue\", high = \"red\", trans = \"log\", \n                        labels = scales::label_comma(accuracy = 0.01))+\n  theme_void()"
+  },
+  {
+    "objectID": "tidytuesday/cia_factbook_old.html",
+    "href": "tidytuesday/cia_factbook_old.html",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "",
+    "text": "Under the mentorship of Professor Jo Hardin @hardin47 at Pomona College. Analysis based on @deepdk"
+  },
+  {
+    "objectID": "tidytuesday/cia_factbook_old.html#loading-relevant-libraries",
+    "href": "tidytuesday/cia_factbook_old.html#loading-relevant-libraries",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "Loading relevant libraries",
+    "text": "Loading relevant libraries\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/cia_factbook_old.html#loading-the-data",
+    "href": "tidytuesday/cia_factbook_old.html#loading-the-data",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "Loading the data",
+    "text": "Loading the data\n\ncia &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-22/cia_factbook.csv') |&gt; \n    mutate(\n    iso_a3 = countrycode::countrycode(\n      country,\n      origin = \"country.name\",\n      destination = \"iso3c\"\n    )) |&gt; \n  drop_na(iso_a3)"
+  },
+  {
+    "objectID": "tidytuesday/cia_factbook_old.html#world-map",
+    "href": "tidytuesday/cia_factbook_old.html#world-map",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "World map",
+    "text": "World map\n\nworld_data &lt;- map_data(\"world\") |&gt; \n  mutate(\n      iso_a3 = countrycode::countrycode(\n      region,\n      origin = \"country.name\",\n      destination = \"iso3c\")) |&gt; \n  drop_na(iso_a3)\n\ndata4map &lt;- world_data |&gt; \n  left_join(cia, by = \"iso_a3\")"
+  },
+  {
+    "objectID": "tidytuesday/cia_factbook_old.html#make-a-single-plot",
+    "href": "tidytuesday/cia_factbook_old.html#make-a-single-plot",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "Make a single plot",
+    "text": "Make a single plot\n\ndata4map |&gt; \n  ggplot(aes(x = long, y = lat, group = group)) +\n  geom_polygon(aes(fill = infant_mortality_rate)) +\n  theme_void()"
+  },
+  {
+    "objectID": "tidytuesday/country_code.html#data-preparation",
+    "href": "tidytuesday/country_code.html#data-preparation",
+    "title": "ISO Country Codes",
+    "section": "Data Preparation",
+    "text": "Data Preparation\n\nformer &lt;- former_countries |&gt; \n  mutate(date = case_when(\n    nchar(date_withdrawn) == 4 ~ ymd(paste0(date_withdrawn, \"-01-01\")),\n    TRUE ~ ymd(date_withdrawn))) |&gt; \n  mutate(yval = sample(5:20, nrow(former_countries), replace = TRUE)) |&gt; \n  arrange(date) |&gt; \n  mutate(decade = as.character((((year(date) %% 100)) %/% 10) * 10)) |&gt; \n  mutate(decade = case_when(decade == \"0\" ~ \"00\",\n                            TRUE ~ decade)) |&gt; \n  mutate(decade = factor(decade, levels = c(\"70\", \"80\", \"90\", \"00\", \"10\", \"20\"))) |&gt; \n  mutate(name = paste0(year(date), \": \", name))"
+  },
+  {
+    "objectID": "tidytuesday/country_code.html#data-vizualization",
+    "href": "tidytuesday/country_code.html#data-vizualization",
+    "title": "ISO Country Codes",
+    "section": "Data Vizualization",
+    "text": "Data Vizualization\n\n# Define custom colors for each decade\ndecade_colors &lt;- c(\"70\" = \"#1f3a6c\", \n                   \"80\" = \"#6a1b9a\", \n                   \"90\" = \"#e53946\", \n                   \"00\" = \"#f57c00\", \n                   \"10\" = \"#43a047\", \n                   \"20\" = \"#00897b\")\n\n# Reorder `name` by `date`\nformer &lt;- former |&gt; \n  mutate(alpha_3 = fct_reorder(alpha_3, date))\n\n# Create the plot\np &lt;- former |&gt; \n  ggplot(aes(x = alpha_3, y = date)) +\n  geom_segment(aes(xend = alpha_3, yend = min(date), color = decade)) +\n  geom_point(aes(text = name, color = decade), size = 4) +\n  scale_color_manual(values = decade_colors) +\n  theme_minimal() +\n  labs(title = \"Interactive Lollipop Plot\", \n       x = \"Country Code\", \n       y = \"Date\",\n       color = \"Decade\") +\n  coord_flip()\n\n# Make it a plotly\nggplotly(p, tooltip = \"text\")"
+  },
+  {
+    "objectID": "tidytuesday/tidytuesday.html#november-24",
+    "href": "tidytuesday/tidytuesday.html#november-24",
+    "title": "Tidytuesday Adventures",
+    "section": "November ’24",
+    "text": "November ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐"
   }
 ]

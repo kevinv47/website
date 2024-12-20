@@ -32,6 +32,11 @@ The following is a list of some of the TidyTuesday projects I have completed. I 
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
 
+
+## November '24
+
+-   **November 12, 2024** <a href="country_code.qmd" class="chip-link">ISO Country Codes 🍭🌐</a>
+
 ## October '24
 
 -   **October 29, 2024** <a href="monsters.qmd" class="chip-link">Monster Movies ⚰️👻</a>

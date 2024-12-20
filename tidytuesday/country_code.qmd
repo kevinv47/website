@@ -1,6 +1,6 @@
 ---
-title: "Country Codes"
-subtitle: "Country Code"
+title: "ISO Country Codes"
+subtitle: "Plotly lollipop graph of when country codes where discontinued"
 date: "Nov 12, 2024"
 author: "Kevin Valdivia"
 format: html
@@ -9,22 +9,23 @@ execute:
   warning: false
   message: false
 ---
+**The dataset this week comes from the {[ISOcodes](https://cran.r-project.org/web/packages/ISOcodes/index.html)} R package.  My analysis will focus on the `former_countries` dataset  which is of formerly used names of countries from ISO 3166-3.**
 
+For this TidyTuesday, I’m creating an interactive lollipop chart to show when different countries ceased to be countries using the former_countries dataset.
+
+### Libraries Used
 ```{r}
 library(tidyverse)
 library(lubridate)
 library(plotly)
 ```
 
-
-
+### Data Importation
 ```{r}
-countries <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/countries.csv')
-country_subdivisions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/country_subdivisions.csv')
 former_countries <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/former_countries.csv')
 ```
 
-
+## Data Preparation
 ```{r}
 former <- former_countries |> 
   mutate(date = case_when(
@@ -37,12 +38,10 @@ former <- former_countries |>
                             TRUE ~ decade)) |> 
   mutate(decade = factor(decade, levels = c("70", "80", "90", "00", "10", "20"))) |> 
   mutate(name = paste0(year(date), ": ", name))
-  
-  
+
 ```
 
-
-
+## Data Vizualization
 ```{r}
 # Define custom colors for each decade
 decade_colors <- c("70" = "#1f3a6c", 
@@ -61,13 +60,15 @@ p <- former |>
   ggplot(aes(x = alpha_3, y = date)) +
   geom_segment(aes(xend = alpha_3, yend = min(date), color = decade)) +
   geom_point(aes(text = name, color = decade), size = 4) +
-  scale_color_manual(values = decade_colors) +  # Apply custom color palette
+  scale_color_manual(values = decade_colors) +
   theme_minimal() +
-  labs(title = "Interactive Lollipop Plot", x = "Country", y = "Date") +
+  labs(title = "Interactive Lollipop Plot", 
+       x = "Country Code", 
+       y = "Date",
+       color = "Decade") +
   coord_flip()
 
-# Make it interactive
+# Make it a plotly
 ggplotly(p, tooltip = "text")
 
 ```
-
