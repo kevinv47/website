@@ -28,6 +28,7 @@ execute:
 }
 </style>
 ```
+-   **Python** <a href="../python_projects/synthetic_diabetes_data.qmd" class="chip-link">Diabetes</a>
 The following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor [Jo Hardin](https://hardin47.netlify.app) and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday `.qmd` files every week because I don’t always have time, but I will try my best to share them when I can.
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
