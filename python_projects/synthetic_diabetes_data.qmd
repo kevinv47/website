@@ -1,0 +1,114 @@
+---
+title: "Visualizing Synthetic Diabetes Data"
+subtitle: "Creating graphs to look at synthetic data"
+date: "Dec 20, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+The data used here will come from user [KevinTan701](https://www.kaggle.com/datasets/kevintan701/diabetes-prediction-datasets/data) at Kaggale. **This dataset was synthetically generated** to resemble real-world health information, covering data from 2021 to 2023.
+
+I will create visualizations to better understand some of the assumptions made in the synthetically generated data.
+
+## Libraries and Data Importation
+```{python}
+# For pulling the data
+import kagglehub
+
+# For loading in the data and data manipulation
+import pandas as pd
+
+# For making vizualizations
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+I will be pulling the data directly from kaggle using `kagglehub`.
+```{python}
+# Download latest version
+path = kagglehub.dataset_download("kevintan701/diabetes-prediction-datasets")
+
+diabetes = pd.read_csv(path + "/diabetes_data.csv")[['weight', 'height', 'stress_level', 'risk_score']]
+print(diabetes.head())
+```
+
+## Data Vizualizations
+
+First, I will visualize the relationship between stress level and the assigned risk score. I will recode the `stress_level` variable from having numerical values to having categorical.
+
+```{python}
+stress_mapping = {0: 'Low', 1: 'Medium', 2: 'High'}
+
+diabetes_cat = diabetes.copy()
+
+diabetes_cat['stress_level'] = diabetes_cat['stress_level'].map(stress_mapping)
+```
+
+After putting the data in the right format I can graph.
+
+```{python}
+order = ['Low', 'Medium', 'High']
+
+colors = {'Low': '#CB78F7', 'Medium': '#B19CD9', 'High': '#9941C7'}
+
+sns.boxplot(diabetes_cat, 
+            x='stress_level', 
+            y='risk_score',
+            hue='stress_level',
+            order=order,
+            palette=colors) 
+plt.title("Risk Score For Diabetes By Stress Level\nBoxplot", loc="left")
+plt.xlabel("Stress Level")
+plt.ylabel("Risk Score For Diabetes")
+plt.show()
+```
+
+Here is the same data but as a jittered strip plot.
+```{python}
+sns.stripplot(data=diabetes, 
+              x='stress_level', 
+              y='risk_score', 
+              jitter=True,
+              color='#8931B9',
+              alpha=0.4)
+
+sns.regplot(data=diabetes, 
+            x='stress_level', 
+            y='risk_score', 
+            scatter=False,
+            color='#4B096F')
+
+plt.title("Risk Score For Diabetes By Stress Level")
+plt.xlabel("Stress Level")
+plt.ylabel("Risk Score")
+
+plt.show()
+```
+
+In this synthetic data, there appear to be more outliers for higher risk scores than usual in the medium stress level. I am curious about how this synthetic data was generated. With real-world data, I wonder how researchers categorize patients into stress level categories, as I imagine that most patients are likely to overestimate their stress levels rather than underestimate them. Perhaps researchers could use other indicators, such as hours at employment and type of employment, to more accurately categorize stress levels.
+
+Now I will look at the relationship between height and weight in the dataset.
+```{python}
+sns.scatterplot(data=diabetes,
+            x='height',
+            y='weight',
+            hue='risk_score')
+
+sns.regplot(data=diabetes, 
+            x='height', 
+            y='weight', 
+            scatter=False,
+            color='#4F0576',
+            ci=None)
+     
+plt.title("Height and Weight in Relationship with Diabetes Risk Score")
+plt.xlabel("Height (cm)")
+plt.ylabel("Weight (kg)")
+plt.legend(title="Risk Score")
+plt.show()
+```
+There are a few observations we can make here. First, the data unexpectedly suggests that, on average, taller individuals tend to weigh less, which appears counterintuitive. Second, there seems to be a section in the middle of the plot, marked by a cluster of dots in a lighter pink color, that slopes upwards in the center. The synthetic data indicates that there may be an optimal weight-to-height region that is associated with a lower diabetes risk score.
