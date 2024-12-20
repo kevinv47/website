@@ -564,7 +564,7 @@
     "href": "tidytuesday/tidytuesday.html",
     "title": "Vizualizations With Python",
     "section": "",
-    "text": "Vizualizations With Python\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\nThe following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor Jo Hardin and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday .qmd files every week because I don’t always have time, but I will try my best to share them when I can.\nHere is the official TidyTuesday repo\n\nNovember ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nNovember ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/tidytuesday.html#tidy-tuesday-projects",
@@ -1110,13 +1110,20 @@
     "href": "tidytuesday/tidytuesday.html#vizualizations-with-python",
     "title": "Kevin Valdivia",
     "section": "",
-    "text": "December 20, 2024 Synthetic Data: Diabetes ⚕💉️"
+    "text": "The following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\n\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️"
   },
   {
     "objectID": "tidytuesday/tidytuesday.html#tidytuesdays-with-r",
     "href": "tidytuesday/tidytuesday.html#tidytuesdays-with-r",
     "title": "Kevin Valdivia",
-    "section": "Tidytuesdays With R",
-    "text": "Tidytuesdays With R\nThe following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor Jo Hardin and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday .qmd files every week because I don’t always have time, but I will try my best to share them when I can.\nHere is the official TidyTuesday repo\n\nNovember ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "section": "# Tidytuesdays With R",
+    "text": "# Tidytuesdays With R\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nNovember ’24\n\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+  },
+  {
+    "objectID": "tidytuesday/tidytuesday.html#december-24",
+    "href": "tidytuesday/tidytuesday.html#december-24",
+    "title": "Vizualizations With Python",
+    "section": "",
+    "text": "December 20, 2024 Synthetic Data: Diabetes ⚕💉️"
   }
 ]

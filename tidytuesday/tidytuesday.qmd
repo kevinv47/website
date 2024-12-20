@@ -28,19 +28,23 @@ execute:
 }
 </style>
 ```
+# Vizualizations With Python
 
+---------
 
-# Vizualizations With Python 
+The following are a selection of data visualizations created using Python, showcasing various techniques and insights.
 
 ### December '24
+-   **December 20, 2024** <a href="../python_projects/synthetic_diabetes_data.qmd" class="chip-link">Synthetic Data: Diabetes ⚕💉️</a>
 
-- **December 20, 2024** <a href="../python_projects/synthetic_diabetes_data.qmd" class="chip-link">Synthetic Data: Diabetes ⚕💉️</a>
 
 # Tidytuesdays With R
-The following is a list of some of the TidyTuesday projects I have completed. I started by attending some of the TidyTuesday sessions led by Professor [Jo Hardin](https://hardin47.netlify.app) and collaborating with other peers. We worked together to learn more about the Tidyverse. I don’t publish my TidyTuesday `.qmd` files every week because I don’t always have time, but I will try my best to share them when I can.
+
+---------
+
+The following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
-
 
 ### November '24
 
