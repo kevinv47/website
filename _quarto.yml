@@ -46,8 +46,8 @@ website:
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: united
+    css: css/styles.css
     toc: true
 
 editor: visual

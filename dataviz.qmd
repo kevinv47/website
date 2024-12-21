@@ -24,7 +24,7 @@ execute:
     text-decoration: none;
 }
 .chip-link:hover {
-    background-color: #e0e0e0;
+    background-color: #ffa04d;
 }
 </style>
 ```
