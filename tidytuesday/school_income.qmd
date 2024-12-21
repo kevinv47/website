@@ -1,6 +1,6 @@
 ---
-title: "Interactive Data Vizualization (select to highlight)"
-subtitle: "Dataset is About Elite Schools"
+title: "Economic Diversity In Elite Schools"
+subtitle: "Interactive Data Vizualization (select to highlight)"
 date: "Sep 10, 2024"
 author: "Kevin Valdivia"
 format: html
@@ -10,9 +10,11 @@ execute:
   message: false
 ---
 
-***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College.***
+The data explores economic diversity and student outcomes. The dataset this week comes from [Opportunity Insights](https://opportunityinsights.org/data/) and is described in its [codebook.](https://opportunityinsights.org/wp-content/uploads/2023/07/CollegeAdmissions_Codebook.pdf)
 
-## Loading relevant libraries
+In this tidytuesday we will make an interactive plotly graph, that has select to highlight capability, between the variables `attend` and `par_income_bin` faceted by whether the school is public or private. 
+
+### Loading relevant libraries
 
 ```{r}
 library(tidyverse)
@@ -20,32 +22,28 @@ library(plotly)
 library(crosstalk) # For SharedData
 ```
 
-## Importation of the data
+### Importation of the data
 
 ```{r}
-college_admissions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-10/college_admissions.csv')
+college_admissions <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-10/college_admissions.csv')
 ```
-
-::: {.callout-tip title="Disclaimer"}
-The documentation of the dataset was highly complicated and technical and hence I don't understand how to interpret the datset. Instead I used the graph to learn more about how to make a interactive graph. Specifically how to select a line on a graph. There are many institutions on the graph so it is not the best example, but the code works.
-:::
 
 ## Setting up interactive graph
 
 ::: {.callout-note title="Plotly & Crosstalk::SharedData"}
-The SharedData function hass to be used in this way for the plotly to work.
+Reminder: the SharedData function hass to be used in this way for the plotly to work.
 :::
 
 ```{r}
 # Some Data prep so that public and private categroization looks good on the graph
 college_admissions <- college_admissions |>
-  mutate(public_name = ifelse(public == TRUE, "Public Uni", "Private Uni"))
+  mutate(public_name = ifelse(public == TRUE, "Public University", "Private University"))
 
 # Indispensable setup for plotly
 data_w_crosstalk <- crosstalk::SharedData$new(college_admissions, ~name)
 ```
 
-## Interactive graph that can highlight a line when selected
+## ggplot Setup
 
 First we need to make the ggplot look how we want it to look.
 
@@ -56,18 +54,28 @@ plot_setup <- data_w_crosstalk |>
   geom_point() +
   geom_line() +
   facet_grid(~ public_name) +
-    scale_color_manual(values = c("Public Uni" = "blue", "Private Uni" = "red")) +  # Custom colors
+    scale_color_manual(values = c("Public University" = "#024ebf", "Private University" = "#bf0202")) +  # Custom colors
   guides(color = "none") + # How to not make the color and public/private appear
+  theme_minimal() +
   labs(x = "Parental Income Bin",
-       y = "Something about % Attendence",
-       title = "Plot Comparing Elite Schools and Student Income Status")
+       y = "Attned Variable",
+       title = "Attend Variable by Parental Income Bin for Elite Schools")
 ```
 
-# Plotly Time
+# Plotly 
 
-Now we can use the plotly to make the ggplot saved interactive (remember crosstalk should have been used before making the ggplot)
+Now we can use the plotly to make the ggplot saved interactive 
 
 ```{r}
 plotly_setup <- plotly::ggplotly(plot_setup, tooltip = "text")
-plotly::highlight(plotly_setup, on = "plotly_click")
+highlight(plotly_setup, on = "plotly_hover")
 ```
+*When hovering over the lines, we can observe the relationship between parental income percentile and attendance for each of the 139 institutions in the study. Private schools generally increase at the highest income bins, while most public schools decrease for the highest incomes.*
+
+More Information About The Variables: 
+
+- `Attend Variable` : Test-score-reweighted absolute attendance rate: Calculated as the fraction of students attending that college among all test-takers within a parent income bin in the Pipeline Analysis Sample.
+
+- `Parental Income Bin Variable` : Parent household income group based on percentile in the income distribution.
+
+
