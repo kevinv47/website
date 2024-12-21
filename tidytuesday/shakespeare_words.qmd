@@ -10,7 +10,7 @@ execute:
   message: false
 ---
 
-***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College. Analysis based on [\@deepdk](https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38)***
+This week we’re exploring dialogue in Shakespeare plays. The dataset this week comes from [shakespeare.mit.edu](https://shakespeare.mit.edu) (via [github.com/nrennie/shakespeare](https://github.com/nrennie/shakespeare)) which is the Web’s first edition of the Complete Works of William Shakespeare. The site has offered Shakespeare’s plays and poetry to the internet community since 1993. The analysis I will take inspiratio from is [@deepdk](https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38)
 
 ## Loading relevant libraries
 

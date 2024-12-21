@@ -137,14 +137,14 @@
     "href": "tidytuesday/chess_matches.html",
     "title": "Understanding Chess Match Dataset",
     "section": "",
-    "text": "Under the mentorship of Professor Jo Hardin @hardin47 at Pomona College"
+    "text": "library(tidyverse)"
   },
   {
     "objectID": "tidytuesday/chess_matches.html#packages",
     "href": "tidytuesday/chess_matches.html#packages",
     "title": "Understanding Chess Match Dataset",
-    "section": "Packages",
-    "text": "Packages\n\nlibrary(tidyverse)"
+    "section": "",
+    "text": "library(tidyverse)"
   },
   {
     "objectID": "tidytuesday/chess_matches.html#loading-chess-dataset",
@@ -193,7 +193,7 @@
     "href": "tidytuesday/shakespeare_words.html",
     "title": "Creating a Word Map With Custom Shapes",
     "section": "",
-    "text": "Under the mentorship of Professor Jo Hardin @hardin47 at Pomona College. Analysis based on @deepdk"
+    "text": "This week we’re exploring dialogue in Shakespeare plays. The dataset this week comes from shakespeare.mit.edu (via github.com/nrennie/shakespeare) which is the Web’s first edition of the Complete Works of William Shakespeare. The site has offered Shakespeare’s plays and poetry to the internet community since 1993. The analysis I will take inspiratio from is @deepdk"
   },
   {
     "objectID": "tidytuesday/shakespeare_words.html#loading-relevant-libraries",
