@@ -36,7 +36,7 @@ The following are a selection of data visualizations created using Python, showc
 
 ### December '24
 
--   **December 20, 2024** <a href="../python_projects/synthetic_diabetes_data.qmd" class="chip-link">Synthetic Data: Diabetes ⚕💉️</a>
+-   **December 20, 2024** <a href="python_projects/synthetic_diabetes_data.qmd" class="chip-link">Synthetic Data: Diabetes ⚕💉️</a>
 
 # Tidytuesdays With R
 
@@ -48,16 +48,16 @@ Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/t
 
 ### November '24
 
--   **November 12, 2024** <a href="country_code.qmd" class="chip-link">ISO Country Codes 🍭🌐</a>
+-   **November 12, 2024** <a href="tidytuesday/country_code.qmd" class="chip-link">ISO Country Codes 🍭🌐</a>
 
 ### October '24
 
--   **October 29, 2024** <a href="monsters.qmd" class="chip-link">Monster Movies ⚰️👻</a>
--   **October 22, 2024**: <a href="CIA_Factbook/cia_factbook.qmd" class="chip-link">CIA Country Comparison Indicators 📊🌍</a>
--   **October 8, 2024**: <a href="biodiversity_national_parks.qmd" class="chip-link">National Park Species 🌲🦉</a>
--   **October 1, 2024**: <a href="chess_matches.qmd" class="chip-link">Chess Games ♟️🎯</a>
+-   **October 29, 2024** <a href="tidytuesday/monsters.qmd" class="chip-link">Monster Movies ⚰️👻</a>
+-   **October 22, 2024**: <a href="tidytuesday/CIA_Factbook/cia_factbook.qmd" class="chip-link">CIA Country Comparison Indicators 📊🌍</a>
+-   **October 8, 2024**: <a href="tidytuesday/biodiversity_national_parks.qmd" class="chip-link">National Park Species 🌲🦉</a>
+-   **October 1, 2024**: <a href="tidytuesday/chess_matches.qmd" class="chip-link">Chess Games ♟️🎯</a>
 
 ### September '24
 
--   **September 17, 2024**: <a href="shakespeare_words.qmd" class="chip-link">Shakespeare Dialogue 🎭✒️</a>
--   **September 10, 2024**: <a href="school_income.qmd" class="chip-link">Diversity & Student Outcomes 📚🌍</a>
+-   **September 17, 2024**: <a href="tidytuesday/shakespeare_words.qmd" class="chip-link">Shakespeare Dialogue 🎭✒️</a>
+-   **September 10, 2024**: <a href="tidytuesday/school_income.qmd" class="chip-link">Diversity & Student Outcomes 📚🌍</a>
