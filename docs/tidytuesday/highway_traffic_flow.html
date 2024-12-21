@@ -184,8 +184,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../tidytuesday/tidytuesday.html"> 
-<span class="menu-text"><strong>Tidytuesday Adventures</strong></span></a>
+    <a class="nav-link" href="../dataviz.html"> 
+<span class="menu-text"><strong>Data Viz Adventures</strong></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -233,32 +233,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><strong><em>Under the mentorship of Professor Jo Hardin <a href="https://github.com/hardin47">@hardin47</a> at Pomona College. Thank you to <a href="https://github.com/nrennie">Nicola Rennie</a> for curating this week’s dataset. The data can be accessed via the <a href="https://webtris.nationalhighways.co.uk/api/swagger/ui/index">National Highways API</a>.</em></strong></p>
-<p>Libraries</p>
+<p>Thank you to <a href="https://github.com/nrennie">Nicola Rennie</a> for curating this week’s dataset. The data can be accessed via the <a href="https://webtris.nationalhighways.co.uk/api/swagger/ui/index">National Highways API</a>. It has the vehicle volume from 4 highway cameras along an English highway, the A64.</p>
+<section id="libraries" class="level3">
+<h3 class="anchored" data-anchor-id="libraries">Libraries</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Data</p>
+</section>
+<section id="data-importation-and-prep" class="level2">
+<h2 class="anchored" data-anchor-id="data-importation-and-prep">Data Importation and Prep</h2>
+<p>There are a few <a href="https://www.gov.uk/bank-holidays">English Bank Holidays</a> in our dataset specifically May 3rd (Early May bank holiday) and May 31st (Spring bank holiday) in 2021. COVID restrictions are <a href="https://www.gov.uk/government/news/further-easing-of-covid-restrictions-confirmed-for-17-may">lifted</a> in May 17 of 2021 in England and we will also take this into account. We will encode these details to observe them in our graphs.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>A64_traffic <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-12-03/A64_traffic.csv'</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dow =</span> <span class="fu">wday</span>(<span class="st">`</span><span class="at">Report Date</span><span class="st">`</span>, <span class="at">label =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">holiday =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Report Date</span><span class="st">`</span> <span class="sc">==</span> <span class="fu">ymd</span>(<span class="st">"2021-05-03"</span>) <span class="sc">|</span> <span class="st">`</span><span class="at">Report Date</span><span class="st">`</span> <span class="sc">==</span> <span class="fu">ymd</span>(<span class="st">"2021-05-31"</span>), <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">status =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Report Date</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="st">"2021-05-17"</span>, <span class="st">"covid_strict"</span>, <span class="st">"covid_free"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">case_when</span>(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    SiteId <span class="sc">==</span> <span class="dv">6867</span> <span class="sc">~</span> <span class="st">"Norton-on-Derwent"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    SiteId <span class="sc">==</span> <span class="dv">7035</span> <span class="sc">~</span> <span class="st">"B1249 &amp; A1039"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    SiteId <span class="sc">==</span> <span class="dv">6867</span> <span class="sc">~</span> <span class="st">"York (north)"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    SiteId <span class="sc">==</span> <span class="dv">6867</span> <span class="sc">~</span> <span class="st">"Filey"</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">status =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Report Date</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="st">"2021-05-17"</span>, <span class="st">"covid_strict"</span>, <span class="st">"covid_free"</span>)) <span class="co"># |&gt; </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># mutate(label = case_when(</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   SiteId == 6867 ~ "Norton-on-Derwent",</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   SiteId == 7035 ~ "B1249 &amp; A1039",</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   SiteId == 6867 ~ "York (north)",</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   SiteId == 6867 ~ "Filey"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Englihs Bank Holidays on May 3rd and May 31st in 2021. We will compare Holiday Mondays with other Mondays.</p>
+</section>
+<section id="graphing" class="level2">
+<h2 class="anchored" data-anchor-id="graphing">Graphing</h2>
+<p>We will compare vehicle volume during Monday holidays against other Mondays of the month as well as the presence of COVID restrictions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>A64_traffic <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(dow <span class="sc">==</span> <span class="st">"Mon"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(SiteId <span class="sc">==</span> <span class="dv">6867</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Time Period Ending</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Total Volume</span><span class="st">`</span>, <span class="at">color =</span> holiday, <span class="at">group =</span> <span class="st">`</span><span class="at">Report Date</span><span class="st">`</span>, <span class="at">linetype =</span> status)) <span class="sc">+</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">holiday =</span> <span class="fu">ifelse</span>(holiday <span class="sc">==</span> <span class="cn">TRUE</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Time Period Ending</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Total Volume</span><span class="st">`</span>, <span class="at">color =</span> holiday, <span class="at">group =</span> <span class="st">`</span><span class="at">Report Date</span><span class="st">`</span>, <span class="at">linetype =</span> status)) <span class="sc">+</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Yes"</span> <span class="ot">=</span> <span class="st">"darkgreen"</span>, <span class="st">"No"</span> <span class="ot">=</span> <span class="st">"red"</span>),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Holiday"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"covid_free"</span> <span class="ot">=</span> <span class="st">"solid"</span>, <span class="st">"covid_strict"</span> <span class="ot">=</span> <span class="st">"dashed"</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"covid_free"</span> <span class="ot">=</span> <span class="st">"Lifted"</span>, <span class="st">"covid_strict"</span> <span class="ot">=</span> <span class="st">"Active"</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Covid Restrictions"</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Vehicle Volumed In The A64 Highway (siteID 6867)"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"The first Mon with COVID restrictions lifted and a holiday </span><span class="sc">\n</span><span class="st">has an increased vehicle volume"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Hour of Day"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Vehicle Volume"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Holiday"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -267,37 +288,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>Now I will facet by day of the week, vehicle type, camera on the highway, and covid restrictions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>A64_traffic <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">hour</span>(<span class="st">`</span><span class="at">Time Period Ending</span><span class="st">`</span>), <span class="at">y =</span> <span class="st">`</span><span class="at">0 - 520 cm</span><span class="st">`</span>, <span class="at">group =</span> <span class="st">`</span><span class="at">Report Date</span><span class="st">`</span>, <span class="at">linetype =</span> status)) <span class="sc">+</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"darkorange"</span>) <span class="sc">+</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">661 - 1160 cm</span><span class="st">`</span><span class="sc">*</span><span class="dv">10</span>), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(SiteId<span class="sc">~</span>dow) <span class="sc">+</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Features of the first axis</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Number of Cars"</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a second axis and specify its features</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span>.<span class="sc">/</span><span class="dv">10</span>, <span class="at">name=</span><span class="st">"Number of Small Trucks"</span>))  <span class="sc">+</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"darkorange"</span>, <span class="at">size=</span><span class="dv">13</span>),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y.right =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size=</span><span class="dv">13</span>)) <span class="sc">+</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"More driving after Covid Restrictions Lifted"</span>) <span class="sc">+</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">hour</span>(<span class="st">`</span><span class="at">Time Period Ending</span><span class="st">`</span>), </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="st">`</span><span class="at">Report Date</span><span class="st">`</span>, </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> status</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">0 - 520 cm</span><span class="st">`</span>, <span class="at">color =</span> <span class="st">"Cars"</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">661 - 1160 cm</span><span class="st">`</span> <span class="sc">*</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"Trucks"</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(SiteId <span class="sc">~</span> dow) <span class="sc">+</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Features of the first axis</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Number of Cars"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a second axis and specify its features</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span>.<span class="sc">/</span><span class="dv">10</span>, <span class="at">name =</span> <span class="st">"Number of Small Trucks"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Cars"</span> <span class="ot">=</span> <span class="st">"darkorange"</span>, <span class="st">"Trucks"</span> <span class="ot">=</span> <span class="st">"blue"</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Vehicle Type"</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"covid_free"</span> <span class="ot">=</span> <span class="st">"solid"</span>, <span class="st">"covid_strict"</span> <span class="ot">=</span> <span class="st">"dashed"</span>),</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"covid_free"</span> <span class="ot">=</span> <span class="st">"Lifted"</span>, <span class="st">"covid_strict"</span> <span class="ot">=</span> <span class="st">"Active"</span>),</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Covid Restrictions"</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"darkorange"</span>, <span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y.right =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">13</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Vehicles Captured By Cameras On A64 Highway"</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Columns represents days of the week while rows represent highways cameras. </span><span class="sc">\n</span><span class="st">Each line is a different week and the line type distiguishes the type of covid restrictions in place."</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Hour of Day"</span>) <span class="sc">+</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="highway_traffic_flow_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="1248"></p>
-<figcaption>Now you can write a caption</figcaption>
+<figcaption>More driving after COVID restrictions were lifted can be observed in the graph. Note that the orange lines represent the number of cars and should be interpreted using the left y-axis, while the blue lines represent trucks and should be interpreted using the right y-axis.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<section id="speed" class="level1">
-<h1>Speed</h1>
 
 
 </section>

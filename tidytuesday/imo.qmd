@@ -1,79 +1,101 @@
 ---
-title: "Creating a Word Map With Custom Shapes"
-subtitle: "Dataset is About The Words Used in Shakespeare's Romeo & Juliet"
-date: "Sep 17, 2024"
+title: "Math Olympiad Ranks"
+subtitle: "Mapping the highest ranked math olympiads per year"
+date: "Sep 24, 2024"
 author: "Kevin Valdivia"
 format: html
 toc: false # Table of contents
 execute: 
   warning: false
   message: false
-  eval: false
+  eval: true
 ---
+The data for this week comes from [International Mathematical Olympiad](https://www.imo-official.org/results.aspx?column=year&order=asc) (IMO). Thank you to [Havisha Khurana](https://github.com/havishak) for curating this week’s dataset.
 
+Importing libraries
 ```{r}
-library(tidyverse) # ggplot, lubridate, dplyr, stringr, readr...
-library(praise)
+library(tidyverse)
 library(maps)
 library(gganimate)
 ```
 
+Importing data
 ```{r}
-country_results_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/country_results_df.csv')
-individual_results_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/individual_results_df.csv')
-timeline_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/timeline_df.csv')
+individual_results_df <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/individual_results_df.csv')
 ```
 
+First we replace the value "C" followed by a number which appears to represent Russia.
 ```{r}
 indiv_country <- individual_results_df |> 
-  mutate(country2 = ifelse(str_detect(country, "C[0-9]"), "Russia", country)) 
-
-indiv_country |> 
-  filter(year == 2024) |> 
-  summarise(distinct_countries = n_distinct(country2), n_countries = n())
+  mutate(country = ifelse(str_detect(country, "C[0-9]"), "Russia", country)) 
 ```
 
+We see that quite a few countries are represented in the data in 2024 whcihc an be enough to make a nice map plot.
+```{r}
+indiv_country |> 
+  filter(year == 2024) |> 
+  summarise(distinct_countries = n_distinct(country))
+```
+
+## Data Prep
+Data prep for makeing the map graph. We specifically need to convert the country names into a consistent form to be able to merge with map data. We are going to take the top performing contestant from each county and year.
 ```{r}
 indiv_country <- indiv_country |> 
-  group_by(country2, year) |> 
+  group_by(country, year) |> 
   arrange(individual_rank) |> 
   slice_head(n = 1) |> 
   arrange(desc(year)) |> 
-  select(year, country2, individual_rank, award) |> 
-  mutate(country3 = case_when(
-    country2 == "United States of America" ~ "USA",
-    country2 == "People's Republic of China" ~ "China",
-    country2 == "Türkiye" ~ "Turkey",
-    country2 == "Islamic Republic of Iran" ~ "Iran",
-    country2 == "Republic of Korea" ~ "South Korea",
-    country2 == "Islamic Republic of Iran" ~ "Iran",
-    country2 == "Turkish Republic of Northern Cyprus" ~ "Cyprus",
-    country2 == "Democratic People's Republic of Korea" ~ "North Korea",
-    country2 == "United Kingdom" ~ "UK",
-    TRUE ~ country2
-  )) |> 
-  mutate(award = as.factor(case_when(
-         str_detect(award, "Gold") ~ "Gold",
-         str_detect(award, "Silver") ~ "Silver",
-         str_detect(award, "Bronze") ~ "Bronze",
-         TRUE ~ NA))) |> 
-  mutate(award = fct_relevel(award, c("Gold", "Silver", "Bronze")))
+  select(year, country, individual_rank, award) |> 
+  mutate(country = case_when(
+    country == "United States of America" ~ "USA",
+    country == "People's Republic of China" ~ "China",
+    country == "Türkiye" ~ "Turkey",
+    country == "Islamic Republic of Iran" ~ "Iran",
+    country == "Republic of Korea" ~ "South Korea",
+    country == "Islamic Republic of Iran" ~ "Iran",
+    country == "Turkish Republic of Northern Cyprus" ~ "Cyprus",
+    country == "Democratic People's Republic of Korea" ~ "North Korea",
+    country == "United Kingdom" ~ "UK",
+    TRUE ~ country
+  )) 
 
 indiv_country
 ```
 
+Here we will generate the map data from the `maps` library and we see that the number of countries it has registered is more than double what we see in 2024, which means we may have quite a big part of our map that is empty.
 ```{r}
 world_data <- map_data("world")
 
 world_data |> 
   summarize(n_distinct(region))
 ```
-
+Now we will merge the two datasets for plotting.
 ```{r}
 plot_imo <- world_data |> 
-  left_join(indiv_country, by = c("region" = "country3")) 
+  left_join(indiv_country, by = c("region" = "country")) |> 
+  filter(!is.na(individual_rank))
 ```
 
-library(gganimate) my_breaks \<- c(1, 10, 50, 200, 600)
-
-plot_imo \|\> mutate(year = as.factor(year)) \|\> #filter(year == 1979 \| !is.na(individual_rank)) \|\> filter(!is.na(individual_rank)) \|\> ggplot(aes(x = long, y = lat, group = group)) + geom_polygon(aes(fill = individual_rank, color = award)) + scale_fill_gradient(name = "best individual rank", trans = "log", low = "#71797E", high = "#E6E6E6", breaks = my_breaks, labels = my_breaks) + gganimate::transition_states(year, state_length = 5, transition_length = 10) + labs(title = 'Math Olympiad top scorer in {closest_state}')
+## Graphing 
+```{r}
+plot_imo |> 
+  ggplot(aes(x = long, y = lat, group = group)) + 
+  geom_polygon(data = world_data, 
+               aes(x = long, y = lat, group = group),
+               color = "black", fill = "white") + 
+  geom_polygon(aes(fill = individual_rank), color = "black") +
+  scale_fill_gradient(name = "Best Individual Rank", 
+                      trans = "log",
+                      low = "#0e2e61",
+                      high = "#91b9fa",
+                      labels = scales::label_number(accuracy = 1)) +
+  theme_minimal() +
+  transition_states(year, 
+                    state_length = 5,
+                    transition_length = 10) +
+  labs(title = 'Top Scoring Math Olympiads in {closest_state}',
+       subtitle = "Countries filled in with white do not have data",
+       x = "",
+       y = "",
+       fill = "Best\n Individual Rank")
+```

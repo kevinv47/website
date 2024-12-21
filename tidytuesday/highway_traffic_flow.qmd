@@ -10,64 +10,93 @@ execute:
   message: false
 ---
 
-***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College. Thank you to [Nicola Rennie](https://github.com/nrennie) for curating this week's dataset. The data can be accessed via the [National Highways API](https://webtris.nationalhighways.co.uk/api/swagger/ui/index).***
+Thank you to [Nicola Rennie](https://github.com/nrennie) for curating this week's dataset. The data can be accessed via the [National Highways API](https://webtris.nationalhighways.co.uk/api/swagger/ui/index). It has the vehicle volume from 4 highway cameras along an English highway, the A64.
 
-Libraries
+### Libraries
 
 ```{r}
 library(tidyverse)
 ```
 
-Data
-
+## Data Importation and Prep
+There are a few [English Bank Holidays](https://www.gov.uk/bank-holidays) in our dataset specifically May 3rd (Early May bank holiday) and May 31st (Spring bank holiday) in 2021. COVID restrictions are [lifted](https://www.gov.uk/government/news/further-easing-of-covid-restrictions-confirmed-for-17-may) in May 17 of 2021 in England and we will also take this into account. We will encode these details to observe them in our graphs.
 ```{r}
 A64_traffic <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-12-03/A64_traffic.csv') |> 
   mutate(dow = wday(`Report Date`, label = TRUE)) |> 
   mutate(holiday = ifelse(`Report Date` == ymd("2021-05-03") | `Report Date` == ymd("2021-05-31"), TRUE, FALSE)) |> 
-  mutate(status = ifelse(`Report Date` < "2021-05-17", "covid_strict", "covid_free")) |> 
-  mutate(label = case_when(
-    SiteId == 6867 ~ "Norton-on-Derwent",
-    SiteId == 7035 ~ "B1249 & A1039",
-    SiteId == 6867 ~ "York (north)",
-    SiteId == 6867 ~ "Filey"
-  ))
+  mutate(status = ifelse(`Report Date` < "2021-05-17", "covid_strict", "covid_free")) # |> 
+  # mutate(label = case_when(
+  #   SiteId == 6867 ~ "Norton-on-Derwent",
+  #   SiteId == 7035 ~ "B1249 & A1039",
+  #   SiteId == 6867 ~ "York (north)",
+  #   SiteId == 6867 ~ "Filey"
+  # ))
 ```
+## Graphing 
 
-Englihs Bank Holidays on May 3rd and May 31st in 2021. We will compare Holiday Mondays with other Mondays.
+We will compare vehicle volume during Monday holidays against other Mondays of the month as well as the presence of COVID restrictions.
 
 ```{r}
 A64_traffic |> 
   filter(dow == "Mon") |> 
   filter(SiteId == 6867) |> 
+  mutate(holiday = ifelse(holiday == TRUE, "Yes", "No")) |> 
   ggplot(aes(x = `Time Period Ending`, y = `Total Volume`, color = holiday, group = `Report Date`, linetype = status)) + 
+  theme_minimal() +
+  scale_color_manual(
+    values = c("Yes" = "darkgreen", "No" = "red"),
+    name = "Holiday"
+  ) +
+  scale_linetype_manual(
+    values = c("covid_free" = "solid", "covid_strict" = "dashed"),
+    labels = c("covid_free" = "Lifted", "covid_strict" = "Active"),
+    name = "Covid Restrictions") +
   geom_line() +
-  labs()
+  labs(title = "Vehicle Volumed In The A64 Highway (siteID 6867)",
+       subtitle = "The first Mon with COVID restrictions lifted and a holiday \nhas an increased vehicle volume",
+       x = "Hour of Day",
+       y = "Vehicle Volume",
+       color = "Holiday")
 ```
-
+Now I will facet by day of the week, vehicle type, camera on the highway, and covid restrictions.
 ```{r}
 #| fig-width: 13
 #| fig-height: 9
-#| fig-cap: Now you can write a caption
+#| fig-cap: More driving after COVID restrictions were lifted can be observed in the graph. Note that the orange lines represent the number of cars and should be interpreted using the left y-axis, while the blue lines represent trucks and should be interpreted using the right y-axis.
 
 A64_traffic |> 
-  ggplot(aes(x = hour(`Time Period Ending`), y = `0 - 520 cm`, group = `Report Date`, linetype = status)) + 
-  geom_smooth(se = FALSE, color = "darkorange") + 
-  geom_smooth(aes(y = `661 - 1160 cm`*10), color = "blue", se = FALSE) + 
-  facet_grid(SiteId~dow) + 
+  ggplot(aes(
+    x = hour(`Time Period Ending`), 
+    group = `Report Date`, 
+    linetype = status
+  )) + 
+  geom_smooth(aes(y = `0 - 520 cm`, color = "Cars"), se = FALSE) + 
+  geom_smooth(aes(y = `661 - 1160 cm` * 10, color = "Trucks"), se = FALSE) + 
+  facet_grid(SiteId ~ dow) + 
   scale_y_continuous(
-    
     # Features of the first axis
     name = "Number of Cars",
-    
     # Add a second axis and specify its features
-    sec.axis = sec_axis(~./10, name="Number of Small Trucks"))  + 
-
+    sec.axis = sec_axis(~./10, name = "Number of Small Trucks")
+  ) + 
+  scale_color_manual(
+    values = c("Cars" = "darkorange", "Trucks" = "blue"),
+    name = "Vehicle Type"
+  ) +
+  scale_linetype_manual(
+    values = c("covid_free" = "solid", "covid_strict" = "dashed"),
+    labels = c("covid_free" = "Lifted", "covid_strict" = "Active"),
+    name = "Covid Restrictions"
+  ) +
   theme(
-    axis.title.y = element_text(color = "darkorange", size=13),
-    axis.title.y.right = element_text(color = "blue", size=13)) +
-
-  labs(title = "More driving after Covid Restrictions Lifted") +
+    axis.title.y = element_text(color = "darkorange", size = 13),
+    axis.title.y.right = element_text(color = "blue", size = 13)
+  ) +
+  labs(title = "Number of Vehicles Captured By Cameras On A64 Highway",
+       subtitle = "Columns represents days of the week while rows represent highways cameras. \nEach line is a different week and the line type distiguishes the type of covid restrictions in place.",
+       x = "Hour of Day") +
   theme_minimal()
+
+
 ```
 
-# Speed

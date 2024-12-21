@@ -46,6 +46,10 @@ The following is a list of some TidyTuesday projects I’ve completed. While I d
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
 
+### December '24
+
+-   **December 3, 2024** <a href="tidytuesday/highway_traffic_flow.qmd" class="chip-link">ISO Country Codes 🚙🚛</a>
+
 ### November '24
 
 -   **November 12, 2024** <a href="tidytuesday/country_code.qmd" class="chip-link">ISO Country Codes 🍭🌐</a>
@@ -59,5 +63,6 @@ Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/t
 
 ### September '24
 
+-   **September 24, 2024**: <a href="tidytuesday/imo.qmd" class="chip-link">Math Olympiads 🧮🏆️</a>
 -   **September 17, 2024**: <a href="tidytuesday/shakespeare_words.qmd" class="chip-link">Shakespeare Dialogue 🎭✒️</a>
 -   **September 10, 2024**: <a href="tidytuesday/school_income.qmd" class="chip-link">Diversity & Student Outcomes 📚🌍</a>
