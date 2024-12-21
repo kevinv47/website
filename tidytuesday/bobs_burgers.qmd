@@ -1,0 +1,94 @@
+---
+title: "Dialogue From Bob's Burgers"
+subtitle: "Plotting Burgers In ggplot"
+date: "Nov 19, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: true # Table of contents
+knitr:
+  opts_chunk: 
+    dev: "ragg_png"
+execute: 
+  echo: true
+  warning: false
+  message: false
+---
+This week we’re exploring Bob’s Burgers dialogue! Instead of using the official tidytuesday rep data we will use the `[bobsburgersR](https://github.com/poncest/bobsburgersR)` data package. Thank you to [Steven Ponce](https://github.com/poncest) for the data,
+
+### Libraries
+Loading the necessary libraries. By loading the bobsburgersR package our data will also be loaded as `transcript_data` and `imdb_wikipedia_data`.
+```{r}
+library(tidyverse) 
+library(bobsburgersR)
+```
+
+## Data Preparation
+
+We will be making text analysis graphs realted to burger related lines, so we will first make a list of "burger keywords". Then we put it in a regex format to detect whether a line has a burger keyword.
+
+```{r}
+burger_keywords <- c(
+  "patty", "burger", "cheeseburger", "double-decker", 
+  "bacon burger", "slider", "smashburger", 
+  "grilled bun", "toasted bun", "drive-thru", 
+  "ketchup", "mustard", "mayo", "pickles", "lettuce", 
+  "tomato", "onions", "cheese", "toppings", "fries"
+)
+burger_keywords_list <- str_c("(?i)", str_c(burger_keywords, collapse = "|"))
+```
+
+Now I will put the data in a format so we can plot how frequently burger related words where said accross seasons and episodes. I will also join the data with the imdb data to also have a rating for another plot.
+```{r}
+plot_data <- transcript_data |> 
+  drop_na(raw_text) |> 
+  mutate(word_in = str_detect(raw_text, burger_keywords_list)) |> 
+  group_by(season, episode) |> 
+  summarize(num_wrds = sum(word_in), .groups = "drop") |> 
+  full_join(imdb_wikipedia_data, by = c("season", "episode"))
+```
+
+## Graphing
+
+First I will facet wrap a plot of the requency of burger lines across the seasons.
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+
+season_labels <- setNames(
+  paste("Season", 1:14),
+  as.character(1:14))
+
+plot_data |> 
+  ggplot(aes(y = num_wrds, x = episode)) + 
+  geom_text(
+    aes(label = "hamburger"), 
+    size = 2.5, color = "#D2691E", 
+    family = "Font Awesome 5 Free Solid") +
+  facet_wrap(
+    ~season, 
+    labeller = as_labeller(season_labels)) + 
+  theme_minimal() +
+  labs(
+    subtitle = "Number of times lines had burger-related words",
+    title = "Dialogue from Bob's Burgers",
+    x = "Episode Number",
+    y = "Number of Lines per Episode")
+```
+Now I will make a scatterplot to view the relationship between "burger lines" and the imdb rating.
+```{r}
+plot_data |> 
+  ggplot(aes(num_wrds, rating)) +
+  geom_text(
+    aes(label = "hamburger"), 
+    size = 2.5, color = "#D2691E", 
+    family = "Font Awesome 5 Free Solid") +  
+  geom_smooth(color = "darkgreen",
+              se = FALSE) +
+  theme_minimal() +
+  labs(title = "Bob's Burgers: Number of Burger Related Lines Against Episode Rating",
+       subtitle = "We see very little relationship as seen by the green trend line",
+       x = "Number of Burger Related Lines",
+       y = "Episode Rating")
+```
+
+

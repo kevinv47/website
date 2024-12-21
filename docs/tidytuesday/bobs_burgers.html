@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Kevin Valdivia">
+<meta name="dcterms.date" content="2024-11-19">
 
-<title>dataviz – Kevin Valdivia</title>
+<title>Dialogue From Bob’s Burgers – Kevin Valdivia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,8 +105,9 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="– Kevin Valdivia">
-<meta property="og:description" content="">
+<meta property="og:title" content="Dialogue From Bob’s Burgers – Kevin Valdivia">
+<meta property="og:description" content="Plotting Burgers In ggplot">
+<meta property="og:image" content="bobs_burgers_files/figure-html/unnamed-chunk-4-1.png">
 <meta property="og:site_name" content="Kevin Valdivia">
 <meta property="og:locale" content="en_US">
 </head>
@@ -82,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Kevin Valdivia</span>
     </a>
   </div>
@@ -93,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -102,23 +139,23 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-essays">    
         <li>
-    <a class="dropdown-item" href="./essays/mex_ine/electoral_reforms.html">
+    <a class="dropdown-item" href="../essays/mex_ine/electoral_reforms.html">
  <span class="dropdown-text">Behind AMLO’s Electoral Reforms</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./essays/mex_ed/mexican_education.html">
+    <a class="dropdown-item" href="../essays/mex_ed/mexican_education.html">
  <span class="dropdown-text">The Mexican Education System</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./essays/cfa_zone/cfa_zone.html">
+    <a class="dropdown-item" href="../essays/cfa_zone/cfa_zone.html">
  <span class="dropdown-text">Economic Integration in Francophone Africa</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./essays/westphalia/westphalia.html">
+    <a class="dropdown-item" href="../essays/westphalia/westphalia.html">
  <span class="dropdown-text">Beyond Westphalia</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/peso/peso_doc.html">
+    <a class="dropdown-item" href="../projects/peso/peso_doc.html">
  <span class="dropdown-text">The Peso In Crisis</span></a>
   </li>  
     </ul>
@@ -129,25 +166,25 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-projects">    
         <li>
-    <a class="dropdown-item" href="./projects/the office/office_text_analysis.html">
+    <a class="dropdown-item" href="../projects/the office/office_text_analysis.html">
  <span class="dropdown-text"><strong>Text Analysis:</strong> <em>The Office</em></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/simulation_study/permutation_experiment.html">
+    <a class="dropdown-item" href="../projects/simulation_study/permutation_experiment.html">
  <span class="dropdown-text"><strong>Permutation Analysis</strong>: <em>Room Draw</em></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/sql_mini_project/sql_project.html">
+    <a class="dropdown-item" href="../projects/sql_mini_project/sql_project.html">
  <span class="dropdown-text"><strong>Graph Replication</strong>: With SQL</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/amlo_mex/amlo_page.html">
+    <a class="dropdown-item" href="../projects/amlo_mex/amlo_page.html">
  <span class="dropdown-text"><strong>Under Development</strong>: The Rise of AMLO</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="./dataviz.html" aria-current="page"> 
+    <a class="nav-link" href="../dataviz.html"> 
 <span class="menu-text"><strong>Data Viz Adventures</strong></span></a>
   </li>  
 </ul>
@@ -166,89 +203,135 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#vizualizations-with-python" id="toc-vizualizations-with-python" class="nav-link active" data-scroll-target="#vizualizations-with-python">Vizualizations With Python</a>
-  <ul class="collapse">
-  <li><a href="#december-24" id="toc-december-24" class="nav-link" data-scroll-target="#december-24">December ’24</a></li>
-  </ul></li>
-  <li><a href="#tidytuesdays-with-r" id="toc-tidytuesdays-with-r" class="nav-link" data-scroll-target="#tidytuesdays-with-r">Tidytuesdays With R</a>
-  <ul class="collapse">
-  <li><a href="#december-24-1" id="toc-december-24-1" class="nav-link" data-scroll-target="#december-24-1">December ’24</a></li>
-  <li><a href="#november-24" id="toc-november-24" class="nav-link" data-scroll-target="#november-24">November ’24</a></li>
-  <li><a href="#october-24" id="toc-october-24" class="nav-link" data-scroll-target="#october-24">October ’24</a></li>
-  <li><a href="#september-24" id="toc-september-24" class="nav-link" data-scroll-target="#september-24">September ’24</a></li>
-  </ul></li>
+  <li><a href="#libraries" id="toc-libraries" class="nav-link active" data-scroll-target="#libraries">Libraries</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
+  <li><a href="#graphing" id="toc-graphing" class="nav-link" data-scroll-target="#graphing">Graphing</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Dialogue From Bob’s Burgers</h1>
+<p class="subtitle lead">Plotting Burgers In ggplot</p>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<style>
-.chip-link {
-    display: inline-block;
-    padding: 0.5em;
-    margin: 0.2em;
-    background-color: #f1f1f1;
-    border-radius: 16px;
-    font-size: 0.9em;
-    color: #333;
-    text-decoration: none;
-}
-.chip-link:hover {
-    background-color: #e0e0e0;
-}
-</style>
-<section id="vizualizations-with-python" class="level1">
-<h1>Vizualizations With Python</h1>
-<hr>
-<p>The following are a selection of data visualizations created using Python, showcasing various techniques and insights.</p>
-<section id="december-24" class="level3">
-<h3 class="anchored" data-anchor-id="december-24">December ’24</h3>
-<ul>
-<li><strong>December 20, 2024</strong> <a href="./python_projects/synthetic_diabetes_data.html" class="chip-link">Synthetic Data: Diabetes ⚕💉️</a></li>
-</ul>
-</section>
-</section>
-<section id="tidytuesdays-with-r" class="level1">
-<h1>Tidytuesdays With R</h1>
-<hr>
-<p>The following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.</p>
-<p>Here is the <a href="https://github.com/rfordatascience/tidytuesday"><strong>official TidyTuesday repo</strong></a></p>
-<section id="december-24-1" class="level3">
-<h3 class="anchored" data-anchor-id="december-24-1">December ’24</h3>
-<ul>
-<li><strong>December 3, 2024</strong> <a href="./tidytuesday/highway_traffic_flow.html" class="chip-link">ISO Country Codes 🚙🚛</a></li>
-</ul>
-</section>
-<section id="november-24" class="level3">
-<h3 class="anchored" data-anchor-id="november-24">November ’24</h3>
-<ul>
-<li><strong>November 19, 2024</strong> <a href="./tidytuesday/bobs_burgers.html" class="chip-link">Bob’s Burgers 📺🍔</a></li>
-<li><strong>November 12, 2024</strong> <a href="./tidytuesday/country_code.html" class="chip-link">ISO Country Codes 🍭🌐</a></li>
-</ul>
-</section>
-<section id="october-24" class="level3">
-<h3 class="anchored" data-anchor-id="october-24">October ’24</h3>
-<ul>
-<li><strong>October 29, 2024</strong> <a href="./tidytuesday/monsters.html" class="chip-link">Monster Movies ⚰️👻</a></li>
-<li><strong>October 22, 2024</strong>: <a href="./tidytuesday/CIA_Factbook/cia_factbook.html" class="chip-link">CIA Country Comparison Indicators 📊🌍</a></li>
-<li><strong>October 8, 2024</strong>: <a href="./tidytuesday/biodiversity_national_parks.html" class="chip-link">National Park Species 🌲🦉</a></li>
-<li><strong>October 1, 2024</strong>: <a href="./tidytuesday/chess_matches.html" class="chip-link">Chess Games ♟️🎯</a></li>
-</ul>
-</section>
-<section id="september-24" class="level3">
-<h3 class="anchored" data-anchor-id="september-24">September ’24</h3>
-<ul>
-<li><strong>September 24, 2024</strong>: <a href="./tidytuesday/imo.html" class="chip-link">Math Olympiads 🧮🏆️</a></li>
-<li><strong>September 17, 2024</strong>: <a href="./tidytuesday/shakespeare_words.html" class="chip-link">Shakespeare Dialogue 🎭✒️</a></li>
-<li><strong>September 10, 2024</strong>: <a href="./tidytuesday/school_income.html" class="chip-link">Diversity &amp; Student Outcomes 📚🌍</a></li>
-</ul>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kevin Valdivia </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 19, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
+</header>
+
+
+<p>This week we’re exploring Bob’s Burgers dialogue! Instead of using the official tidytuesday rep data we will use the <code>[bobsburgersR](https://github.com/poncest/bobsburgersR)</code> data package. Thank you to <a href="https://github.com/poncest">Steven Ponce</a> for the data,</p>
+<section id="libraries" class="level3">
+<h3 class="anchored" data-anchor-id="libraries">Libraries</h3>
+<p>Loading the necessary libraries. By loading the bobsburgersR package our data will also be loaded as <code>transcript_data</code> and <code>imdb_wikipedia_data</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bobsburgersR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<p>We will be making text analysis graphs realted to burger related lines, so we will first make a list of “burger keywords”. Then we put it in a regex format to detect whether a line has a burger keyword.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>burger_keywords <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"patty"</span>, <span class="st">"burger"</span>, <span class="st">"cheeseburger"</span>, <span class="st">"double-decker"</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bacon burger"</span>, <span class="st">"slider"</span>, <span class="st">"smashburger"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"grilled bun"</span>, <span class="st">"toasted bun"</span>, <span class="st">"drive-thru"</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ketchup"</span>, <span class="st">"mustard"</span>, <span class="st">"mayo"</span>, <span class="st">"pickles"</span>, <span class="st">"lettuce"</span>, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tomato"</span>, <span class="st">"onions"</span>, <span class="st">"cheese"</span>, <span class="st">"toppings"</span>, <span class="st">"fries"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>burger_keywords_list <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"(?i)"</span>, <span class="fu">str_c</span>(burger_keywords, <span class="at">collapse =</span> <span class="st">"|"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now I will put the data in a format so we can plot how frequently burger related words where said accross seasons and episodes. I will also join the data with the imdb data to also have a rating for another plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> transcript_data <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(raw_text) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word_in =</span> <span class="fu">str_detect</span>(raw_text, burger_keywords_list)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(season, episode) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">num_wrds =</span> <span class="fu">sum</span>(word_in), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(imdb_wikipedia_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"season"</span>, <span class="st">"episode"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="graphing" class="level2">
+<h2 class="anchored" data-anchor-id="graphing">Graphing</h2>
+<p>First I will facet wrap a plot of the requency of burger lines across the seasons.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>season_labels <span class="ot">&lt;-</span> <span class="fu">setNames</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"Season"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.character</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plot_data <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> num_wrds, <span class="at">x =</span> episode)) <span class="sc">+</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="st">"hamburger"</span>), </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">color =</span> <span class="st">"#D2691E"</span>, </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="st">"Font Awesome 5 Free Solid"</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span>season, </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">labeller =</span> <span class="fu">as_labeller</span>(season_labels)) <span class="sc">+</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Number of times lines had burger-related words"</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Dialogue from Bob's Burgers"</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Episode Number"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of Lines per Episode"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bobs_burgers_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now I will make a scatterplot to view the relationship between “burger lines” and the imdb rating.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plot_data <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(num_wrds, rating)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="st">"hamburger"</span>), </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">color =</span> <span class="st">"#D2691E"</span>, </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="st">"Font Awesome 5 Free Solid"</span>) <span class="sc">+</span>  </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">color =</span> <span class="st">"darkgreen"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bob's Burgers: Number of Burger Related Lines Against Episode Rating"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"We see very little relationship as seen by the green trend line"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Number of Burger Related Lines"</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Episode Rating"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="bobs_burgers_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->

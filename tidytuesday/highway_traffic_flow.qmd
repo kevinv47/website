@@ -19,7 +19,9 @@ library(tidyverse)
 ```
 
 ## Data Importation and Prep
+
 There are a few [English Bank Holidays](https://www.gov.uk/bank-holidays) in our dataset specifically May 3rd (Early May bank holiday) and May 31st (Spring bank holiday) in 2021. COVID restrictions are [lifted](https://www.gov.uk/government/news/further-easing-of-covid-restrictions-confirmed-for-17-may) in May 17 of 2021 in England and we will also take this into account. We will encode these details to observe them in our graphs.
+
 ```{r}
 A64_traffic <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-12-03/A64_traffic.csv') |> 
   mutate(dow = wday(`Report Date`, label = TRUE)) |> 
@@ -32,7 +34,8 @@ A64_traffic <- readr::read_csv('https://raw.githubusercontent.com/rfordatascienc
   #   SiteId == 6867 ~ "Filey"
   # ))
 ```
-## Graphing 
+
+## Graphing
 
 We will compare vehicle volume during Monday holidays against other Mondays of the month as well as the presence of COVID restrictions.
 
@@ -58,7 +61,9 @@ A64_traffic |>
        y = "Vehicle Volume",
        color = "Holiday")
 ```
+
 Now I will facet by day of the week, vehicle type, camera on the highway, and covid restrictions.
+
 ```{r}
 #| fig-width: 13
 #| fig-height: 9
@@ -99,4 +104,3 @@ A64_traffic |>
 
 
 ```
-

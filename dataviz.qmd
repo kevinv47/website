@@ -52,6 +52,7 @@ Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/t
 
 ### November '24
 
+-   **November 19, 2024** <a href="tidytuesday/bobs_burgers.qmd" class="chip-link">Bob's Burgers 📺🍔</a>
 -   **November 12, 2024** <a href="tidytuesday/country_code.qmd" class="chip-link">ISO Country Codes 🍭🌐</a>
 
 ### October '24
