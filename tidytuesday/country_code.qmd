@@ -9,11 +9,13 @@ execute:
   warning: false
   message: false
 ---
-**The dataset this week comes from the {[ISOcodes](https://cran.r-project.org/web/packages/ISOcodes/index.html)} R package.  My analysis will focus on the `former_countries` dataset  which is of formerly used names of countries from ISO 3166-3.**
+
+**The dataset this week comes from the {[ISOcodes](https://cran.r-project.org/web/packages/ISOcodes/index.html)} R package. My analysis will focus on the `former_countries` dataset which is of formerly used names of countries from ISO 3166-3.**
 
 For this TidyTuesday, I’m creating an interactive lollipop chart to show when different countries ceased to be countries using the former_countries dataset.
 
 ### Libraries Used
+
 ```{r}
 library(tidyverse)
 library(lubridate)
@@ -21,11 +23,13 @@ library(plotly)
 ```
 
 ### Data Importation
+
 ```{r}
 former_countries <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-12/former_countries.csv')
 ```
 
 ## Data Preparation
+
 ```{r}
 former <- former_countries |> 
   mutate(date = case_when(
@@ -42,6 +46,7 @@ former <- former_countries |>
 ```
 
 ## Data Vizualization
+
 ```{r}
 # Define custom colors for each decade
 decade_colors <- c("70" = "#1f3a6c", 
@@ -62,9 +67,9 @@ p <- former |>
   geom_point(aes(text = name, color = decade), size = 4) +
   scale_color_manual(values = decade_colors) +
   theme_minimal() +
-  labs(title = "Interactive Lollipop Plot", 
+  labs(title = "Timeline of Country Code Termination From 1970 - 2010", 
        x = "Country Code", 
-       y = "Date",
+       y = "Date of Usage Termination",
        color = "Decade") +
   coord_flip()
 
