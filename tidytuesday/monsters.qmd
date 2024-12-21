@@ -10,9 +10,7 @@ execute:
   message: false
 ---
 
-![](horror.jpg) Photo by <a href="https://unsplash.com/es/@mwrona?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">m wrona</a> on <a href="https://unsplash.com/es/fotos/casa-de-madera-gris-cubierta-por-la-niebla-pCgxm-HDMNs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-
-***Under the mentorship of Professor Jo Hardin [\@hardin47](https://github.com/hardin47) at Pomona College.***
+This week we're exploring "monster" movies: movies with "monster" in their title. The data this week comes from the [Internet Movie Database](https://developer.imdb.com/non-commercial-datasets/). Thank you to [Jon Harmon](https://github.com/jonthegeek) for curating this week's dataset.
 
 ### Libraries
 
