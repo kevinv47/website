@@ -23,6 +23,7 @@ library(rpart.plot)
 library(tidyverse)
 ```
 
+### Data 
 This Tidytuesday dataset was curated by [Jon Harmon](https://github.com/jonthegeek) and comes from [IMD](https://developer.imdb.com/non-commercial-datasets/)
 
 ```{r}
@@ -34,6 +35,8 @@ monster_movies <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
   pivot_wider(names_from = genres, values_from = value, values_fill = 0)
 ```
 
+## Data Manipulation
+Getting the data ready for plotting.
 ```{r}
 plot_data <- monster_movies |>
     mutate(title_type = str_to_title(title_type)) |> 
@@ -88,7 +91,7 @@ movie_wflow_lm |>
   fit(data = monster_model) |> 
   tidy()
 ```
-
+Now we will plot.
 ```{r}
 # Fit the model and predict
 movie_wflow_lm_fit <- movie_wflow_lm |> 
