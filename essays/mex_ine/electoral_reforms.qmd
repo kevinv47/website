@@ -79,7 +79,7 @@ The reforms ultimately did not pass, but they will undoubtedly be influential. T
 
 # Figures
 
-[Link to information on graph creation](ine_graphics.qmd)
+[Link to information on graph creation](ine_graphs.qmd)
 
 **Figure 1.**
 
@@ -243,6 +243,7 @@ ggplotly(media_plot, tooltip = "text") |>
                                                          family = "Arial"),
                       bordercolor = "black"))
 ```
+
 <small>*Note.* The approval of the president controlling the media in times of difficulties has been going up over time. Each vertical line represents a new presidential term. The green line represents AMLO’s 2018 election victory (LAPOP 2020).</small>
 
 # Tables
@@ -257,7 +258,6 @@ ggplotly(media_plot, tooltip = "text") |>
 | **Total**           | 2,571                    | 396 (-2,175)            |
 
 <small> *Note.* The proposed dramatic reductions in staff will significantly decrease the resource capacity that the INE (Instituto Nacional de Estadística or National Institute of Statistics) will have in a clear and dramatic manner (“Plan B and the Future of Democracy in Mexico \| CSIS Events” 2023).</small>
-
 
 # Works Cited
 
