@@ -9,6 +9,8 @@ execute:
   warning: false
   message: false
   error: false
+  echo: false
+  eval: true
 ---
 
 The international order appears to revolve around a 'traditional' state-based system. States seem to be autonomous political actors who make decisions for their clearly demarcated territory. However, this 'traditional' Westphalian model of state systems has never truly existed, and its facade is deteriorating. The erosion of the traditional state system is primarily due to globalizing forces, which have complicated the straightforward conception of the state. To understand this erosion, three aspects of globalization must be considered: political influences, institutional influences, and influences from non-state actors.
@@ -43,7 +45,40 @@ Efforts at regional integration through the establishment of supranational insti
 
 Previous examples have primarily centered on how states and institutions employ political tools to exert influence on the policies of other states. Nonetheless, non-state actors also influence states to the extent that they are no longer autonomously in decision-making but, instead, are subject to external influences. These non-state actors encompass lobbyists and multinational corporations. Lobbyists employ significant sums of money to advocate for and influence policy-making in state institutions, impeding genuine state autonomy. In the US, more than 4.09 billion dollars are used by organizations to lobby the government (Total Lobbying Spending U.S. 2022, 2023). As illustrated in Figure 1, the increasing prevalence of lobbying indicates that states are becoming less autonomous actors and more conduits for external influence. States no longer make autonomous decisions; rather, they serve as vehicles for lobbyists to enact their agencies.
 
-**Figure 1** *Total lobbying spending in the United States from 1998 to 2023 (in billion U.S. dollars)* ![](lobbying.png) <small>*Notes.* There has been a consistent rise in US lobbying expenditure (Total Lobbying Spending U.S. 2022, 2023).</small>
+**Figure 1** *Total lobbying spending in the United States from 1998 to 2023 (in billion U.S. dollars)*
+
+```{r}
+#| height: 75
+#| width: 150
+library(tidyverse)
+library(readxl)
+library(janitor)
+
+read_excel("lobby.xlsx", sheet = "Data") |> 
+  slice(-c(1 , 2)) |> 
+  clean_names() |> 
+  rename(year = u_s_total_lobbying_spending_1998_2023,
+         value = x2) |> 
+  mutate(year = as.numeric(year),
+         value = as.numeric(value)) |> 
+  ggplot(aes(year, value)) +
+  geom_point(size = 2, color = "blue") +
+  geom_line(size =1, color = "blue") +
+  geom_text(aes(label = round(value, digit = 1)), 
+          vjust = 1.1, 
+          hjust = 1.5, 
+          nudge_x = 0.5, 
+          nudge_y = 0.2, 
+          size = 2.5,
+          color = "blue") +
+  theme_light() +
+  labs(y = "Spending in billions of USD",
+       x = "Years")
+
+```
+
+
+<small>*Notes.* There has been a consistent rise in US lobbying expenditure (Total Lobbying Spending U.S. 2022, 2023).</small>
 
 Multinational corporations, especially those based in great powers, have had a strong influence on the political processes of other states. One example of this interference was the banana companies in Central American countries. At its peak, the United Fruit Company owned 42% of Guatemalan land (RS#01: Background on the Guatemalan Coup of 1954, n.d.). The Guatemalan government did not have Westphalian control of this territory, when multinational corporations had such expansive ownership of the land.
 
