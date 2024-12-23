@@ -1,0 +1,198 @@
+---
+subtitle: "Behind AMLO’s Electoral Reforms"
+title: "Graph Creation"
+date: "Dec 13, 2023"
+author: "Kevin Valdivia"
+format: html
+toc: true # Table of contents
+execute: 
+  warning: false
+  message: false
+  error: false
+---
+
+The data, collected in 2020 by LAPOP, [Latin American Public Opinion Project](https://www.latinobarometro.org/latOnline.jsp), includes insights on public perceptions regarding presidential control over the media, trust in Mexico's National Electoral Institution, and confidence in the management of presidential governance over time. These key survey topics provide a deeper understanding of shifting attitudes and political dynamics in Mexico, which I used in my essay entitled: *[Behind AMLO’s Electoral Reforms: Ideology, Power, and MORENA’s Future](electoral_reforms.qmd)*.
+
+## Data Cleaning
+
+Loading necessary libraries for data cleaning.
+```{r}
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(plotly)
+```
+
+
+Function to clean the LAPOP data.
+```{r}
+lapop_cleaner <- function(file_path, object_name) {
+  read_excel(file_path) |> 
+    slice(-1:-3) |>    # Remove first 3 rows
+    distinct() |>      # Remove duplicates
+    row_to_names(row_number = 1) |>  # Use the first row as column names
+    clean_names() |>    # Clean column names to make them unique and valid
+    select(-2) |>       # Remove the second column
+    rename(answer = 1) |>   # Rename the first column to 'answer'
+    filter(!(answer %in% c("País -   México", 	
+                           "País -  Total", 
+                            "(N)"))) |> 
+    pivot_longer(cols = -answer,
+                 names_to = "year",
+                 values_to = "proportion") |> 
+    mutate(year = as.numeric(str_extract(year, "\\d{4}"))) |> 
+    mutate(proportion = case_when(proportion == "-" ~ 0,
+                                  TRUE ~ as.numeric(proportion)))
+}
+```
+
+Before cleaning the data looked like this:
+```{r}
+head(read_excel("control_media.xlsx"))
+```
+
+We now have the data almost ready for plotting. Below is the same data, but with a tidy format.
+```{r}
+ine_con <- lapop_cleaner(
+  "ine_confidence.xlsx")
+control_media <- lapop_cleaner(
+  "control_media.xlsx")
+prez_approval <- lapop_cleaner(
+  "prez_approval.xlsx")
+
+head(control_media)
+```
+## Graphing
+
+Now we will make some alterations so that `percent` shows the percent of individuals who only approve (or strongly approve) of the subject in question. Then the pipe will be followed by the ggplot.
+
+First graph I will make is the presidencial approval graph. 
+```{r}
+prez_plot <- prez_approval |> 
+  filter(answer == "Aprueba") |> # Aprueba is spanish for approve
+  mutate(percent = proportion * 100,
+         president = case_when(year < 2006 ~ "Vicente Fox",
+                               year >= 2006 & year < 2012 ~ "Felipe Calderón",
+                               year >= 2012 & year < 2018 ~ "Enrique Peña Nieto",
+                               TRUE ~ "Andrés Manuel López Obrador"),
+         party = case_when(president %in% c("Felipe Calderón", "Vicente Fox") ~ "PAN",
+                           president == "Enrique Peña Nieto" ~ "PRI",
+                           TRUE ~ "MORENA")) |> 
+  ggplot(aes(year, percent,
+             text = paste(paste("Year:", year, "<br>"),
+                          paste0("Percent: ", round(percent, 2), "%<br>"),
+                          "President:", president, "<br>",
+                          "Party:", party))) + # Add hover info)) +
+  geom_vline(xintercept = c(2012, 2006), 
+             color = "#525252") +
+  geom_vline(xintercept = 2018, 
+             color = "maroon") +
+  geom_point(aes(year, percent)) +
+  geom_line(aes(group = 1)) +
+  scale_x_continuous(breaks = seq(2002, 2020, 
+                                  by = 1)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust = 1)) +
+  labs(x = "Years",
+       y = "Percent Approval",
+       title = "Confidence in the Management of The Presidents Government Overtime")
+
+ggplotly(prez_plot, tooltip = "text") |> 
+  layout(
+    hoverlabel = list(bgcolor = "#bdbdbd", font = list(color = "black",
+                                                         size = 12,
+                                                         family = "Arial"),
+                      bordercolor = "black"))
+```
+
+Now I will graph the graph about confidence in the INE. 
+```{r}
+ine_plot <- ine_con |> 
+  filter(answer %in% c("Mucha confianza", "Algo de confianza")) |> # In Spanish "Mucha confianza" means very confidence and "Algo de confianza" means somewhat confident
+  group_by(year) |> 
+  summarize(proportion = sum(proportion)) |> 
+  mutate(percent = proportion * 100,
+         president = case_when(year < 2006 ~ "Vicente Fox",
+                               year >= 2006 & year < 2012 ~ "Felipe Calderón",
+                               year >= 2012 & year < 2018 ~ "Enrique Peña Nieto",
+                               TRUE ~ "Andrés Manuel López Obrador"),
+         party = case_when(president %in% c("Felipe Calderón", "Vicente Fox") ~ "PAN",
+                           president == "Enrique Peña Nieto" ~ "PRI",
+                           TRUE ~ "MORENA")) |> 
+  ggplot(aes(year, percent,
+             text = paste(paste("Year:", year, "<br>"),
+                          paste0("Percent: ", round(percent, 2), "%<br>"),
+                          "President:", president, "<br>",
+                          "Party:", party))) + # Add hover info)) +
+  geom_vline(xintercept = c(2012, 2006), 
+             color = "#525252") +
+  geom_vline(xintercept = 2018, 
+             color = "maroon") +
+  geom_point(aes(year, percent)) +
+  geom_line(aes(group = 1)) +
+  scale_x_continuous(breaks = seq(2006, 2020, 
+                                  by = 1)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust = 1)) +
+  labs(x = "Years",
+       y = "Percent With Confidence",
+       title = "Confidence in the National Electoral Institution Overtime")
+
+ggplotly(ine_plot, tooltip = "text") |> 
+  layout(
+    hoverlabel = list(bgcolor = "#bdbdbd", font = list(color = "black",
+                                                         size = 12,
+                                                         family = "Arial"),
+                      bordercolor = "black"))
+```
+
+Now I will graph the graph about presidents control over the media. 
+
+```{r}
+media_plot <- control_media |> 
+  filter(answer %in% c("Muy de acuerdo", "De acuerdo")) |> # In Spanish "Muy de acuerdo" means strongly agree and "De acuerdo" means agree
+  group_by(year) |> 
+  summarize(proportion = sum(proportion)) |> 
+  mutate(percent = proportion * 100,
+         president = case_when(year < 2006 ~ "Vicente Fox",
+                               year >= 2006 & year < 2012 ~ "Felipe Calderón",
+                               year >= 2012 & year < 2018 ~ "Enrique Peña Nieto",
+                               TRUE ~ "Andrés Manuel López Obrador"),
+         party = case_when(president %in% c("Felipe Calderón", "Vicente Fox") ~ "PAN",
+                           president == "Enrique Peña Nieto" ~ "PRI",
+                           TRUE ~ "MORENA")) |> 
+  ggplot(aes(year, percent,
+             text = paste(paste("Year:", year, "<br>"),
+                          paste0("Percent: ", round(percent, 2), "%<br>"),
+                          "President:", president, "<br>",
+                          "Party:", party))) + # Add hover info)) +
+  geom_vline(xintercept = c(2012, 2006), 
+             color = "#525252") +
+  geom_vline(xintercept = 2018, 
+             color = "maroon") +
+  geom_point(aes(year, percent)) +
+  geom_line(aes(group = 1)) +
+  scale_x_continuous(breaks = seq(2002, 2020, 
+                                  by = 1)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust = 1)) +
+  labs(x = "Years",
+       y = "Percent With Approval",
+       title = "Approval that 'In case of difficulties it is right for the president to control the media'")
+
+ggplotly(media_plot, tooltip = "text") |> 
+  layout(
+    hoverlabel = list(bgcolor = "#bdbdbd", font = list(color = "black",
+                                                         size = 12,
+                                                         family = "Arial"),
+                      bordercolor = "black"))
+```
+
+
+

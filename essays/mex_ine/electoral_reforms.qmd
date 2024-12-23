@@ -9,6 +9,8 @@ execute:
   warning: false
   message: false
   error: false
+  echo: false
+  eval: true
 ---
 
 # Executive Summary
@@ -75,6 +77,188 @@ Finally, there are many other parts of the reforms that would implicitly allow f
 
 The reforms ultimately did not pass, but they will undoubtedly be influential. They have set a precedent for the ability of the executive to introduce sweeping reforms with a lack of legislative debate. This has also shown that by framing these controversial laws to the palate of the majority of the electorate, passing these reforms is plausible. Democratic backsliding because of the reforms is undeniable. Now, it leads to the question of whether taking up the torch for a Plan C could come in the form of the MORENA presidential candidate Claudia Sheinbaum. The resilience of Mexico’s democratic foundations faces a pivotal test in the coming years, as the aftermath of these failed reforms could prompt a critical reassessment of the nation’s commitment to upholding democratic norms and principles amidst mounting political challenges.
 
+# Figures
+
+[Link to information on graph creation](ine_graphics.qmd)
+
+**Figure 1.**
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(plotly)
+lapop_cleaner <- function(file_path, object_name) {
+  read_excel(file_path) |> 
+    slice(-1:-3) |>    # Remove first 3 rows
+    distinct() |>      # Remove duplicates
+    row_to_names(row_number = 1) |>  # Use the first row as column names
+    clean_names() |>    # Clean column names to make them unique and valid
+    select(-2) |>       # Remove the second column
+    rename(answer = 1) |>   # Rename the first column to 'answer'
+    filter(!(answer %in% c("País -   México", 	
+                           "País -  Total", 
+                            "(N)"))) |> 
+    pivot_longer(cols = -answer,
+                 names_to = "year",
+                 values_to = "proportion") |> 
+    mutate(year = as.numeric(str_extract(year, "\\d{4}"))) |> 
+    mutate(proportion = case_when(proportion == "-" ~ 0,
+                                  TRUE ~ as.numeric(proportion)))
+}
+ine_con <- lapop_cleaner(
+  "ine_confidence.xlsx")
+control_media <- lapop_cleaner(
+  "control_media.xlsx")
+prez_approval <- lapop_cleaner(
+  "prez_approval.xlsx")
+
+prez_plot <- prez_approval |> 
+  filter(answer == "Aprueba") |> # Aprueba is spanish for approve
+  mutate(percent = proportion * 100,
+         president = case_when(year < 2006 ~ "Vicente Fox",
+                               year >= 2006 & year < 2012 ~ "Felipe Calderón",
+                               year >= 2012 & year < 2018 ~ "Enrique Peña Nieto",
+                               TRUE ~ "Andrés Manuel López Obrador"),
+         party = case_when(president %in% c("Felipe Calderón", "Vicente Fox") ~ "PAN",
+                           president == "Enrique Peña Nieto" ~ "PRI",
+                           TRUE ~ "MORENA")) |> 
+  ggplot(aes(year, percent,
+             text = paste(paste("Year:", year, "<br>"),
+                          paste0("Percent: ", round(percent, 2), "%<br>"),
+                          "President:", president, "<br>",
+                          "Party:", party))) + # Add hover info)) +
+  geom_vline(xintercept = c(2012, 2006), 
+             color = "#525252") +
+  geom_vline(xintercept = 2018, 
+             color = "maroon") +
+  geom_point(aes(year, percent)) +
+  geom_line(aes(group = 1)) +
+  scale_x_continuous(breaks = seq(2002, 2020, 
+                                  by = 1)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust = 1)) +
+  labs(x = "Years",
+       y = "Percent Approval",
+       title = "Confidence in the Management of The Presidents Government Overtime")
+
+ggplotly(prez_plot, tooltip = "text") |> 
+  layout(
+    hoverlabel = list(bgcolor = "#bdbdbd", font = list(color = "black",
+                                                         size = 12,
+                                                         family = "Arial"),
+                      bordercolor = "black"))
+```
+
+<small>*Note.* Each vertical line represents a new presidential term. The green line represents AMLO’s 2018 election victory (LAPOP 2020).</small>
+
+**Figure 2.**
+
+```{r}
+ine_plot <- ine_con |> 
+  filter(answer %in% c("Mucha confianza", "Algo de confianza")) |> # In Spanish "Mucha confianza" means very confidence and "Algo de confianza" means somewhat confident
+  group_by(year) |> 
+  summarize(proportion = sum(proportion)) |> 
+  mutate(percent = proportion * 100,
+         president = case_when(year < 2006 ~ "Vicente Fox",
+                               year >= 2006 & year < 2012 ~ "Felipe Calderón",
+                               year >= 2012 & year < 2018 ~ "Enrique Peña Nieto",
+                               TRUE ~ "Andrés Manuel López Obrador"),
+         party = case_when(president %in% c("Felipe Calderón", "Vicente Fox") ~ "PAN",
+                           president == "Enrique Peña Nieto" ~ "PRI",
+                           TRUE ~ "MORENA")) |> 
+  ggplot(aes(year, percent,
+             text = paste(paste("Year:", year, "<br>"),
+                          paste0("Percent: ", round(percent, 2), "%<br>"),
+                          "President:", president, "<br>",
+                          "Party:", party))) + # Add hover info)) +
+  geom_vline(xintercept = c(2012, 2006), 
+             color = "#525252") +
+  geom_vline(xintercept = 2018, 
+             color = "maroon") +
+  geom_point(aes(year, percent)) +
+  geom_line(aes(group = 1)) +
+  scale_x_continuous(breaks = seq(2006, 2020, 
+                                  by = 1)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust = 1)) +
+  labs(x = "Years",
+       y = "Percent With Confidence",
+       title = "Confidence in the National Electoral Institution Overtime")
+
+ggplotly(ine_plot, tooltip = "text") |> 
+  layout(
+    hoverlabel = list(bgcolor = "#bdbdbd", font = list(color = "black",
+                                                         size = 12,
+                                                         family = "Arial"),
+                      bordercolor = "black"))
+```
+
+<small>*Note.* The graph shows that confidence in the INE overtime has been decreasing. Each vertical line represents a new presidential term. The green line represents AMLO’s 2018 election victory (LAPOP 2020).</small>
+
+**Figure 3.**
+
+```{r}
+media_plot <- control_media |> 
+  filter(answer %in% c("Muy de acuerdo", "De acuerdo")) |> # In Spanish "Muy de acuerdo" means strongly agree and "De acuerdo" means agree
+  group_by(year) |> 
+  summarize(proportion = sum(proportion)) |> 
+  mutate(percent = proportion * 100,
+         president = case_when(year < 2006 ~ "Vicente Fox",
+                               year >= 2006 & year < 2012 ~ "Felipe Calderón",
+                               year >= 2012 & year < 2018 ~ "Enrique Peña Nieto",
+                               TRUE ~ "Andrés Manuel López Obrador"),
+         party = case_when(president %in% c("Felipe Calderón", "Vicente Fox") ~ "PAN",
+                           president == "Enrique Peña Nieto" ~ "PRI",
+                           TRUE ~ "MORENA")) |> 
+  ggplot(aes(year, percent,
+             text = paste(paste("Year:", year, "<br>"),
+                          paste0("Percent: ", round(percent, 2), "%<br>"),
+                          "President:", president, "<br>",
+                          "Party:", party))) + # Add hover info)) +
+  geom_vline(xintercept = c(2012, 2006), 
+             color = "#525252") +
+  geom_vline(xintercept = 2018, 
+             color = "maroon") +
+  geom_point(aes(year, percent)) +
+  geom_line(aes(group = 1)) +
+  scale_x_continuous(breaks = seq(2002, 2020, 
+                                  by = 1)) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust = 1)) +
+  labs(x = "Years",
+       y = "Percent With Approval",
+       title = "Approval that 'In case of difficulties it is right for the president to control the media'")
+
+ggplotly(media_plot, tooltip = "text") |> 
+  layout(
+    hoverlabel = list(bgcolor = "#bdbdbd", font = list(color = "black",
+                                                         size = 12,
+                                                         family = "Arial"),
+                      bordercolor = "black"))
+```
+<small>*Note.* The approval of the president controlling the media in times of difficulties has been going up over time. Each vertical line represents a new presidential term. The green line represents AMLO’s 2018 election victory (LAPOP 2020).</small>
+
+# Tables
+
+**Table 1.** *Reductions in the Staff of Servicio Profesional Electoral Nacional (SPEN)*
+
+| **Part of INE**     | **Staff Before Reforms** | **Staff After Reforms** |
+|---------------------|--------------------------|-------------------------|
+| **Headquarters**    | 413                      | Unknown                 |
+| **Local Boards**    | 358                      | 96 (-262)               |
+| **District Boards** | 1,800                    | 300 (-1,500)            |
+| **Total**           | 2,571                    | 396 (-2,175)            |
+
+<small> *Note.* The proposed dramatic reductions in staff will significantly decrease the resource capacity that the INE (Instituto Nacional de Estadística or National Institute of Statistics) will have in a clear and dramatic manner (“Plan B and the Future of Democracy in Mexico \| CSIS Events” 2023).</small>
+
+
 # Works Cited
 
 -   AMLO. 2022. “Presidente presenta iniciativa de reforma electoral; incluye creación del INEC y reducción de gasto a partidos políticos.” April 28, 2022. [Link](https://lopezobrador.org.mx/2022/04/28/presidente-presenta-iniciativa-de-reforma-electoral-incluye-creacion-del-inec-y-reduccion-de-gasto-a-partidos-politicos/).
@@ -130,36 +314,3 @@ The reforms ultimately did not pass, but they will undoubtedly be influential. T
 -   Vallejo, Guadalupe. 2022. “La transferencia de votos, un tema inconstitucional que frenó la reforma de AMLO.” *ADNPolítico*. December 16, 2022. [Link](https://politica.expansion.mx/mexico/2022/12/16/clausula-de-vida-eterna-transferencia-de-votos-que-es).
 
 -   Villanueva Ulfgard, Rebecka. 2023. “López Obrador’s Hyper-Presidentialism: Populism and Autocratic Legalism Defying the Supreme Court and the National Electoral Institute.” *The International Journal of Human Rights* 27 (8): 1267–91. \[Link\](https://doi.org/10.1080/136
-
-# Figures
-
-**Figure 1.**
-
-![](confidence_prez.png)
-
-<small>*Note.* Each vertical line represents a new presidential term. The green line represents AMLO’s 2018 election victory (LAPOP 2020).</small>
-
-**Figure 2.**
-
-![](confidence_ine.png)
-
-<small>*Note.* The graph shows that confidence in the INE overtime has been decreasing. Each vertical line represents a new presidential term. The green line represents AMLO’s 2018 election victory (LAPOP 2020).</small>
-
-**Figure 3.**
-
-![](control_media.png)
-
-<small>*Note.* The approval of the president controlling the media in times of difficulties has been going up over time. Each vertical line represents a new presidential term. The green line represents AMLO’s 2018 election victory (LAPOP 2020).</small>
-
-# Tables
-
-**Table 1.** *Reductions in the Staff of Servicio Profesional Electoral Nacional (SPEN)*
-
-| **Part of INE**     | **Staff Before Reforms** | **Staff After Reforms** |
-|---------------------|--------------------------|-------------------------|
-| **Headquarters**    | 413                      | Unknown                 |
-| **Local Boards**    | 358                      | 96 (-262)               |
-| **District Boards** | 1,800                    | 300 (-1,500)            |
-| **Total**           | 2,571                    | 396 (-2,175)            |
-
-<small> *Note.* The proposed dramatic reductions in staff will significantly decrease the resource capacity that the INE (Instituto Nacional de Estadística or National Institute of Statistics) will have in a clear and dramatic manner (“Plan B and the Future of Democracy in Mexico \| CSIS Events” 2023).</small>
