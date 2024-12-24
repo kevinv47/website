@@ -9,7 +9,12 @@ execute:
   warning: false
   message: false
   error: false
+  echo: false
+  eval: true
 ---
+```{r}
+library(tidyverse)
+```
 
 # Introduction
 
@@ -19,7 +24,9 @@ Colonialism compelled the Global South to adopt political and economic structure
 
 The CFA franc is a monetary union in Francophone Africa managed by France. It was originally introduced as the "Franc of the French Colonies in Africa," but is now referred to as the "African Financial Community." The CFA franc is divided into two monetary unions: the West African Economic and Monetary Union (UEMOA) and the Central African Economic and Monetary Community (CEMAC). UEMOA comprises eight West African countries, including Benin, Burkina Faso, Côte d'Ivoire, Guinea-Bissau, Mali, Niger, Senegal, and Togo, while CEMAC comprises six Central African countries, including Cameroon, Central African Republic, Chad, Republic of Congo, Equatorial Guinea, and Gabon (see Figure 1). Understanding the CFA franc is necessary to understand how France has maintained its influence over African countries through an integrated system of monetary unions that remain under its control.
 
-**Figure 1.** *Francophone Africa's participation in trade blocs* ![](map.png) <small>*Note.* Adapted from Dakar & Kampala, "Making Sense of West Africa’s New Currency", The Economist, 2020.</small>
+**Figure 1.** *Francophone Africa's participation in trade blocs* ![](map.png) 
+
+<small>*Note.* Adapted from Dakar & Kampala, "Making Sense of West Africa’s New Currency", The Economist, 2020.</small>
 
 Pigeaud et al. (2020) demonstrate how the concept of the CFA franc can be traced back to the franc zone, which was established in 1939 to centralize the coordination of economic operations and establish free trade within the French empire. The CFA zone was created in Africa in 1945 to institutionalize these policies, resulting in the introduction of the CFA franc, pegged to the French franc, with currency policy administered in Paris. This system, made to serve the "colonial pact", incentivized cheaper trade with France and disincentivized trade with other countries (p.14). The CFA currencies are freely convertible to the Euro but have restrictions on convertibility with other currencies. In practice, the French Treasury generally regulates conversions by initially exchanging currencies for the Euro, which can subsequently be traded for CFA franc currencies. This results in increased demand for and strengthening of the Euro. Additionally, the central banks in the CFA zone are required to deposit foreign exchange reserves in the French Treasury, a requirement that has changed over time. Originally, African banks had to deposit all foreign exchange reserves except what was needed for daily operations and other obligations, but this has decreased over the years to 50% of foreign exchange reserves (p.22). The French economic backing has led to low inflation that is well below Africa's average at 3% (p.33). However, in exchange for this low inflation rate, the region has experienced substantial economic stagnation and lower GDP growth in comparison to other African economies (see Figures 2 and 3).
 
@@ -29,9 +36,91 @@ Pigeaud et al. (2020) demonstrate how the concept of the CFA franc can be traced
 
 The economies of Francophone Africa and other colonial regions were designed to export extractable goods to more developed countries, discouraging intraregional trade. This has resulted in low levels of intraregional trade in the present day, as shown in Figures 4 and 5. However, the lack of intraregional trade in Francophone Africa reduces the benefits of regional integration, which undermines the motivation to pursue integration models designed to facilitate such trade. These regions become 'primary associations' that group, "a series of underdeveloped countries around a single economically developed country" (Garcia, 1961, p.23-30). Therefore, there is less incentive for Francophone Africa to pursue regional integration. Even long after France’s formal control, “the African countries remain largely producers of unprocessed raw materials and trade more with Europe than with each other” (Pigeaud & Sylla, 2020, p.105). In other words, colonial history hinders the necessity for economic integration by removing incentives to boost trade within the region.
 
-**Figure 4.** *Share of intra-REC (regional economic community) of total trade (in percent cent)* ![](trade.png) <small>*Note.* Figure shows intra-regional trade is low in Africa, unlike other regional economic communities. (adapted from Zafar "CFA franc zone: Economic development and the post-COVID recovery", *Brookings Institute*, 2021).</small>
+**Figure 4.** *Share of intra-REC (regional economic community) of total trade (in percent cent)* 
 
-**Figure 5.** *Share of intra-regional GVC (global value chains) flows in total GVC participation* ![](gvc.png) <small>*Note.* Figure shows the region's domestic economic activity in relation to its international economic activity. (adapted from "Key Statistics and Trends in Regional Trade in Africa," UNCTADStat, 2019, p. 24).</small>
+```{r}
+library(tidyverse)
+# Recreating the dataset
+rec_data <- data.frame(
+  region = c("Africa", "Africa", 
+             "European Union", "European Union", 
+             "NAFTA", "NAFTA", 
+             "ASEAN", "ASEAN", 
+             "MERCOSUR", "MERCOSUR"),
+  # numbers = c(56, 56, 
+  #             28, 28, 
+  #             3, 3, 
+  #             10, 10, 
+  #             5, 5),
+  category = c("Intra region", "Rest of the World", 
+               "Intra region", "Rest of the World", 
+               "Intra region", "Rest of the World", 
+               "Intra region", "Rest of the World", 
+               "Intra region", "Rest of the World"),
+  percent = c(15.4, 84.6, 
+              61.7, 38.3, 
+              40.3, 59.7, 
+              23.3, 76.7, 
+              14.5, 85.5))
+
+# Plot
+rec_data |> 
+  mutate(category = fct_rev(category)) |> 
+  ggplot() +
+  geom_col(aes(x = region, 
+             y = percent, 
+             fill = category),
+           color = "white") +
+  geom_text(aes(x = region,
+                label = str_c(percent, "%"), 
+                y = ifelse(category == "Intra region", 7.5, 92)),
+            color = "white",
+            size = 3.9,
+            fontface = "bold") +
+  scale_fill_manual(values = c("Intra region" = "#789DBC",
+                               "Rest of the World" = "#FA4032")) +
+  theme_minimal() +
+  labs(y = "Percent",
+       fill = "",
+       x = "") +
+  coord_flip()
+```
+
+*Note.* Figure shows intra-regional trade is low in Africa, unlike other regional economic communities. (adapted from Zafar "CFA franc zone: Economic development and the post-COVID recovery", *Brookings Institute*, 2021).</small>
+
+**Figure 5.** *Share of intra-regional GVC (global value chains) flows in total GVC participation* 
+
+```{r}
+values <- c(61, 57, 42, 22, 11, 6)
+regions <- c("North & Central America",
+             "European Union",
+             "East & South-East Asia",
+             "Transition Economies",
+             "Latin America & Caribbean",
+             "Africa")
+
+gvc_flows <- data.frame(values = values, regions = regions)
+
+gvc_flows |> 
+  mutate(values = as.numeric(values),
+  regions = fct_reorder(regions, values, .desc = FALSE)) |> 
+  ggplot() +
+  geom_col(aes(x = regions, y = values), 
+               fill = "#789DBC") +
+  geom_text(aes(x = regions, 
+                y = values,
+                label = values),
+            color = "white",
+            hjust = 1.5, 
+            fontface = "bold",
+            size = 4.5) +
+  labs(x = "",
+       y = "Percent") +
+  theme_minimal() +
+  coord_flip()
+```
+
+*Note.* Figure shows the region's domestic economic activity in relation to its international economic activity. (adapted from "Key Statistics and Trends in Regional Trade in Africa," UNCTADStat, 2019, p. 24).</small>
 
 ## The CFA as a Framework for Integration?
 
