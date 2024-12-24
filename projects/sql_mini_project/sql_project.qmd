@@ -5,7 +5,7 @@ date: "Nov 26, 2024"
 author: "Kevin Valdivia"
 bibliography: sql.bib
 format: html
-toc: false # Table of contents
+toc: true # Table of contents
 execute: 
   warning: false
   message: false
