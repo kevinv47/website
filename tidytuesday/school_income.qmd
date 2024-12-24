@@ -12,7 +12,7 @@ execute:
 
 The data explores economic diversity and student outcomes. The dataset this week comes from [Opportunity Insights](https://opportunityinsights.org/data/) and is described in its [codebook.](https://opportunityinsights.org/wp-content/uploads/2023/07/CollegeAdmissions_Codebook.pdf)
 
-In this tidytuesday we will make an interactive plotly graph, that has select to highlight capability, between the variables `attend` and `par_income_bin` faceted by whether the school is public or private. 
+In this tidytuesday we will make an interactive plotly graph, that has select to highlight capability, between the variables `attend` and `par_income_bin` faceted by whether the school is public or private.
 
 ### Loading relevant libraries
 
@@ -62,20 +62,19 @@ plot_setup <- data_w_crosstalk |>
        title = "Attend Variable by Parental Income Bin for Elite Schools")
 ```
 
-# Plotly 
+# Plotly
 
-Now we can use the plotly to make the ggplot saved interactive 
+Now we can use the plotly to make the ggplot saved interactive
 
 ```{r}
 plotly_setup <- plotly::ggplotly(plot_setup, tooltip = "text")
 highlight(plotly_setup, on = "plotly_hover")
 ```
+
 *When hovering over the lines, we can observe the relationship between parental income percentile and attendance for each of the 139 institutions in the study. Private schools generally increase at the highest income bins, while most public schools decrease for the highest incomes.*
 
-More Information About The Variables: 
+More Information About The Variables:
 
-- `Attend Variable` : Test-score-reweighted absolute attendance rate: Calculated as the fraction of students attending that college among all test-takers within a parent income bin in the Pipeline Analysis Sample.
+-   `Attend Variable` : Test-score-reweighted absolute attendance rate: Calculated as the fraction of students attending that college among all test-takers within a parent income bin in the Pipeline Analysis Sample.
 
-- `Parental Income Bin Variable` : Parent household income group based on percentile in the income distribution.
-
-
+-   `Parental Income Bin Variable` : Parent household income group based on percentile in the income distribution.

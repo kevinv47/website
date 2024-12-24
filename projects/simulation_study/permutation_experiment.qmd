@@ -10,13 +10,9 @@ execute:
   message: false
 ---
 
-![](college_photo.jpg) Photo by [Ryan Jacobson](https://unsplash.com/es/@lndtxphoto?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/es/fotos/bicicleta-negra-estacionada-frente-al-edificio-cXUOQWdRV4I?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
+**The Experiment**
 
-[Link](presentation_permutation_presentation.qmd) to Slides Explaining Experiment
-
-# Experiment
-
-I plan to simulate the likelihood of getting my preferred room in a room draw. There are three types of rooms: red, blue, and green. My preference for these rooms is in that order, with 60% of people preferring red rooms, 30% preferring blue rooms, and 10% preferring green rooms. Each room type has a specific occupancy: there are 30 red rooms, 30 blue rooms, and 40 green rooms. In total, there are 100 students in this experiment. My goal is to determine the probability of me ending up with each type of housing. The order of turns in the room draw is assigned randomly. 
+I plan to simulate the likelihood of getting my preferred room in a room draw. There are three types of rooms: red, blue, and green. My preference for these rooms is in that order, with 60% of people preferring red rooms, 30% preferring blue rooms, and 10% preferring green rooms. Each room type has a specific occupancy: there are 30 red rooms, 30 blue rooms, and 40 green rooms. In total, there are 100 students in this experiment. My goal is to determine the probability of me ending up with each type of housing. The order of turns in the room draw is assigned randomly.
 
 ### Library
 
@@ -69,15 +65,20 @@ room_assignment <- function(pref_order, room_occ, r_rooms, b_rooms, g_rooms) {
 
 ```{r}
 my_room <- function(lottery_num, pref_probs, room_occ) {
+  
   r_rooms <- 0
   b_rooms <- 0
   g_rooms <- 0
+  
   my_room_color <- ""
   map(1:lottery_num, function(num) {
-    
+  
+    # If the place in the line we are on is my lottery number than assign me to a room
     if (num == lottery_num) {
       my_room_color <<- room_assignment(c("red", "blue", "green"), room_occ, r_rooms, b_rooms, g_rooms)
     }
+    
+    # If it is not my turn than assign a room to somone else
     
     # Getting Individual Room Prefs
     pref_order <- room_pref(pref_probs[[1]], pref_probs[[2]], pref_probs[[3]])
@@ -111,6 +112,16 @@ calculate_proportion <- function(input_list, value) {
 
 The `room_draws` function will be the one we ultimately work with. It returns a tibble showing the proportion of assigned dorm colors based on the number of draws.
 
+::: {.callout-note title="Important Note about the `room_draws` function`"}
+The `room_draws` function returns a dataset with three variables that we will use for plotting. These variables are:
+
+1. **draws**: This variable represents the number of room draws conducted during the experiment. Essentially, it tracks how many times the room selection process was repeated.
+2. **room**: This variable identifies the type or category of room drawn in each instance.
+3. **proportion**: This variable shows the proportion of times each type of room was drawn relative to the total number of draws.
+
+It is important to note that in every iteration of the experiment, your lottery number is randomly assigned. This randomization affects the outcomes, ensuring variability in the results. The proportions are calculated based on how frequently each room type is drawn across all iterations.
+:::
+
 ```{r}
 room_draws <- function(draws, pref_probs, room_occ) {
 
@@ -141,9 +152,6 @@ set.seed(47)
 pref_probs <- c(0.6, 0.3, 0.1)
 room_occ <- c(30, 30, 40)
 draws <- 300
-
-
-type <- "single"
 
 single_data <- map(1:draws, room_draws, pref_probs, room_occ) |> 
   bind_rows() |> 
@@ -183,4 +191,10 @@ single_data |>
 
 ```
 
-As we increase the number of room draws, the proportions tend to stabilize around certain values. Therefore, we can expect the probability of getting a red room to be around 50%, a green room around 30%, and a blue room around 20%.
+As we increase the number of room draws, the proportions tend to stabilize around certain values. Therefore, we can expect the probability of getting a red room to be around 50%, a green room around 30%, and a blue room around 20%. It is important to note that this graph randomizes my lottery number for each draw.
+
+## Predefined
+Now, we are going to repeat the experiment, but this time we will predefine our lottery number. We will use the same format as before to build the structure of the experiment.
+
+<iframe width="1000" height="700" src=https://kevin-valdivia.shinyapps.io/room_draw/ title="Room Draw Simulation" data-external="1"></iframe>
+

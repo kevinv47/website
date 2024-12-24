@@ -1,6 +1,6 @@
 ---
-title: "SQL Mini Project"
-subtitle: "Using SQL With WAI Database"
+title: "Wideband Acoustic Immittance Data Visualization"
+subtitle: "Graph Replication With SQL"
 date: "Nov 26, 2024"
 author: "Kevin Valdivia"
 format: html

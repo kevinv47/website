@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-ca18fbd2e8790c6568535d603d3b1e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,10 +104,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../css/styles.css">
 <meta property="og:title" content="Campus Room Draw Permutation – Kevin Valdivia">
 <meta property="og:description" content="Understanding the complexity of room draw">
-<meta property="og:image" content="college_photo.jpg">
+<meta property="og:image" content="permutation_experiment_files/figure-html/unnamed-chunk-9-1.png">
 <meta property="og:site_name" content="Kevin Valdivia">
 <meta property="og:locale" content="en_US">
 </head>
@@ -184,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../../tidytuesday/tidytuesday.html"> 
+    <a class="nav-link" href="../../dataviz.html"> 
 <span class="menu-text"><strong>Data Viz Adventures</strong></span></a>
   </li>  
 </ul>
@@ -234,10 +234,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><img src="college_photo.jpg" class="img-fluid"> Photo by <a href="https://unsplash.com/es/@lndtxphoto?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Ryan Jacobson</a> on <a href="https://unsplash.com/es/fotos/bicicleta-negra-estacionada-frente-al-edificio-cXUOQWdRV4I?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
-<p><a href="../../projects/simulation_study/presentation_permutation_presentation.html">Link</a> to Slides Explaining Experiment</p>
-<section id="experiment" class="level1">
-<h1>Experiment</h1>
+<p><strong>The Experiment</strong></p>
 <p>I plan to simulate the likelihood of getting my preferred room in a room draw. There are three types of rooms: red, blue, and green. My preference for these rooms is in that order, with 60% of people preferring red rooms, 30% preferring blue rooms, and 10% preferring green rooms. Each room type has a specific occupancy: there are 30 red rooms, 30 blue rooms, and 40 green rooms. In total, there are 100 students in this experiment. My goal is to determine the probability of me ending up with each type of housing. The order of turns in the room draw is assigned randomly.</p>
 <section id="library" class="level3">
 <h3 class="anchored" data-anchor-id="library">Library</h3>
@@ -282,33 +279,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>my_room</code> simulates a single room draw, where I am assigned to a room. It assigns people to rooms until my turn, then assigns me to my preferred room that is still available. Finally, it returns the room I am assigned to.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>my_room <span class="ot">&lt;-</span> <span class="cf">function</span>(lottery_num, pref_probs, room_occ) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  r_rooms <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  b_rooms <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  g_rooms <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  my_room_color <span class="ot">&lt;-</span> <span class="st">""</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span>lottery_num, <span class="cf">function</span>(num) {</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (num <span class="sc">==</span> lottery_num) {</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      my_room_color <span class="ot">&lt;&lt;-</span> <span class="fu">room_assignment</span>(<span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>), room_occ, r_rooms, b_rooms, g_rooms)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Getting Individual Room Prefs</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    pref_order <span class="ot">&lt;-</span> <span class="fu">room_pref</span>(pref_probs[[<span class="dv">1</span>]], pref_probs[[<span class="dv">2</span>]], pref_probs[[<span class="dv">3</span>]])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  r_rooms <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  b_rooms <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  g_rooms <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  my_room_color <span class="ot">&lt;-</span> <span class="st">""</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span>lottery_num, <span class="cf">function</span>(num) {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If the place in the line we are on is my lottery number than assign me to a room</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (num <span class="sc">==</span> lottery_num) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      my_room_color <span class="ot">&lt;&lt;-</span> <span class="fu">room_assignment</span>(<span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>), room_occ, r_rooms, b_rooms, g_rooms)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    room <span class="ot">&lt;-</span> <span class="fu">room_assignment</span>(pref_order, room_occ, r_rooms, b_rooms, g_rooms)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If it is not my turn than assign a room to somone else</span></span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (room <span class="sc">==</span> <span class="st">"red"</span>) {</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      r_rooms <span class="ot">&lt;&lt;-</span> r_rooms <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (room <span class="sc">==</span> <span class="st">"blue"</span>) {</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      b_rooms <span class="ot">&lt;&lt;-</span> b_rooms <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (room <span class="sc">==</span> <span class="st">"green"</span>) {</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>      g_rooms <span class="ot">&lt;&lt;-</span> g_rooms <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(my_room_color)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Getting Individual Room Prefs</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    pref_order <span class="ot">&lt;-</span> <span class="fu">room_pref</span>(pref_probs[[<span class="dv">1</span>]], pref_probs[[<span class="dv">2</span>]], pref_probs[[<span class="dv">3</span>]])</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    room <span class="ot">&lt;-</span> <span class="fu">room_assignment</span>(pref_order, room_occ, r_rooms, b_rooms, g_rooms)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (room <span class="sc">==</span> <span class="st">"red"</span>) {</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>      r_rooms <span class="ot">&lt;&lt;-</span> r_rooms <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (room <span class="sc">==</span> <span class="st">"blue"</span>) {</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>      b_rooms <span class="ot">&lt;&lt;-</span> b_rooms <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (room <span class="sc">==</span> <span class="st">"green"</span>) {</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>      g_rooms <span class="ot">&lt;&lt;-</span> g_rooms <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(my_room_color)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This function is designed solely to facilitate finding the proportions of a list, making it easier to create a tibble of the proportions for each draw.</p>
 <div class="cell">
@@ -320,6 +322,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>room_draws</code> function will be the one we ultimately work with. It returns a tibble showing the proportion of assigned dorm colors based on the number of draws.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Important Note about the `room_draws` function`">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important Note about the <code>room_draws</code> function`
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>room_draws</code> function returns a dataset with three variables that we will use for plotting. These variables are:</p>
+<ol type="1">
+<li><strong>draws</strong>: This variable represents the number of room draws conducted during the experiment. Essentially, it tracks how many times the room selection process was repeated.</li>
+<li><strong>room</strong>: This variable identifies the type or category of room drawn in each instance.</li>
+<li><strong>proportion</strong>: This variable shows the proportion of times each type of room was drawn relative to the total number of draws.</li>
+</ol>
+<p>It is important to note that in every iteration of the experiment, your lottery number is randomly assigned. This randomization affects the outcomes, ensuring variability in the results. The proportions are calculated based on how frequently each room type is drawn across all iterations.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>room_draws <span class="ot">&lt;-</span> <span class="cf">function</span>(draws, pref_probs, room_occ) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -349,20 +370,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>room_occ <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">40</span>)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> <span class="dv">300</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span> <span class="st">"single"</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>single_data <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span>draws, room_draws, pref_probs, room_occ) <span class="sc">|&gt;</span> </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> red<span class="sc">:</span>green,</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"room"</span>,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"proportion"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>single_data <span class="sc">|&gt;</span> </span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(draws <span class="sc">&gt;</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(room) <span class="sc">|&gt;</span> </span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_prop =</span> <span class="fu">mean</span>(proportion))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>single_data <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span>draws, room_draws, pref_probs, room_occ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> red<span class="sc">:</span>green,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"room"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"proportion"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>single_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(draws <span class="sc">&gt;</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(room) <span class="sc">|&gt;</span> </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_prop =</span> <span class="fu">mean</span>(proportion))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   room  avg_prop
@@ -402,10 +420,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>As we increase the number of room draws, the proportions tend to stabilize around certain values. Therefore, we can expect the probability of getting a red room to be around 50%, a green room around 30%, and a blue room around 20%.</p>
-
-
+<p>As we increase the number of room draws, the proportions tend to stabilize around certain values. Therefore, we can expect the probability of getting a red room to be around 50%, a green room around 30%, and a blue room around 20%. It is important to note that this graph randomizes my lottery number for each draw.</p>
 </section>
+<section id="predefined" class="level2">
+<h2 class="anchored" data-anchor-id="predefined">Predefined</h2>
+<p>Now, we are going to repeat the experiment, but this time we will predefine our lottery number. We will use the same format as before to build the structure of the experiment.</p>
+<iframe width="1000" height="700" src="https://kevin-valdivia.shinyapps.io/room_draw/" title="Room Draw Simulation" data-external="1">
+</iframe>
+
+
 </section>
 
 </main> <!-- /main -->

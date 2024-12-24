@@ -1,0 +1,12 @@
+name: room_draw
+title: room_draw
+username: kevin-valdivia
+account: kevin-valdivia
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13637561
+bundleId: 9563947
+url: https://kevin-valdivia.shinyapps.io/room_draw/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

@@ -318,142 +318,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><img src="gdp_per_capita.png" class="img-fluid"> <small></small></p><small>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>calculate_avg_growth <span class="ot">&lt;-</span> <span class="cf">function</span>(vars) {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">diff</span>(vars) <span class="sc">/</span> <span class="fu">head</span>(vars, <span class="sc">-</span><span class="dv">1</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>clean_column <span class="ot">&lt;-</span> <span class="cf">function</span>(column) {</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">str_remove_all</span>(column, <span class="st">"[:,</span><span class="sc">\\</span><span class="st">.]"</span>))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>columns_to_clean <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X1999"</span>, <span class="st">"X2000"</span>, <span class="st">"X2001"</span>, <span class="st">"X2002"</span>, <span class="st">"X2003"</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2004"</span>, <span class="st">"X2005"</span>, <span class="st">"X2006"</span>, <span class="st">"X2007"</span>, <span class="st">"X2008"</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2009"</span>, <span class="st">"X2010"</span>, <span class="st">"X2011"</span>, <span class="st">"X2012"</span>, <span class="st">"X2013"</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2014"</span>, <span class="st">"X2015"</span>, <span class="st">"X2016"</span>, <span class="st">"X2017"</span>, <span class="st">"X2018"</span>, <span class="st">"X2019"</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ethiopia"</span>, <span class="st">"Rwanda"</span>, <span class="st">"Mozambique"</span>, <span class="st">"Tanzania"</span>, <span class="st">"Mauritius"</span>, </span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ghana"</span>, <span class="st">"Nigeria"</span>, <span class="st">"Uganda"</span>, <span class="st">"Cabo Verde"</span>, <span class="st">"Burkina Faso"</span>, </span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chad"</span>, <span class="st">"Angola"</span>, <span class="st">"Botswana"</span>, <span class="st">"Namibia"</span>, <span class="st">"Seychelles"</span>, </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Senegal"</span>, <span class="st">"Mali"</span>, <span class="st">"Benin"</span>, <span class="st">"Cameroon"</span>, <span class="st">"Mauritania"</span>, </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Niger"</span>, <span class="st">"Cote d'Ivoire"</span>, <span class="st">"Togo"</span>, <span class="st">"South Africa"</span>, <span class="st">"Rep. of Congo"</span>, </span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Dem. Rep. of Congo"</span>, <span class="st">"The Gambia"</span>, <span class="st">"Liberia"</span>, <span class="st">"Gabon"</span>, </span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Central African Rep"</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>needed_codes <span class="ot">&lt;-</span> <span class="fu">countrycode</span>(countries, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>gdp_growth <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"gdp_growth.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">ifelse</span>(Country <span class="sc">==</span> <span class="st">"S„o TomÈ and PrÌncipe"</span>, </span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"São Tomé and Príncipe"</span>, Country),</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="fu">countrycode</span>(Country, </span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                            <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(code <span class="sc">%in%</span> needed_codes) <span class="sc">|&gt;</span> </span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">countrycode</span>(code,</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>                               <span class="at">origin =</span> <span class="st">"iso3c"</span>, <span class="at">destination =</span> <span class="st">"country.name"</span>)) <span class="sc">|&gt;</span>  </span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Country, <span class="fu">all_of</span>(columns_to_clean)) <span class="sc">|&gt;</span> </span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(columns_to_clean), clean_column)) <span class="sc">|&gt;</span> </span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(columns_to_clean), </span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span><span class="fu">ifelse</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>, .), <span class="at">.names =</span> <span class="st">"clean_{col}"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_growth =</span> <span class="fu">calculate_avg_growth</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"clean_"</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>calculate_avg_growth <span class="ot">&lt;-</span> <span class="cf">function</span>(gdp_growth, vars) {</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">diff</span>(gdp_growth<span class="sc">$</span>vars) <span class="sc">/</span> <span class="fu">head</span>(gdp_growth<span class="sc">$</span>vars, <span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>clean_column <span class="ot">&lt;-</span> <span class="cf">function</span>(column) {</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">str_remove_all</span>(column, <span class="st">"[:,</span><span class="sc">\\</span><span class="st">.]"</span>))</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>columns_to_clean <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X1999"</span>, <span class="st">"X2000"</span>, <span class="st">"X2001"</span>, <span class="st">"X2002"</span>, <span class="st">"X2003"</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2004"</span>, <span class="st">"X2005"</span>, <span class="st">"X2006"</span>, <span class="st">"X2007"</span>, <span class="st">"X2008"</span>,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2009"</span>, <span class="st">"X2010"</span>, <span class="st">"X2011"</span>, <span class="st">"X2012"</span>, <span class="st">"X2013"</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2014"</span>, <span class="st">"X2015"</span>, <span class="st">"X2016"</span>, <span class="st">"X2017"</span>, <span class="st">"X2018"</span>, <span class="st">"X2019"</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ethiopia"</span>, <span class="st">"Rwanda"</span>, <span class="st">"Mozambique"</span>, <span class="st">"Tanzania"</span>, <span class="st">"Mauritius"</span>, </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ghana"</span>, <span class="st">"Nigeria"</span>, <span class="st">"Uganda"</span>, <span class="st">"Cabo Verde"</span>, <span class="st">"Burkina Faso"</span>, </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chad"</span>, <span class="st">"Angola"</span>, <span class="st">"Botswana"</span>, <span class="st">"Namibia"</span>, <span class="st">"Seychelles"</span>, </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Senegal"</span>, <span class="st">"Mali"</span>, <span class="st">"Benin"</span>, <span class="st">"Cameroon"</span>, <span class="st">"Mauritania"</span>, </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Niger"</span>, <span class="st">"Cote d'Ivoire"</span>, <span class="st">"Togo"</span>, <span class="st">"South Africa"</span>, <span class="st">"Rep. of Congo"</span>, </span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Dem. Rep. of Congo"</span>, <span class="st">"The Gambia"</span>, <span class="st">"Gabon"</span>, </span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Central African Rep"</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>needed_codes <span class="ot">&lt;-</span> <span class="fu">countrycode</span>(countries, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>gdp_growth <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"gdp_growth.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">ifelse</span>(Country <span class="sc">==</span> <span class="st">"S„o TomÈ and PrÌncipe"</span>, </span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"São Tomé and Príncipe"</span>, Country),</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">code =</span> <span class="fu">countrycode</span>(Country, </span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>                       <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(code <span class="sc">%in%</span> needed_codes) <span class="sc">|&gt;</span> </span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">countrycode</span>(code,</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>                                <span class="at">origin =</span> <span class="st">"iso3c"</span>, <span class="at">destination =</span> <span class="st">"country.name"</span>)) <span class="sc">|&gt;</span>    <span class="fu">select</span>(Country, <span class="fu">starts_with</span>(<span class="st">"X"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(columns_to_clean), clean_column))</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>new_gdp_growth <span class="ot">&lt;-</span> gdp_growth <span class="sc">|&gt;</span>          </span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>         <span class="fu">mutate</span>(<span class="at">gdp_growth =</span> <span class="fu">calculate_avg_growth</span>(gdp_growth, </span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>                                            <span class="fu">c</span>(<span class="st">"X1999"</span>, <span class="st">"X2000"</span>, <span class="st">"X2001"</span>, </span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"X2002"</span>, <span class="st">"X2003"</span>, <span class="st">"X2004"</span>, </span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"X2005"</span>, <span class="st">"X2006"</span>, <span class="st">"X2007"</span>, </span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"X2008"</span>, <span class="st">"X2009"</span>, <span class="st">"X2010"</span>, </span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"X2011"</span>, <span class="st">"X2012"</span>, <span class="st">"X2013"</span>,</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"X2014"</span>, <span class="st">"X2015"</span>, <span class="st">"X2016"</span>, </span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"X2017"</span>, <span class="st">"X2018"</span>, <span class="st">"X2019"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ethiopia"</span>, <span class="st">"Rwanda"</span>, <span class="st">"Mozambique"</span>, <span class="st">"Tanzania"</span>, <span class="st">"Mauritius"</span>, </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ghana"</span>, <span class="st">"Nigeria"</span>, <span class="st">"Uganda"</span>, <span class="st">"Cabo Verde"</span>, <span class="st">"Burkina Faso"</span>, </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chad"</span>, <span class="st">"Angola"</span>, <span class="st">"Botswana"</span>, <span class="st">"Namibia"</span>, <span class="st">"Seychelles"</span>, </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Senegal"</span>, <span class="st">"Mali"</span>, <span class="st">"Benin"</span>, <span class="st">"Cameroon"</span>, <span class="st">"Mauritania"</span>, </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Niger"</span>, <span class="st">"Cote d'Ivoire"</span>, <span class="st">"Togo"</span>, <span class="st">"South Africa"</span>, <span class="st">"Rep. of Congo"</span>, </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Dem. Rep. of Congo"</span>, <span class="st">"The Gambia"</span>, <span class="st">"Liberia"</span>, <span class="st">"Gabon"</span>, </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Central African Rep"</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>needed_codes <span class="ot">&lt;-</span> <span class="fu">countrycode</span>(countries, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>gdp_growth <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"gdp_growth.csv"</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize country names if needed</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>gdp_growth <span class="ot">&lt;-</span> gdp_growth <span class="sc">%&gt;%</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">ifelse</span>(Country <span class="sc">==</span> <span class="st">"S„o TomÈ and PrÌncipe"</span>, </span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"São Tomé and Príncipe"</span>, Country),</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="fu">countrycode</span>(Country, </span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                            <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(code <span class="sc">%in%</span> needed_codes) <span class="sc">%&gt;%</span> <span class="co"># Remove rows where code is NA</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">countrycode</span>(code,</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>                               <span class="at">origin =</span> <span class="st">"iso3c"</span>, <span class="at">destination =</span> <span class="st">"country.name"</span>))</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the list of year columns (e.g., X1999, X2000, ..., X2019)</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^X"</span>, <span class="fu">names</span>(gdp_growth), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to calculate yearly GDP growth</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>calculate_growth <span class="ot">&lt;-</span> <span class="cf">function</span>(gdp) {</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  gdp <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(gdp)  <span class="co"># Ensure all values are numeric</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  growth <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fu">diff</span>(gdp) <span class="sc">/</span> <span class="fu">head</span>(gdp, <span class="sc">-</span><span class="dv">1</span>)) <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(<span class="fu">na.omit</span>(growth)))</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the growth calculation to each country's GDP data</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>gdp_growth <span class="ot">&lt;-</span> gdp_growth <span class="sc">%&gt;%</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_growth =</span> <span class="fu">calculate_growth</span>(<span class="fu">c_across</span>(<span class="fu">all_of</span>(years)))) <span class="sc">%&gt;%</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview the updated dataframe</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gdp_growth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>clean_column <span class="ot">&lt;-</span> <span class="cf">function</span>(column) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">str_remove_all</span>(column, <span class="st">"[:,</span><span class="sc">\\</span><span class="st">.]"</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>columns_to_clean <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X1999"</span>, <span class="st">"X2000"</span>, <span class="st">"X2001"</span>, <span class="st">"X2002"</span>, <span class="st">"X2003"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2004"</span>, <span class="st">"X2005"</span>, <span class="st">"X2006"</span>, <span class="st">"X2007"</span>, <span class="st">"X2008"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2009"</span>, <span class="st">"X2010"</span>, <span class="st">"X2011"</span>, <span class="st">"X2012"</span>, <span class="st">"X2013"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"X2014"</span>, <span class="st">"X2015"</span>, <span class="st">"X2016"</span>, <span class="st">"X2017"</span>, <span class="st">"X2018"</span>, <span class="st">"X2019"</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ethiopia"</span>, <span class="st">"Rwanda"</span>, <span class="st">"Mozambique"</span>, <span class="st">"Tanzania"</span>, <span class="st">"Mauritius"</span>, </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ghana"</span>, <span class="st">"Nigeria"</span>, <span class="st">"Uganda"</span>, <span class="st">"Cabo Verde"</span>, <span class="st">"Burkina Faso"</span>, </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chad"</span>, <span class="st">"Angola"</span>, <span class="st">"Botswana"</span>, <span class="st">"Namibia"</span>, <span class="st">"Seychelles"</span>, </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Senegal"</span>, <span class="st">"Mali"</span>, <span class="st">"Benin"</span>, <span class="st">"Cameroon"</span>, <span class="st">"Mauritania"</span>, </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Niger"</span>, <span class="st">"Cote d'Ivoire"</span>, <span class="st">"Togo"</span>, <span class="st">"South Africa"</span>, <span class="st">"Rep. of Congo"</span>, </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Dem. Rep. of Congo"</span>, <span class="st">"The Gambia"</span>, <span class="st">"Gabon"</span>, </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Central African Rep"</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>needed_codes <span class="ot">&lt;-</span> <span class="fu">countrycode</span>(countries, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>gdp_growth <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"gdp_growth.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">ifelse</span>(Country <span class="sc">==</span> <span class="st">"São Tomé and Príncipe"</span>, </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"São Tomé and Príncipe"</span>, Country),</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">code =</span> <span class="fu">countrycode</span>(Country, </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                            <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(code <span class="sc">%in%</span> needed_codes) <span class="sc">|&gt;</span> </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">countrycode</span>(code,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                               <span class="at">origin =</span> <span class="st">"iso3c"</span>, <span class="at">destination =</span> <span class="st">"country.name"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Country, <span class="fu">starts_with</span>(<span class="st">"x"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(columns_to_clean), clean_column)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>Country,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"years"</span>,</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"values"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">years =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract_all</span>(years, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>)))</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>gdp_growth <span class="sc">|&gt;</span> </span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Benin"</span>, <span class="st">"Burkina Faso"</span>, <span class="st">"Cote d'Ivoire"</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Mali"</span>, <span class="st">"Niger"</span>, <span class="st">"Togo"</span>, <span class="st">"Senegal"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Country) <span class="sc">|&gt;</span> </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(years, values, <span class="at">color =</span> Country)) <span class="sc">+</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
