@@ -424,7 +424,7 @@
     "href": "projects/sql_mini_project/sql_project.html",
     "title": "Wideband Acoustic Immittance Data Visualization",
     "section": "",
-    "text": "Replicate Figure 1 from Voss (2020) using SQL and R:\n\nQuery the WAI Database to build a dataset.\nPipe it into ggplot() to recreate Figure 1.\n\nAnalyze the Lewis (2015) study by sex:\n\nPlot frequency vs. mean absorbance by sex for the Lewis (2015) data."
+    "text": "Replicate Figure 1 from Voss (2019) using SQL and R:\n\nQuery the WAI Database to build a dataset.\nPipe it into ggplot() to recreate Figure 1.\n\nAnalyze the Lewis and Neely (2015) data by sex:\n\nPlot frequency vs. mean absorbance by sex for this data."
   },
   {
     "objectID": "projects/mex_peso/mexican_peso.html",

@@ -3,6 +3,7 @@ title: "Wideband Acoustic Immittance Data Visualization"
 subtitle: "Graph Replication With SQL"
 date: "Nov 26, 2024"
 author: "Kevin Valdivia"
+bibliography: sql.bib
 format: html
 toc: false # Table of contents
 execute: 
@@ -10,28 +11,23 @@ execute:
   message: false
 ---
 
+
 ### Objective
 
--   **Replicate Figure 1 from [Voss (2020)](https://pmc.ncbi.nlm.nih.gov/articles/PMC7093226/)** using SQL and R:
+-   **Replicate [Figure 1]((https://pmc.ncbi.nlm.nih.gov/articles/PMC7093226/)) from @Voss2019** using SQL and R:
     -   Query the WAI Database to build a dataset.
     -   Pipe it into `ggplot()` to recreate Figure 1.
--   **Analyze the Lewis (2015) study by sex**:
-    -   Plot frequency vs. mean absorbance by sex for the Lewis (2015) data.
+-   **Analyze the @Lewis2015 data by sex**:
+    -   Plot frequency vs. mean absorbance by sex for this data.
+    
+### Data
 
-### Libraries
-
-The libraries used in the project are the `tidyverse` and `RMariaDB`.
+I will use the [Wideband Acoustic Immittance (WAI) Database](https://www.science.smith.edu/wai-database/), which I will access through SQL. The following is the connection. I will also load my libraries in this first step. The libraries used in the project are the `tidyverse` and `RMariaDB`.
 
 ```{r}
 library(tidyverse)
 library(RMariaDB)
-```
 
-## Setting Up Connection
-
-I will use the [Wideband Acoustic Immittance (WAI) Database](https://www.science.smith.edu/wai-database/), which I will access through SQL. The following is the connection.
-
-```{r}
 con_wai <- dbConnect(
   MariaDB(), host = "scidb.smith.edu",
   user = "waiuser", password = "smith_waiDB", 
@@ -91,24 +87,14 @@ I created a custom color palette to match the lines in the graphs I am replicati
 
 ```{r}
 custom_colors <- c(
-  "#5C4E9E",
-  "#387BBC",
-  "#5FB8A9",
-  "#99D59F",
-  "#D9F0A7",
-  "#ECF5AF",
-  "#F7EEAF",
-  "#F8D37E",
-  "#EC9D57",
-  "#E46647",
-  "#C9384D",
-  "#9C2045"
+  "#5C4E9E", "#387BBC", "#5FB8A9", "#99D59F", "#D9F0A7", "#ECF5AF",
+  "#F7EEAF", "#F8D37E", "#EC9D57", "#E46647", "#C9384D", "#9C2045"
 )
 
 color_map <- setNames(custom_colors, unique(replication_data$label))
 ```
 
-Now, I will use the `replication_data` to create a graph that replicates the original. I will use the `color_map` variable to apply the custom color template.
+Now, I will use the `replication_data` to create a graph that replicates the original (becuase of updates in the data there will be slight differnces in the plotting). I will use the `color_map` variable to apply the custom color template.
 
 ```{r, fig.width=10, fig.height=6}
 replication_data |> 
@@ -133,7 +119,7 @@ replication_data |>
     color = "")
 ```
 
-# Graphing by Sex
+# Graphing Lewis & Neely 2015
 
 In the `Subjects` database, we will use the `Identifier` as a key to connect the datasets. Additionally, we will use the variable `Sex` to analyze the difference in mean absorbance by sex. We will join this database with Measurments database.
 
@@ -162,14 +148,19 @@ GROUP BY Identifier, Frequency, Sex;
 Now, I will graph the `mean_absorbance` against `Frequency`, grouped by `Sex`, for the `Lewis_2015` research data.
 
 ```{r}
+custom_palette <- c("Female" = "darkred", 
+                    "Male" = "darkgreen")
+
 absorbance_by_sex |> 
+  mutate(Sex = ifelse(Sex == "Female", "Female", "Male")) |>  # There semmed to be some variability with how Male is spelled
   ggplot(aes(x = Frequency, y = mean_absorbance, color = Sex)) +
   geom_line(size = 1.25)+  
   theme_minimal() +
+  scale_color_manual(values = custom_palette) +
   labs(
     x = "Frequency (Hz)", 
     y = "Mean Absorbance",
-    title = "Mean absorbance by Sex For Lewis (2015)",
+    title = "Mean absorbance by Sex For Lewis and Neely (2015)",
     color = "Sex"
   )
 ```
