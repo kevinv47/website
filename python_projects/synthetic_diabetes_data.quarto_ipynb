@@ -1,0 +1,213 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Visualizing Synthetic Diabetes Data\"\n",
+        "subtitle: \"Creating graphs to look at synthetic data\"\n",
+        "date: \"Dec 20, 2024\"\n",
+        "author: \"Kevin Valdivia\"\n",
+        "format: html\n",
+        "toc: false # Table of contents\n",
+        "execute: \n",
+        "  warning: false\n",
+        "  message: false\n",
+        "---\n",
+        "\n",
+        "\n",
+        "The data used here will come from user [KevinTan701](https://www.kaggle.com/datasets/kevintan701/diabetes-prediction-datasets/data) at Kaggale. **This dataset was synthetically generated** to resemble real-world health information, covering data from 2021 to 2023.\n",
+        "\n",
+        "I will create visualizations to better understand some of the assumptions made in the synthetically generated data.\n",
+        "\n",
+        "## Libraries and Data Importation"
+      ],
+      "id": "2da5e724"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# For pulling the data\n",
+        "import kagglehub\n",
+        "\n",
+        "# For loading in the data and data manipulation\n",
+        "import pandas as pd\n",
+        "\n",
+        "# For making vizualizations\n",
+        "import matplotlib.pyplot as plt\n",
+        "import seaborn as sns"
+      ],
+      "id": "b9309aa2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "I will be pulling the data directly from kaggle using `kagglehub`."
+      ],
+      "id": "fc8da6e7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Download latest version\n",
+        "path = kagglehub.dataset_download(\"kevintan701/diabetes-prediction-datasets\")\n",
+        "\n",
+        "diabetes = pd.read_csv(path + \"/diabetes_data.csv\")[['weight', 'height', 'stress_level', 'risk_score']]\n",
+        "print(diabetes.head())"
+      ],
+      "id": "b0122673",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Data Vizualizations\n",
+        "\n",
+        "First, I will visualize the relationship between stress level and the assigned risk score. I will recode the `stress_level` variable from having numerical values to having categorical.\n"
+      ],
+      "id": "f9f9d325"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "stress_mapping = {0: 'Low', 1: 'Medium', 2: 'High'}\n",
+        "\n",
+        "diabetes_cat = diabetes.copy()\n",
+        "\n",
+        "diabetes_cat['stress_level'] = diabetes_cat['stress_level'].map(stress_mapping)"
+      ],
+      "id": "578bc8ac",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "After putting the data in the right format I can graph.\n"
+      ],
+      "id": "91bdc298"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "order = ['Low', 'Medium', 'High']\n",
+        "\n",
+        "colors = {'Low': '#CB78F7', 'Medium': '#B19CD9', 'High': '#9941C7'}\n",
+        "\n",
+        "sns.boxplot(diabetes_cat, \n",
+        "            x='stress_level', \n",
+        "            y='risk_score',\n",
+        "            hue='stress_level',\n",
+        "            order=order,\n",
+        "            palette=colors) \n",
+        "plt.title(\"Risk Score For Diabetes By Stress Level\\nBoxplot\", loc=\"left\")\n",
+        "plt.xlabel(\"Stress Level\")\n",
+        "plt.ylabel(\"Risk Score For Diabetes\")\n",
+        "plt.show()"
+      ],
+      "id": "7af9f283",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Here is the same data but as a jittered strip plot."
+      ],
+      "id": "c5b5802f"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sns.stripplot(data=diabetes, \n",
+        "              x='stress_level', \n",
+        "              y='risk_score', \n",
+        "              jitter=True,\n",
+        "              color='#8931B9',\n",
+        "              alpha=0.4)\n",
+        "\n",
+        "sns.regplot(data=diabetes, \n",
+        "            x='stress_level', \n",
+        "            y='risk_score', \n",
+        "            scatter=False,\n",
+        "            color='#4B096F')\n",
+        "\n",
+        "plt.title(\"Risk Score For Diabetes By Stress Level\")\n",
+        "plt.xlabel(\"Stress Level\")\n",
+        "plt.ylabel(\"Risk Score\")\n",
+        "\n",
+        "plt.show()"
+      ],
+      "id": "2da5b7bb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "In this synthetic data, there appear to be more outliers for higher risk scores than usual in the medium stress level. I am curious about how this synthetic data was generated. With real-world data, I wonder how researchers categorize patients into stress level categories, as I imagine that most patients are likely to overestimate their stress levels rather than underestimate them. Perhaps researchers could use other indicators, such as hours at employment and type of employment, to more accurately categorize stress levels.\n",
+        "\n",
+        "Now I will look at the relationship between height and weight in the dataset."
+      ],
+      "id": "3ce6e6a8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "sns.scatterplot(data=diabetes,\n",
+        "            x='height',\n",
+        "            y='weight',\n",
+        "            hue='risk_score')\n",
+        "\n",
+        "sns.regplot(data=diabetes, \n",
+        "            x='height', \n",
+        "            y='weight', \n",
+        "            scatter=False,\n",
+        "            color='#4F0576',\n",
+        "            ci=None)\n",
+        "     \n",
+        "plt.title(\"Height and Weight in Relationship with Diabetes Risk Score\")\n",
+        "plt.xlabel(\"Height (cm)\")\n",
+        "plt.ylabel(\"Weight (kg)\")\n",
+        "plt.legend(title=\"Risk Score\")\n",
+        "plt.show()"
+      ],
+      "id": "b03d0aa7",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "There are a few observations we can make here. First, the data unexpectedly suggests that, on average, taller individuals tend to weigh less, which appears counterintuitive. Second, there seems to be a section in the middle of the plot, marked by a cluster of dots in a lighter pink color, that slopes upwards in the center. The synthetic data indicates that there may be an optimal weight-to-height region that is associated with a lower diabetes risk score."
+      ],
+      "id": "77fc530e"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/Users/kevinvaldivia/Library/Python/3.12/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
