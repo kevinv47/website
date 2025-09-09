@@ -3,9 +3,9 @@ title: "Netflix Movies & Shows"
 subtitle: "Vizualizing the Netflix Catalog"
 date: "July 29, 2025"
 author: "Kevin Valdivia"
-format: 
-  html:
-    code-fold: true
+format: html
+  # html:
+  #   code-fold: true
 toc: false # Table of contents
 execute: 
   warning: false

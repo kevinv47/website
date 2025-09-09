@@ -1131,7 +1131,7 @@
     "href": "dataviz.html",
     "title": "Vizualizations With Python",
     "section": "",
-    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nSeptember ’25\n\nSeptember 9, 2024 International Visa Requirments 🛂🌐\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nSeptember ’25\n\nSeptember 9, 2024 International Visa Requirments 🛂✈️\nSeptember 2, 2024 International Visa Requirments 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2024 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/imo.html#data-prep",
@@ -1299,28 +1299,28 @@
     "href": "tidytuesday/netflix.html#libraries",
     "title": "Netflix Movies & Shows",
     "section": "Libraries",
-    "text": "Libraries\nLoading packages for the data manipulation and vizulization.\n\n\nCode\nlibrary(tidyverse)\nlibrary(plotly)\nlibrary(lubridate)\nlibrary(scales)"
+    "text": "Libraries\nLoading packages for the data manipulation and vizulization.\n\nlibrary(tidyverse)\nlibrary(plotly)\nlibrary(lubridate)\nlibrary(scales)"
   },
   {
     "objectID": "tidytuesday/netflix.html#data-importation",
     "href": "tidytuesday/netflix.html#data-importation",
     "title": "Netflix Movies & Shows",
     "section": "Data Importation",
-    "text": "Data Importation\nImportating the data from the tidytuesday repo.\n\n\nCode\nmovies &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/movies.csv')\nshows &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/shows.csv')"
+    "text": "Data Importation\nImportating the data from the tidytuesday repo.\n\nmovies &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/movies.csv')\nshows &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/shows.csv')"
   },
   {
     "objectID": "tidytuesday/netflix.html#graphing",
     "href": "tidytuesday/netflix.html#graphing",
     "title": "Netflix Movies & Shows",
     "section": "Graphing",
-    "text": "Graphing\n\nScatter plot\n\n\nCode\nsum_movies |&gt;\n  head(2000)|&gt;\n  ggplot(aes(sum_views, sum_hours, color = year_groups)) +\n  geom_point(alpha = 0.2) +\n  scale_x_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  scale_y_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  facet_wrap(~year_groups) +\n  scale_color_brewer(palette = \"Set2\") +\n  labs(title = \"Views of a shows agaisnt the hours accumalated\",\n       x = \"Number of Views\",\n       y = \"Number of Hours\",\n       color = \"Release Date\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\n\n\n\nCode\nyearly_data &lt;- sum_movies |&gt;\n  group_by(year) |&gt;\n  summarize(views = sum(sum_views),\n            hours = sum(sum_hours)) |&gt;\n  pivot_longer(col = c(hours, views),\n               values_to = \"value\",\n               names_to = \"type\") |&gt;\n  filter(year &lt; 2025)\n\nyearly_data |&gt;\n  ggplot(aes(factor(year), value, \n             color = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"),\n             fill = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"))) +\n  geom_col(alpha = 0.5) +\n  scale_y_continuous(\n    trans = \"log10\",\n    labels = label_number(scale_cut = cut_short_scale()))+\n  theme_minimal() +\n    scale_color_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",      \n    \"Number of Views\" = \"#ff7f0e\"  \n  )) +\n  scale_fill_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",\n    \"Number of Views\" = \"#ff7f0e\"\n  )) +\n  labs(title = \"Netflix Views and Hours By Release Date Years\",\n       y = \"\",\n       x = \"\",\n       color = \"\",\n       fill = \"\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +\n  theme(\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank() \n  )"
+    "text": "Graphing\n\nScatter plot\n\nsum_movies |&gt;\n  head(2000)|&gt;\n  ggplot(aes(sum_views, sum_hours, color = year_groups)) +\n  geom_point(alpha = 0.2) +\n  scale_x_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  scale_y_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  facet_wrap(~year_groups) +\n  scale_color_brewer(palette = \"Set2\") +\n  labs(title = \"Views of a shows agaisnt the hours accumalated\",\n       x = \"Number of Views\",\n       y = \"Number of Hours\",\n       color = \"Release Date\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\n\nyearly_data &lt;- sum_movies |&gt;\n  group_by(year) |&gt;\n  summarize(views = sum(sum_views),\n            hours = sum(sum_hours)) |&gt;\n  pivot_longer(col = c(hours, views),\n               values_to = \"value\",\n               names_to = \"type\") |&gt;\n  filter(year &lt; 2025)\n\nyearly_data |&gt;\n  ggplot(aes(factor(year), value, \n             color = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"),\n             fill = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"))) +\n  geom_col(alpha = 0.5) +\n  scale_y_continuous(\n    trans = \"log10\",\n    labels = label_number(scale_cut = cut_short_scale()))+\n  theme_minimal() +\n    scale_color_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",      \n    \"Number of Views\" = \"#ff7f0e\"  \n  )) +\n  scale_fill_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",\n    \"Number of Views\" = \"#ff7f0e\"\n  )) +\n  labs(title = \"Netflix Views and Hours By Release Date Years\",\n       y = \"\",\n       x = \"\",\n       color = \"\",\n       fill = \"\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +\n  theme(\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank() \n  )"
   },
   {
     "objectID": "tidytuesday/australian_frogs.html",
     "href": "tidytuesday/australian_frogs.html",
     "title": "Australian Frogs",
     "section": "",
-    "text": "frogID_data &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')\nfrog_names &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')"
+    "text": "This analysis uses 2023 data from the sixth annual release of FrogID, an Australian frog call identification initiative. FrogID allows citizen scientists to record frog calls via a mobile app, with experts verifying the species. The dataset, curated by Jessica Moore, contributes to ongoing research on frog ecology, taxonomy, and conservation. Primary data sources include Rowley & Callaghan (2020) and the Australian Society of Herpetologists Official List of Australian Species (2025)."
   },
   {
     "objectID": "tidytuesday/australian_frogs.html#importing-data",
@@ -1391,5 +1391,26 @@
     "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
     "section": "Plotting",
     "text": "Plotting\nThe following graph shows the visa requirements for entry based on your country of origin. “Easy Access” countries include those that allow either visa-free travel or entry via an electronic travel authorization (ETA) for the specified nationality. “Visa Required” indicates countries where travelers must obtain a visa before entry.\n\nplot_visa_connections(\"MX\", \"Mexicans\")\n\n\n\n\n\n\nplot_visa_connections(\"CA\", \"Canadians\")\n\n\n\n\n\n\nplot_visa_connections(\"BR\", \"Brazilians\")"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html#importing-libraries-data",
+    "href": "tidytuesday/australian_frogs.html#importing-libraries-data",
+    "title": "Australian Frogs",
+    "section": "Importing Libraries & Data",
+    "text": "Importing Libraries & Data\nIn this section, we load the necessary R packages for data manipulation, mapping, and visualization, and import the FrogID observation data along with the official frog species names.\n\n# Libraries\nlibrary(tidyverse)\nlibrary(maps)\nlibrary(Polychrome)\nlibrary(plotly)\nlibrary(RColorBrewer)\n\n# Importing Data\nfrogID_data &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')\nfrog_names &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html#data-manipulation",
+    "href": "tidytuesday/australian_frogs.html#data-manipulation",
+    "title": "Australian Frogs",
+    "section": "Data Manipulation",
+    "text": "Data Manipulation\nJoin all the frog data spottings with the frog scientific information.\n\nall_frogs &lt;- frogID_data |&gt;\n  left_join(frog_names, by = \"scientificName\") |&gt;\n  mutate(month = month(eventDate),\n         season = case_when(\n             month %in% c(12, 1, 2) ~ \"Winter\",\n             month %in% c(3, 4, 5) ~ \"Spring\",\n             month %in% c(6, 7, 8) ~ \"Summer\",\n             month %in% c(9, 10, 11) ~ \"Fall\"),\n         genus = str_extract(scientificName, \"^\\\\w+\")\n         )\n\nFinding the frogs that are most spotted and creating a color palette for the plotting.\n\ntop_frogs &lt;- all_frogs |&gt;\n  group_by(genus) |&gt;\n  summarize(n = n()) |&gt;\n  arrange(desc(n)) |&gt;\n  head(7) |&gt;\n  pull(genus)\n\nall_frogs &lt;- all_frogs |&gt;\n  filter(genus %in% c(\"Uperoleia\", \"Pseudophryne\", \"Mixophyes\"))\n\nmycols &lt;- createPalette(7, c(\"#E41A1C\", \"#377EB8\", \"#4DAF4A\"))\nnames(mycols) &lt;- all_frogs |&gt; select(genus) |&gt; unique() |&gt; pull()"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html#plotting",
+    "href": "tidytuesday/australian_frogs.html#plotting",
+    "title": "Australian Frogs",
+    "section": "Plotting",
+    "text": "Plotting\nWe plot the frog spottings into a plotly in such a way we can select and deselect frogs by clicking the legend.\n\naustralia_map &lt;- maps::map(database = \"world\", region = \"Australia\")\n\n\n\n\n\n\n\np &lt;- ggplot(australia_map, \n       aes(x = long, y = lat, group = group)) +\n  geom_polygon(fill = \"white\", color = \"black\") + \n  geom_point(data = all_frogs,\n             aes(x = decimalLongitude, \n                 y = decimalLatitude, \n                 color = genus),\n             alpha = 0.5,\n             size = 1,\n             inherit.aes = FALSE) +\n  theme_minimal() +\n  theme(\n        # legend.position = \"none\",\n        axis.title.x = element_blank(),   # remove x axis title\n        axis.title.y = element_blank(),   # remove y axis title\n        axis.text.x  = element_blank(),   # remove x axis text\n        axis.text.y  = element_blank(),   # remove y axis text\n        axis.ticks   = element_blank(),   # remove ticks\n        panel.grid   = element_blank()    # remove grid lines\n      ) +\n  labs(title = \"Frogs in Australia\",\n       color = \"Select:\") + \n  scale_color_manual(values = mycols) +\n  facet_wrap(~season)\n\nggplotly(p, tooltip = NULL)"
   }
 ]

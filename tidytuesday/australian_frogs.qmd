@@ -1,6 +1,6 @@
 ---
 title: "Australian Frogs"
-subtitle: "INSERT SUBTITLE"
+subtitle: "Graphing Frog Presence Across the Seasons"
 date: "Sept 2, 2025"
 author: "Kevin Valdivia"
 format: html
@@ -10,26 +10,26 @@ execute:
   message: false
 ---
 
-## Importing Data
+This analysis uses 2023 data from the sixth annual release of [FrogID](https://www.frogid.net.au/explore), an Australian frog call identification initiative. FrogID allows citizen scientists to record frog calls via a mobile app, with experts verifying the species. The dataset, curated by [Jessica Moore](https://github.com/jessjep), contributes to ongoing research on frog ecology, taxonomy, and conservation. Primary data sources include Rowley & Callaghan (2020) and the Australian Society of Herpetologists Official List of Australian Species (2025).
 
+## Importing Libraries & Data
+In this section, we load the necessary R packages for data manipulation, mapping, and visualization, and import the FrogID observation data along with the official frog species names.
 ```{r}
-frogID_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')
-frog_names <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')
-```
-
-## Libraries
-
-```{r}
+# Libraries
 library(tidyverse)
 library(maps)
 library(Polychrome)
 library(plotly)
 library(RColorBrewer)
+
+# Importing Data
+frogID_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')
+frog_names <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')
 ```
 
-## Data Wrangling
+## Data Manipulation
 
-Join all the frog data
+Join all the frog data spottings with the frog scientific information.
 
 ```{r}
 all_frogs <- frogID_data |>
@@ -43,6 +43,7 @@ all_frogs <- frogID_data |>
          genus = str_extract(scientificName, "^\\w+")
          )
 ```
+Finding the frogs that are most spotted and creating a color palette for the plotting.
 
 ```{r}
 top_frogs <- all_frogs |>
@@ -59,12 +60,12 @@ mycols <- createPalette(7, c("#E41A1C", "#377EB8", "#4DAF4A"))
 names(mycols) <- all_frogs |> select(genus) |> unique() |> pull()
 ```
 
-## Data Vizualizations
-
+## Plotting
+We plot the frog spottings into a plotly in such a way we can select and deselect frogs by clicking the legend.
 ```{r}
-australia_map <- map(database = "world", region = "Australia")
+australia_map <- maps::map(database = "world", region = "Australia")
 
-p <- ggplot(data = australia_map, 
+p <- ggplot(australia_map, 
        aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "white", color = "black") + 
   geom_point(data = all_frogs,
