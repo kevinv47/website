@@ -1131,7 +1131,7 @@
     "href": "dataviz.html",
     "title": "Vizualizations With Python",
     "section": "",
-    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nSeptember ’25\n\nSeptember 9, 2024 International Visa Requirments 🛂🌐\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/imo.html#data-prep",
@@ -1286,5 +1286,110 @@
     "title": "The Office - Mini Text Analysis Project",
     "section": "Shiny",
     "text": "Shiny\nNow, we will use the same format as the work-related plotting section to create a Shiny app where we can input a word and see the percentage of words in the characters’ lines that contain it."
+  },
+  {
+    "objectID": "tidytuesday/netflix.html",
+    "href": "tidytuesday/netflix.html",
+    "title": "Netflix Movies & Shows",
+    "section": "",
+    "text": "The data this week will be exploring TV show and movie viewing data from Netflix. Netflix has released these engagment reports since 2023.\nIn this tidytuesday we will make a few graphs to display some of the changes in what is viewed overtime."
+  },
+  {
+    "objectID": "tidytuesday/netflix.html#libraries",
+    "href": "tidytuesday/netflix.html#libraries",
+    "title": "Netflix Movies & Shows",
+    "section": "Libraries",
+    "text": "Libraries\nLoading packages for the data manipulation and vizulization.\n\n\nCode\nlibrary(tidyverse)\nlibrary(plotly)\nlibrary(lubridate)\nlibrary(scales)"
+  },
+  {
+    "objectID": "tidytuesday/netflix.html#data-importation",
+    "href": "tidytuesday/netflix.html#data-importation",
+    "title": "Netflix Movies & Shows",
+    "section": "Data Importation",
+    "text": "Data Importation\nImportating the data from the tidytuesday repo.\n\n\nCode\nmovies &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/movies.csv')\nshows &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/shows.csv')"
+  },
+  {
+    "objectID": "tidytuesday/netflix.html#graphing",
+    "href": "tidytuesday/netflix.html#graphing",
+    "title": "Netflix Movies & Shows",
+    "section": "Graphing",
+    "text": "Graphing\n\nScatter plot\n\n\nCode\nsum_movies |&gt;\n  head(2000)|&gt;\n  ggplot(aes(sum_views, sum_hours, color = year_groups)) +\n  geom_point(alpha = 0.2) +\n  scale_x_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  scale_y_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  facet_wrap(~year_groups) +\n  scale_color_brewer(palette = \"Set2\") +\n  labs(title = \"Views of a shows agaisnt the hours accumalated\",\n       x = \"Number of Views\",\n       y = \"Number of Hours\",\n       color = \"Release Date\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\n\n\n\nCode\nyearly_data &lt;- sum_movies |&gt;\n  group_by(year) |&gt;\n  summarize(views = sum(sum_views),\n            hours = sum(sum_hours)) |&gt;\n  pivot_longer(col = c(hours, views),\n               values_to = \"value\",\n               names_to = \"type\") |&gt;\n  filter(year &lt; 2025)\n\nyearly_data |&gt;\n  ggplot(aes(factor(year), value, \n             color = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"),\n             fill = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"))) +\n  geom_col(alpha = 0.5) +\n  scale_y_continuous(\n    trans = \"log10\",\n    labels = label_number(scale_cut = cut_short_scale()))+\n  theme_minimal() +\n    scale_color_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",      \n    \"Number of Views\" = \"#ff7f0e\"  \n  )) +\n  scale_fill_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",\n    \"Number of Views\" = \"#ff7f0e\"\n  )) +\n  labs(title = \"Netflix Views and Hours By Release Date Years\",\n       y = \"\",\n       x = \"\",\n       color = \"\",\n       fill = \"\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +\n  theme(\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank() \n  )"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html",
+    "href": "tidytuesday/australian_frogs.html",
+    "title": "Australian Frogs",
+    "section": "",
+    "text": "frogID_data &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')\nfrog_names &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html#importing-data",
+    "href": "tidytuesday/australian_frogs.html#importing-data",
+    "title": "Australian Frogs",
+    "section": "",
+    "text": "frogID_data &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')\nfrog_names &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html#libraries",
+    "href": "tidytuesday/australian_frogs.html#libraries",
+    "title": "Australian Frogs",
+    "section": "Libraries",
+    "text": "Libraries\n\nlibrary(tidyverse)\nlibrary(maps)\nlibrary(Polychrome)\nlibrary(plotly)\nlibrary(RColorBrewer)"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html#data-wrangling",
+    "href": "tidytuesday/australian_frogs.html#data-wrangling",
+    "title": "Australian Frogs",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nJoin all the frog data\n\nall_frogs &lt;- frogID_data |&gt;\n  left_join(frog_names, by = \"scientificName\") |&gt;\n  mutate(month = month(eventDate),\n         season = case_when(\n             month %in% c(12, 1, 2) ~ \"Winter\",\n             month %in% c(3, 4, 5) ~ \"Spring\",\n             month %in% c(6, 7, 8) ~ \"Summer\",\n             month %in% c(9, 10, 11) ~ \"Fall\"),\n         genus = str_extract(scientificName, \"^\\\\w+\")\n         )\n\n\ntop_frogs &lt;- all_frogs |&gt;\n  group_by(genus) |&gt;\n  summarize(n = n()) |&gt;\n  arrange(desc(n)) |&gt;\n  head(7) |&gt;\n  pull(genus)\n\nall_frogs &lt;- all_frogs |&gt;\n  filter(genus %in% c(\"Uperoleia\", \"Pseudophryne\", \"Mixophyes\"))\n\nmycols &lt;- createPalette(7, c(\"#E41A1C\", \"#377EB8\", \"#4DAF4A\"))\nnames(mycols) &lt;- all_frogs |&gt; select(genus) |&gt; unique() |&gt; pull()"
+  },
+  {
+    "objectID": "tidytuesday/australian_frogs.html#data-vizualizations",
+    "href": "tidytuesday/australian_frogs.html#data-vizualizations",
+    "title": "Australian Frogs",
+    "section": "Data Vizualizations",
+    "text": "Data Vizualizations\n\naustralia_map &lt;- map(database = \"world\", region = \"Australia\")\n\n\n\n\n\n\n\np &lt;- ggplot(data = australia_map, \n       aes(x = long, y = lat, group = group)) +\n  geom_polygon(fill = \"white\", color = \"black\") + \n  geom_point(data = all_frogs,\n             aes(x = decimalLongitude, \n                 y = decimalLatitude, \n                 color = genus),\n             alpha = 0.5,\n             size = 1,\n             inherit.aes = FALSE) +\n  theme_minimal() +\n  theme(\n        # legend.position = \"none\",\n        axis.title.x = element_blank(),   # remove x axis title\n        axis.title.y = element_blank(),   # remove y axis title\n        axis.text.x  = element_blank(),   # remove x axis text\n        axis.text.y  = element_blank(),   # remove y axis text\n        axis.ticks   = element_blank(),   # remove ticks\n        panel.grid   = element_blank()    # remove grid lines\n      ) +\n  labs(title = \"Frogs in Australia\",\n       color = \"Select:\") + \n  scale_color_manual(values = mycols) +\n  facet_wrap(~season)\n\nggplotly(p, tooltip = NULL)"
+  },
+  {
+    "objectID": "tidytuesday/henley_passport.html",
+    "href": "tidytuesday/henley_passport.html",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "",
+    "text": "Thanks to Brenden Smith and Jen Richmond from the tidytuesday community for curating this week’s 2025 dataset from the Henley Passport Index, which measures the number of countries each passport allows its holders to enter visa-free, including visa-on-arrival and electronic travel authorization (ETA) access."
+  },
+  {
+    "objectID": "tidytuesday/henley_passport.html#library",
+    "href": "tidytuesday/henley_passport.html#library",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Library",
+    "text": "Library\nThe following are the libraries used in the analysis.\n\nlibrary(tidyverse)\nlibrary(jsonlite)\n\n# Plotting\nlibrary(plotly)\nlibrary(sf)\nlibrary(rnaturalearth)\nlibrary(rnaturalearthdata)"
+  },
+  {
+    "objectID": "tidytuesday/henley_passport.html#data-importation",
+    "href": "tidytuesday/henley_passport.html#data-importation",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Data Importation",
+    "text": "Data Importation\nImporting the data from the tidytuesday repo\n\ncountry_lists = read_csv(\"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-09/country_lists.csv\")\nrank_by_year = read_csv(\"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-09/rank_by_year.csv\")"
+  },
+  {
+    "objectID": "tidytuesday/henley_passport.html#graphing",
+    "href": "tidytuesday/henley_passport.html#graphing",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Graphing",
+    "text": "Graphing\nFirst, we will join our visa data with the mapping (geospatial) data to prepare it for visualization.\n\nworld &lt;- ne_countries(scale = \"medium\", returnclass = \"sf\")\nworld_data &lt;- world |&gt; \n  left_join(travel_perms, by = c(\"iso_a2_eh\" = \"to\"))\n\nI will now create a function that generates the visa requirements map for any country. The function takes two parameters: the country code to filter the data and the demonym for the country, which is used in the graph title. This approach is flexible and would also be very useful if I wanted to integrate it into a Shiny app.\n\n#' Create an interactive visa requirements map for a given country\n#'\n#' @param code Character. ISO country code to filter the visa data\n#' @param demonym Character. Nationality used in the graph title\n#' \n#' @return A Plotly interactive map\n#' @example plot_visa_connections(\"MX\", \"Mexicans\")\n#' \nplot_visa_connections &lt;- function(code, demonym) {\n  plot_ly() |&gt; \n    add_sf(\n      data = world_data |&gt; \n        filter(from == code),\n      split = ~iso_a2_eh,\n      color = ~visa_type,\n      colors = c(\n        \"Domestic Travel\" = \"#1f77b4\",\n        \"Easy Access\" = \"#2ca02c\",\n        \"Visa Required\" = \"#d62728\"\n      ),\n      text = ~paste(\"&lt;b&gt;Country:&lt;/b&gt;\", to_name, \n                    \"&lt;b&gt;&lt;br&gt;Visa:&lt;/b&gt;\", visa_type),\n      hoveron = \"fills\",\n      hoverinfo = \"text\" \n    ) |&gt; \n    layout(title = paste0(\"&lt;br&gt;Visa Connections For &lt;b&gt;\", \n                          demonym, \"&lt;/b&gt;\"),\n           showlegend = FALSE)\n}"
+  },
+  {
+    "objectID": "tidytuesday/henley_passport.html#data-manipulation",
+    "href": "tidytuesday/henley_passport.html#data-manipulation",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Data Manipulation",
+    "text": "Data Manipulation\nWe first clean the data to get it into a tidy format. Specifically, we want to create from and to columns to capture the direction of travel, along with the visa requirements for that direction. This structure will make it easier to analyze and visualize visa connections between countries.\n\ntravel_perms_no_domesitc &lt;- country_lists |&gt; \n  pivot_longer(\n    cols = c(visa_required, visa_online, visa_on_arrival, \n             visa_free_access, electronic_travel_authorisation),\n    names_to = \"visa_type\",\n    values_to = \"json_str\") |&gt; \n  mutate(json_parsed = map(json_str, ~ fromJSON(.)[[1]])) |&gt; \n  unnest(json_parsed, names_sep = \"_\") |&gt; \n  select(-json_str) |&gt; \n  select(from = code, from_name = country,\n         to = json_parsed_code, to_name = json_parsed_name,\n         visa_type) |&gt; \n  mutate(visa_type = case_when(\n    visa_type %in% c(\"visa_required\",\n                   \"visa_online\",\n                   \"visa_on_arrival\") ~ \"Visa Required\",\n    visa_type %in% c(\"visa_free_access\",\n                     \"electronic_travel_authorisation\") ~ \"Easy Access\")) |&gt; \n  mutate(from = ifelse(from_name == \"Namibia\", \"NA\", from)) |&gt; \n  distinct()\ntravel_perms_no_domesitc |&gt; head(3)\n\n# A tibble: 3 × 5\n  from  from_name             to    to_name     visa_type    \n  &lt;chr&gt; &lt;chr&gt;                 &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;        \n1 PS    Palestinian Territory AF    Afghanistan Visa Required\n2 PS    Palestinian Territory DZ    Algeria     Visa Required\n3 PS    Palestinian Territory AD    Andorra     Visa Required\n\n\nBefore continuing, we need to ensure that the dataset includes self-to-self observations, so that each country’s visa connections include itself. This way, the country of origin will also appear on the map.\n\nhome_countries &lt;- travel_perms_no_domesitc |&gt; \n  select(from, from_name) |&gt; \n  distinct() |&gt; \n  mutate(visa_type = \"Domestic Travel\",\n         to = from,\n         to_name = from_name)\n\ntravel_perms &lt;- travel_perms_no_domesitc |&gt; rbind(home_countries)"
+  },
+  {
+    "objectID": "tidytuesday/henley_passport.html#plotting",
+    "href": "tidytuesday/henley_passport.html#plotting",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Plotting",
+    "text": "Plotting\nThe following graph shows the visa requirements for entry based on your country of origin. “Easy Access” countries include those that allow either visa-free travel or entry via an electronic travel authorization (ETA) for the specified nationality. “Visa Required” indicates countries where travelers must obtain a visa before entry.\n\nplot_visa_connections(\"MX\", \"Mexicans\")\n\n\n\n\n\n\nplot_visa_connections(\"CA\", \"Canadians\")\n\n\n\n\n\n\nplot_visa_connections(\"BR\", \"Brazilians\")"
   }
 ]

@@ -46,6 +46,9 @@ The following is a list of some TidyTuesday projects I’ve completed. While I d
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
 
+### September '25
+-   **September 9, 2024** <a href="tidytuesday/henley_passport.qmd" class="chip-link">International Visa Requirments 🛂🌐</a>
+
 ### December '24
 
 -   **December 3, 2024** <a href="tidytuesday/highway_traffic_flow.qmd" class="chip-link">ISO Country Codes 🚙🚛</a>

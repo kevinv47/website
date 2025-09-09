@@ -1,0 +1,137 @@
+---
+title: "Netflix Movies & Shows"
+subtitle: "Vizualizing the Netflix Catalog"
+date: "July 29, 2025"
+author: "Kevin Valdivia"
+format: 
+  html:
+    code-fold: true
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+The data this week will be exploring TV show and movie viewing data from Netflix. Netflix has released these [engagment reports](https://about.netflix.com/en/news/what-we-watched-the-first-half-of-2025) since 2023.
+
+In this tidytuesday we will make a few graphs to display some of the changes in what is viewed overtime.
+
+## Libraries
+
+Loading packages for the data manipulation and vizulization.
+
+```{r}
+library(tidyverse)
+library(plotly)
+library(lubridate)
+library(scales)
+```
+
+## Data Importation
+
+Importating the data from the [tidytuesday repo](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-07-29/readme.md).
+
+```{r}
+movies <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/movies.csv')
+shows <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/shows.csv')
+```
+
+# Data Manipulation
+First we clean up the data so that the unit of observation is a movie and the sum of views and watch hours across the years.
+
+```{r}
+sum_movies <- movies |>
+  group_by(title, release_date) |>
+  filter(!is.na(release_date)) |>
+  summarise(sum_views = sum(views),
+            sum_hours = sum(hours_viewed)) |>
+  mutate(year = year(ymd(release_date)),
+         year_groups = factor(case_when(
+           year < 2017 ~ "2013 - 2016",
+           year >= 2017 & year < 2020 ~ "2017 - 2019",
+           year >= 2020 & year < 2023 ~ "2020 - 2023",
+           TRUE ~ "2024 - 2025"
+         ), levels = c("2013 - 2016", "2017 - 2019", 
+                       "2020 - 2023", "2024 - 2025"))) |>
+  select(-release_date) |>
+  arrange(desc(sum_views))
+
+head(sum_movies)
+```
+
+## Graphing
+
+### Scatter plot
+
+```{r}
+sum_movies |>
+  head(2000)|>
+  ggplot(aes(sum_views, sum_hours, color = year_groups)) +
+  geom_point(alpha = 0.2) +
+  scale_x_log10(labels = label_number(scale_cut = cut_short_scale())) +
+  scale_y_log10(labels = label_number(scale_cut = cut_short_scale())) +
+  facet_wrap(~year_groups) +
+  scale_color_brewer(palette = "Set2") +
+  labs(title = "Views of a shows agaisnt the hours accumalated",
+       x = "Number of Views",
+       y = "Number of Hours",
+       color = "Release Date") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+yearly_data <- sum_movies |>
+  group_by(year) |>
+  summarize(views = sum(sum_views),
+            hours = sum(sum_hours)) |>
+  pivot_longer(col = c(hours, views),
+               values_to = "value",
+               names_to = "type") |>
+  filter(year < 2025)
+
+yearly_data |>
+  ggplot(aes(factor(year), value, 
+             color = ifelse(type == "hours", "Watch Hours", "Number of Views"),
+             fill = ifelse(type == "hours", "Watch Hours", "Number of Views"))) +
+  geom_col(alpha = 0.5) +
+  scale_y_continuous(
+    trans = "log10",
+    labels = label_number(scale_cut = cut_short_scale()))+
+  theme_minimal() +
+    scale_color_manual(values = c(
+    "Watch Hours" = "#1f77b4",      
+    "Number of Views" = "#ff7f0e"  
+  )) +
+  scale_fill_manual(values = c(
+    "Watch Hours" = "#1f77b4",
+    "Number of Views" = "#ff7f0e"
+  )) +
+  labs(title = "Netflix Views and Hours By Release Date Years",
+       y = "",
+       x = "",
+       color = "",
+       fill = "") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank() 
+  )
+```
+
+```{r, include=FALSE}
+name_shows <- shows |>
+  group_by(title) |>
+  summarise(sum_views = sum(views),
+            sum_hours = sum(hours_viewed)) |>
+  mutate(season = str_match(title, "(?:: Season) ([0-9]+)")[,2]) |>
+  filter(!is.na(season) & parse_integer(season) < 10 & parse_integer(season) > 0)
+
+name_shows |>
+  ggplot(aes(x = factor(season), y = sum_views)) +
+  geom_boxplot() +
+  facet_grid(~season, scales = "free_x") 
+  # scale_y_log10(labels = label_number(scale_cut = cut_short_scale())) +
+  # geom_jitter(alpha = 0.1, width = 2) 
+
+```

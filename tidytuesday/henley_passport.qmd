@@ -1,0 +1,133 @@
+---
+title: "Henley Passport DatasetVisa Requirements by Country of Origin"
+subtitle: "Henley Passport Dataset"
+date: "Sept 9, 2025"
+author: "Kevin Valdivia"
+output: 
+  html_document:
+    code_folding: show
+toc: false         # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+Thanks to Brenden Smith and Jen Richmond from the [tidytuesday](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-09/readme.md) community for curating this week’s 2025 dataset from the Henley Passport Index, which measures the number of countries each passport allows its holders to enter visa-free, including visa-on-arrival and electronic travel authorization (ETA) access.
+
+## Library
+The following are the libraries used in the analysis.
+```{r}
+library(tidyverse)
+library(jsonlite)
+
+# Plotting
+library(plotly)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+```
+
+## Data Importation
+Importing the data from the tidytuesday repo
+```{r}
+country_lists = read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-09/country_lists.csv")
+rank_by_year = read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-09/rank_by_year.csv")
+
+```
+## Data Manipulation
+We first clean the data to get it into a tidy format. Specifically, we want to create from and to columns to capture the direction of travel, along with the visa requirements for that direction. This structure will make it easier to analyze and visualize visa connections between countries.
+```{r}
+#| fold: TRUE
+travel_perms_no_domesitc <- country_lists |> 
+  pivot_longer(
+    cols = c(visa_required, visa_online, visa_on_arrival, 
+             visa_free_access, electronic_travel_authorisation),
+    names_to = "visa_type",
+    values_to = "json_str") |> 
+  mutate(json_parsed = map(json_str, ~ fromJSON(.)[[1]])) |> 
+  unnest(json_parsed, names_sep = "_") |> 
+  select(-json_str) |> 
+  select(from = code, from_name = country,
+         to = json_parsed_code, to_name = json_parsed_name,
+         visa_type) |> 
+  mutate(visa_type = case_when(
+    visa_type %in% c("visa_required",
+                   "visa_online",
+                   "visa_on_arrival") ~ "Visa Required",
+    visa_type %in% c("visa_free_access",
+                     "electronic_travel_authorisation") ~ "Easy Access")) |> 
+  mutate(from = ifelse(from_name == "Namibia", "NA", from)) |> 
+  distinct()
+travel_perms_no_domesitc |> head(3)
+```
+
+Before continuing, we need to ensure that the dataset includes self-to-self observations, so that each country’s visa connections include itself. This way, the country of origin will also appear on the map.
+```{r}
+home_countries <- travel_perms_no_domesitc |> 
+  select(from, from_name) |> 
+  distinct() |> 
+  mutate(visa_type = "Domestic Travel",
+         to = from,
+         to_name = from_name)
+
+travel_perms <- travel_perms_no_domesitc |> rbind(home_countries)
+```
+
+
+
+## Graphing
+First, we will join our visa data with the mapping (geospatial) data to prepare it for visualization.
+```{r}
+world <- ne_countries(scale = "medium", returnclass = "sf")
+world_data <- world |> 
+  left_join(travel_perms, by = c("iso_a2_eh" = "to"))
+```
+I will now create a function that generates the visa requirements map for any country. The function takes two parameters: the country code to filter the data and the demonym for the country, which is used in the graph title. This approach is flexible and would also be very useful if I wanted to integrate it into a Shiny app.
+```{r}
+#| fold: true
+#' Create an interactive visa requirements map for a given country
+#'
+#' @param code Character. ISO country code to filter the visa data
+#' @param demonym Character. Nationality used in the graph title
+#' 
+#' @return A Plotly interactive map
+#' @example plot_visa_connections("MX", "Mexicans")
+#' 
+plot_visa_connections <- function(code, demonym) {
+  plot_ly() |> 
+    add_sf(
+      data = world_data |> 
+        filter(from == code),
+      split = ~iso_a2_eh,
+      color = ~visa_type,
+      colors = c(
+        "Domestic Travel" = "#1f77b4",
+        "Easy Access" = "#2ca02c",
+        "Visa Required" = "#d62728"
+      ),
+      text = ~paste("<b>Country:</b>", to_name, 
+                    "<b><br>Visa:</b>", visa_type),
+      hoveron = "fills",
+      hoverinfo = "text" 
+    ) |> 
+    layout(title = paste0("<br>Visa Connections For <b>", 
+                          demonym, "</b>"),
+           showlegend = FALSE)
+}
+```
+
+## Plotting
+The following graph shows the visa requirements for entry based on your country of origin. “Easy Access” countries include those that allow either visa-free travel or entry via an electronic travel authorization (ETA) for the specified nationality. “Visa Required” indicates countries where travelers must obtain a visa before entry.
+
+```{r}
+plot_visa_connections("MX", "Mexicans")
+```
+
+```{r}
+plot_visa_connections("CA", "Canadians")
+```
+
+```{r}
+plot_visa_connections("BR", "Brazilians")
+```
+

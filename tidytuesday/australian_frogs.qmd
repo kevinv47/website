@@ -1,0 +1,93 @@
+---
+title: "Australian Frogs"
+subtitle: "INSERT SUBTITLE"
+date: "Sept 2, 2025"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+## Importing Data
+
+```{r}
+frogID_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')
+frog_names <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')
+```
+
+## Libraries
+
+```{r}
+library(tidyverse)
+library(maps)
+library(Polychrome)
+library(plotly)
+library(RColorBrewer)
+```
+
+## Data Wrangling
+
+Join all the frog data
+
+```{r}
+all_frogs <- frogID_data |>
+  left_join(frog_names, by = "scientificName") |>
+  mutate(month = month(eventDate),
+         season = case_when(
+             month %in% c(12, 1, 2) ~ "Winter",
+             month %in% c(3, 4, 5) ~ "Spring",
+             month %in% c(6, 7, 8) ~ "Summer",
+             month %in% c(9, 10, 11) ~ "Fall"),
+         genus = str_extract(scientificName, "^\\w+")
+         )
+```
+
+```{r}
+top_frogs <- all_frogs |>
+  group_by(genus) |>
+  summarize(n = n()) |>
+  arrange(desc(n)) |>
+  head(7) |>
+  pull(genus)
+
+all_frogs <- all_frogs |>
+  filter(genus %in% c("Uperoleia", "Pseudophryne", "Mixophyes"))
+
+mycols <- createPalette(7, c("#E41A1C", "#377EB8", "#4DAF4A"))
+names(mycols) <- all_frogs |> select(genus) |> unique() |> pull()
+```
+
+## Data Vizualizations
+
+```{r}
+australia_map <- map(database = "world", region = "Australia")
+
+p <- ggplot(data = australia_map, 
+       aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill = "white", color = "black") + 
+  geom_point(data = all_frogs,
+             aes(x = decimalLongitude, 
+                 y = decimalLatitude, 
+                 color = genus),
+             alpha = 0.5,
+             size = 1,
+             inherit.aes = FALSE) +
+  theme_minimal() +
+  theme(
+        # legend.position = "none",
+        axis.title.x = element_blank(),   # remove x axis title
+        axis.title.y = element_blank(),   # remove y axis title
+        axis.text.x  = element_blank(),   # remove x axis text
+        axis.text.y  = element_blank(),   # remove y axis text
+        axis.ticks   = element_blank(),   # remove ticks
+        panel.grid   = element_blank()    # remove grid lines
+      ) +
+  labs(title = "Frogs in Australia",
+       color = "Select:") + 
+  scale_color_manual(values = mycols) +
+  facet_wrap(~season)
+
+ggplotly(p, tooltip = NULL)
+```
