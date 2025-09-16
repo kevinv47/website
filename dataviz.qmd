@@ -47,6 +47,7 @@ The following is a list of some TidyTuesday projects I’ve completed. While I d
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
 
 ### September '25
+-   **September 12, 2024** <a href="tidytuesday/recipe_data.qmd" class="chip-link">Recipe Data Table 🍲🍳️</a>
 -   **September 9, 2024** <a href="tidytuesday/henley_passport.qmd" class="chip-link">International Visa Requirments 🛂✈️</a>
 -   **September 2, 2024** <a href="tidytuesday/australian_frogs.qmd" class="chip-link">International Visa Requirments 🇦🇺🐸</a>
 

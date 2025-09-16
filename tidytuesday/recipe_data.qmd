@@ -1,0 +1,108 @@
+---
+title: "Recipes"
+subtitle: "Recipe Catalog From Allrecipes.com"
+date: "Sept 16, 2025"
+author: "Kevin Valdivia"
+format: html
+  # html:
+  #   code-fold: true
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+This week, we’ll be using a flavorful dataset: a curated collection of recipes sourced from [Allrecipes.com](https://www.allrecipes.com). The data is available through the tastyR package, which brings together recipe information for analysis in R. This weeks dataset was curated by [Brian Mubia](https://github.com/owlzyseyes).
+
+## Libraries
+
+Loading packages for the data manipulation and vizulization.
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(DT)
+
+# Font Awesome for half stars
+library(fontawesome)
+fontawesome::fa_html_dependency()
+
+```
+
+## Data Importation
+
+Importating the data from the [tidytuesday repo](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-16/readme.md).
+
+```{r}
+all_recipes <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-16/all_recipes.csv')
+cuisines <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-16/cuisines.csv')
+```
+
+## Interactive Table
+
+CSS code necessary for the star ratings.
+
+```{css}
+.star {
+  font-size: 16px;
+}
+.star.full {
+  color: blue;
+}
+.star.empty {
+  color: lightgray;
+}
+.star.half {
+  background: linear-gradient(90deg, blue 50%, lightgray 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+```
+
+We will first clean up the data to make it a bit more readable and in the correct format for the DT table.
+
+```{r}
+df <- cuisines |> 
+  mutate(name_link = paste0('<a href = "',url,'" target="_blank">',name,'</a>')) |> 
+  mutate(full = floor(avg_rating + 0.25),
+         half = ifelse((avg_rating + 0.25 - full) >= 0.5, 1, 0),
+         empty = 5 - full - half) |> 
+  mutate(stars = ifelse(is.na(avg_rating), NA,
+                              paste0( 
+    strrep('<span style="color: blue;">&#9733;</span>', full),   # ★
+    strrep('<span style="color: blue;"><i class="fa-solid fa-star-half"></i></span>', half),
+    strrep('<span style="color: lightgray;">&#9733;</span>', empty) # ☆ in grey
+  
+))) |> 
+  select(Dish = name_link, 
+         Cuisine = country, 
+         stars, avg_rating, 
+         total_ratings, 
+         calories, fat, carbs, protein, servings,
+         prep_time, cook_time) |> 
+  clean_names(case = "title")
+```
+
+Displaying the cuisine data in a DT table.
+
+```{r}
+df |> 
+  DT::datatable(escape = FALSE,
+                class = 'display',
+                extensions = 'Buttons',
+                rownames = FALSE,
+                filter = "top",
+                options = list(
+                  dom = 'Bfrtip',
+                  buttons = list(
+                    list(extend = 'colvis', 
+                         text = 'Show Nutritional Info',
+                         columns = c(5:9)),
+                    list(extend = 'colvis', 
+                         text = 'Show Cook Info',
+                         columns = c(10:11))  
+                    ),
+                  columnDefs = list(list(visible = FALSE,
+                                         targets = c(5:11)))
+                ))
+```
