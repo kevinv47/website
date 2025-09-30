@@ -1,0 +1,67 @@
+---
+title: "Crane Migration in Sweden"
+subtitle: "Seasonal variations overtime"
+date: "Sept 30, 2025"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+This week tidytuesday will exploring Crane Observations at Lake Hornborgasjön, Sweden [Naturum website](https://www.hornborga.com/naturen/transtatistik/).
+
+## Libraries
+
+```{r}
+library(tidyverse)
+```
+
+# Importing Data
+The dataset is pulled from the [tidy tuesday repo](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-30/readme.md) and was curate by [Carl Börstell](https://github.com/borstell).
+```{r}
+cranes <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-30/cranes.csv')
+```
+
+## Data Wrangling
+Changing the date variables to be compatible with ggploting.
+```{r}
+cranes_adapted <- cranes |> 
+  mutate(year = year(date),
+         md = mdy(paste0(format(date, "%m-%d"), "2000", sep = "-")))
+
+```
+
+## Graphing
+Creating a plot to understnad the seasonal variations in crane spottings. We notice that more cranes have been observed in recent years.
+```{r}
+cranes_adapted |> 
+  ggplot(aes(x = year, y = md, color = observations)) + 
+  geom_segment(aes(x = year - 0.3, xend = year + 0.3, y = md, yend = md)) +
+  scale_color_gradient(low = "lightyellow", high = "#CC5500") +
+  guides(color = guide_colorbar(
+    direction = "horizontal",   # horizontal
+    barwidth = 10,              # horizontal length
+    barheight = 1,              # vertical thickness
+    title.position = "top"
+  )) +
+  theme_minimal() + 
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_line(linetype = "dashed"),
+        panel.grid.major.x = element_line(linetype = "solid"),
+        legend.position = c(0.77, 0.5))+
+  labs(x = "", y = "", color = "Cranes Observed",
+       title = "Cranes Observed In Sweden For Fall & Spring Seasons",
+       subtitle = "Grey lines were cancelled days for counting") + 
+  scale_y_date(
+    breaks = ymd(c("2000-03-01", "2000-04-01", "2000-05-01",
+                   "2000-06-01", "2000-07-01", "2000-08-01",
+                   "2000-09-01", "2000-10-01", "2000-11-01")),
+    date_labels = "%b") +
+  scale_x_continuous(breaks = seq(1995, 2025, by = 5))
+```
+
+
+
+

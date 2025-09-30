@@ -1131,7 +1131,7 @@
     "href": "dataviz.html",
     "title": "Vizualizations With Python",
     "section": "",
-    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nSeptember ’25\n\nSeptember 12, 2024 Recipe Data Table 🍲🍳️\nSeptember 9, 2024 International Visa Requirments 🛂✈️\nSeptember 2, 2024 International Visa Requirments 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2024 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nSeptember ’25\n\nSeptember 30, 2024 Crane Migration in Sweden 𓅥🇸🇪️\nSeptember 12, 2024 Recipe Data Table 🍲🍳️\nSeptember 9, 2024 International Visa Requirments 🛂✈️\nSeptember 2, 2024 International Visa Requirments 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2024 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/imo.html#data-prep",
@@ -1440,5 +1440,33 @@
     "title": "Recipes",
     "section": "Interactive Table",
     "text": "Interactive Table\nCSS code necessary for the star ratings.\n\n.star {\n  font-size: 16px;\n}\n.star.full {\n  color: blue;\n}\n.star.empty {\n  color: lightgray;\n}\n.star.half {\n  background: linear-gradient(90deg, blue 50%, lightgray 50%);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n}\n\n\nWe will first clean up the data to make it a bit more readable and in the correct format for the DT table.\n\ndf &lt;- cuisines |&gt; \n  mutate(name_link = paste0('&lt;a href = \"',url,'\" target=\"_blank\"&gt;',name,'&lt;/a&gt;')) |&gt; \n  mutate(full = floor(avg_rating + 0.25),\n         half = ifelse((avg_rating + 0.25 - full) &gt;= 0.5, 1, 0),\n         empty = 5 - full - half) |&gt; \n  mutate(stars = ifelse(is.na(avg_rating), NA,\n                              paste0( \n    strrep('&lt;span style=\"color: blue;\"&gt;&#9733;&lt;/span&gt;', full),   # ★\n    strrep('&lt;span style=\"color: blue;\"&gt;&lt;i class=\"fa-solid fa-star-half\"&gt;&lt;/i&gt;&lt;/span&gt;', half),\n    strrep('&lt;span style=\"color: lightgray;\"&gt;&#9733;&lt;/span&gt;', empty) # ☆ in grey\n  \n))) |&gt; \n  select(Dish = name_link, \n         Cuisine = country, \n         stars, avg_rating, \n         total_ratings, \n         calories, fat, carbs, protein, servings,\n         prep_time, cook_time) |&gt; \n  clean_names(case = \"title\")\n\nDisplaying the cuisine data in a DT table.\n\ndf |&gt; \n  DT::datatable(escape = FALSE,\n                class = 'display',\n                extensions = 'Buttons',\n                rownames = FALSE,\n                filter = \"top\",\n                options = list(\n                  dom = 'Bfrtip',\n                  buttons = list(\n                    list(extend = 'colvis', \n                         text = 'Show Nutritional Info',\n                         columns = c(5:9)),\n                    list(extend = 'colvis', \n                         text = 'Show Cook Info',\n                         columns = c(10:11))  \n                    ),\n                  columnDefs = list(list(visible = FALSE,\n                                         targets = c(5:11)))\n                ))"
+  },
+  {
+    "objectID": "tidytuesday/cranes_sweden.html",
+    "href": "tidytuesday/cranes_sweden.html",
+    "title": "Crane Migration in Sweden",
+    "section": "",
+    "text": "This week tidytuesday will exploring Crane Observations at Lake Hornborgasjön, Sweden Naturum website."
+  },
+  {
+    "objectID": "tidytuesday/cranes_sweden.html#libraries",
+    "href": "tidytuesday/cranes_sweden.html#libraries",
+    "title": "Crane Migration in Sweden",
+    "section": "Libraries",
+    "text": "Libraries\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/cranes_sweden.html#data-wrangling",
+    "href": "tidytuesday/cranes_sweden.html#data-wrangling",
+    "title": "Crane Migration in Sweden",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nChanging the date variables to be compatible with ggploting.\n\ncranes_adapted &lt;- cranes |&gt; \n  mutate(year = year(date),\n         md = mdy(paste0(format(date, \"%m-%d\"), \"2000\", sep = \"-\")))"
+  },
+  {
+    "objectID": "tidytuesday/cranes_sweden.html#graphing",
+    "href": "tidytuesday/cranes_sweden.html#graphing",
+    "title": "Crane Migration in Sweden",
+    "section": "Graphing",
+    "text": "Graphing\nCreating a plot to understnad the seasonal variations in crane spottings. We notice that more cranes have been observed in recent years.\n\ncranes_adapted |&gt; \n  ggplot(aes(x = year, y = md, color = observations)) + \n  geom_segment(aes(x = year - 0.3, xend = year + 0.3, y = md, yend = md)) +\n  scale_color_gradient(low = \"lightyellow\", high = \"#CC5500\") +\n  guides(color = guide_colorbar(\n    direction = \"horizontal\",   # horizontal\n    barwidth = 10,              # horizontal length\n    barheight = 1,              # vertical thickness\n    title.position = \"top\"\n  )) +\n  theme_minimal() + \n  theme(panel.grid.minor.y = element_blank(),\n        panel.grid.minor.x = element_blank(),\n        panel.grid.major.y = element_line(linetype = \"dashed\"),\n        panel.grid.major.x = element_line(linetype = \"solid\"),\n        legend.position = c(0.77, 0.5))+\n  labs(x = \"\", y = \"\", color = \"Cranes Observed\",\n       title = \"Cranes Observed In Sweden For Fall & Spring Seasons\",\n       subtitle = \"Grey lines were cancelled days for counting\") + \n  scale_y_date(\n    breaks = ymd(c(\"2000-03-01\", \"2000-04-01\", \"2000-05-01\",\n                   \"2000-06-01\", \"2000-07-01\", \"2000-08-01\",\n                   \"2000-09-01\", \"2000-10-01\", \"2000-11-01\")),\n    date_labels = \"%b\") +\n  scale_x_continuous(breaks = seq(1995, 2025, by = 5))"
   }
 ]
