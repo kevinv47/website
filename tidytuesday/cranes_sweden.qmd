@@ -9,7 +9,8 @@ execute:
   warning: false
   message: false
 ---
-This week tidytuesday will exploring Crane Observations at Lake Hornborgasjön, Sweden [Naturum website](https://www.hornborga.com/naturen/transtatistik/).
+
+This weeks tidytuesday will explore Crane Observations at Lake Hornborgasjön, Sweden [Naturum website](https://www.hornborga.com/naturen/transtatistik/).
 
 ## Libraries
 
@@ -18,13 +19,17 @@ library(tidyverse)
 ```
 
 # Importing Data
+
 The dataset is pulled from the [tidy tuesday repo](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-30/readme.md) and was curate by [Carl Börstell](https://github.com/borstell).
+
 ```{r}
 cranes <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-30/cranes.csv')
 ```
 
 ## Data Wrangling
+
 Changing the date variables to be compatible with ggploting.
+
 ```{r}
 cranes_adapted <- cranes |> 
   mutate(year = year(date),
@@ -33,7 +38,9 @@ cranes_adapted <- cranes |>
 ```
 
 ## Graphing
+
 Creating a plot to understnad the seasonal variations in crane spottings. We notice that more cranes have been observed in recent years.
+
 ```{r}
 cranes_adapted |> 
   ggplot(aes(x = year, y = md, color = observations)) + 
@@ -61,7 +68,3 @@ cranes_adapted |>
     date_labels = "%b") +
   scale_x_continuous(breaks = seq(1995, 2025, by = 5))
 ```
-
-
-
-

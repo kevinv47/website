@@ -1,0 +1,95 @@
+---
+title: "Sherlock Holmes Dataset"
+subtitle: "Sentiment Analysis"
+date: "Nov 18, 2025"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+This week [tidytuesday](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-11-18/readme.md) will explore  the complete line-by-line text of the Sherlock Holmes stories and novels from the R package `[sherlock](https://github.com/EmilHvitfeldt/sherlock)`.
+
+Libraries used for the analysis
+```{r}
+library(tidyverse)
+library(tidytext)
+library(tidytuesdayR)
+library(rvest)
+library(tools)
+```
+
+Data imported from the tidytuesday repo
+```{r}
+holmes <- tidytuesdayR::tt_load('2025-11-18')$holmes |> 
+  mutate(book = tolower(book)) |> 
+  mutate(book = str_squish(book))
+```
+
+### Data Mainpulation
+Scraping from wikipedia to get the publishing year for each of the books to be used in the plot.
+```{r}
+holmes_wiki <- read_html("https://en.wikipedia.org/wiki/Canon_of_Sherlock_Holmes") |> 
+  html_elements("p+ ol li , p+ ol a") |> 
+  html_text() |> 
+  as_tibble() |> 
+  filter(!is.na(str_extract(value, "\\d{4}"))) |> 
+  mutate(date = str_extract(value, "\\d{4}")) |> 
+  mutate(title = str_extract(value, '^"?([^"(]+)"?')) |> 
+  mutate(title = str_replace_all(title, '"', '')) |> 
+  mutate(title = tolower(title)) |> 
+  mutate(title = str_squish(title))
+```
+
+Joining the dataset of the publishing year to the dataset with the sentiment analysis.
+```{r}
+holmes <- holmes |> 
+  left_join(holmes_wiki, by = c("book" = "title"))
+```
+
+Pulling the sentiments from tidytext.
+```{r}
+afinn_sentiments <- tidytext::get_sentiments("afinn") 
+nrc_sentiments <- tidytext::get_sentiments("nrc") |> 
+  filter(sentiment != "positive", sentiment != "negative")
+```
+
+Joining the text with the holmes dataset.
+```{r}
+sent_data <- holmes |> 
+  tidytext::unnest_tokens(words, text) |> 
+  anti_join(stop_words, by = c("words" = "word")) |> 
+  left_join(nrc_sentiments, by = c("words" = "word"), relationship = "many-to-many") |> 
+  group_by(date, sentiment) |> 
+  summarize(n = n()) |> 
+  filter(!is.na(sentiment)) |> 
+  mutate(prop = n / sum(n)) |> 
+  mutate(date = as.numeric(date))
+```
+### Data Viz
+Plot showing the changes in the sentiment of the books overtime.
+```{r, fig.width=10, fig.height=5}
+sent_data |> 
+  ggplot(aes(x = date, y = prop)) + 
+  geom_line(aes(color = sentiment), size = 1.2) + 
+  geom_point(shape = 21, fill = "white", aes(color = sentiment), size = 3, alpha = 0.8) + 
+  scale_color_brewer(palette = "Dark2", 
+                     labels = function(x) toTitleCase(x)) +
+  labs(title = "Proportion of Each Sentiment Over Time",
+       subtitle = 
+         "Tracking sentiment changes in the Sherlock Holmes novels by published year",
+       y = "Proportion", x = "Year") + 
+  
+  theme_minimal(base_size = 15) + 
+  theme(legend.title = element_blank(),
+        plot.title = element_text(face = "bold", size = 16),
+        plot.subtitle = element_text(size = 12),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_text(size = 14))
+
+```
+
+
+
+

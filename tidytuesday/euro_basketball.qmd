@@ -1,0 +1,50 @@
+---
+title: "EuroLeague Basketball"
+subtitle: "Seasonal variations overtime"
+date: "Oct 7, 2025"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+This week tidytuesday will explore EuroLeague Basketball, the premier men’s club basketball competition in Europe.
+
+## Libraries
+
+```{r}
+library(tidyverse)
+```
+
+# Importing Data
+
+This data comes from [EuroleagueBasketball R package](https://github.com/natanast/EuroleagueBasketball).
+
+```{r}
+euroleague_basketball <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-07/euroleague_basketball.csv')
+```
+
+## Preparing The Data
+
+The goal is to plot as much of the data as possible.
+
+```{r}
+euro_basketball_cleaned <- euroleague_basketball |> 
+  mutate(capacity = str_split(Capacity, ", ")) |> 
+  unnest(capacity) |> 
+  mutate(capacity = as.numeric(str_replace_all(capacity, ",", "")),
+         last_rank = as.numeric(str_extract(`Last season`, "\\d+"))) |> 
+  select(Team, Country, capacity, last_rank, 
+         FinalFour_Appearances, Titles_Won, everything())
+
+```
+
+## GGally
+
+```{r, eval=FALSE}
+library(GGally)
+
+ggparcoord(data)
+```

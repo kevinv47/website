@@ -46,14 +46,19 @@ The following is a list of some TidyTuesday projects I’ve completed. While I d
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
 
+
+### November '25
+-   **November 18, 2025** <a href="tidytuesday/holmes.qmd"
+class="chip-link">Sherlock Holmes Sentiment 🕵🏽🔍️</a>
+
 ### September '25
--   **September 30, 2024** <a href="tidytuesday/cranes_sweden.qmd" class="chip-link">Crane Migration in Sweden 𓅥🇸🇪️</a>
--   **September 12, 2024** <a href="tidytuesday/recipe_data.qmd" class="chip-link">Recipe Data Table 🍲🍳️</a>
--   **September 9, 2024** <a href="tidytuesday/henley_passport.qmd" class="chip-link">International Visa Requirments 🛂✈️</a>
--   **September 2, 2024** <a href="tidytuesday/australian_frogs.qmd" class="chip-link">International Visa Requirments 🇦🇺🐸</a>
+-   **September 30, 2025** <a href="tidytuesday/cranes_sweden.qmd" class="chip-link">Crane Migration in Sweden 𓅥🇸🇪️</a>
+-   **September 12, 2025** <a href="tidytuesday/recipe_data.qmd" class="chip-link">Recipe Data Table 🍲🍳️</a>
+-   **September 9, 2025** <a href="tidytuesday/henley_passport.qmd" class="chip-link">International Visa Requirments 🛂✈️</a>
+-   **September 2, 2025** <a href="tidytuesday/australian_frogs.qmd" class="chip-link">International Visa Requirments 🇦🇺🐸</a>
 
 ### July '25
--   **July 29, 2024** <a href="tidytuesday/netflix.qmd" class="chip-link">Netflix Catalog 🎬🍿️</a>
+-   **July 29, 2025* <a href="tidytuesday/netflix.qmd" class="chip-link">Netflix Catalog 🎬🍿️</a>
 
 ### December '24
 

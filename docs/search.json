@@ -1131,7 +1131,7 @@
     "href": "dataviz.html",
     "title": "Vizualizations With Python",
     "section": "",
-    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nSeptember ’25\n\nSeptember 30, 2024 Crane Migration in Sweden 𓅥🇸🇪️\nSeptember 12, 2024 Recipe Data Table 🍲🍳️\nSeptember 9, 2024 International Visa Requirments 🛂✈️\nSeptember 2, 2024 International Visa Requirments 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2024 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nNovember ’25\n\nNovember 18, 2025 Sherlock Holmes Sentiment 🕵🏽🔍️\n\n\n\nSeptember ’25\n\nSeptember 30, 2025 Crane Migration in Sweden 𓅥🇸🇪️\nSeptember 12, 2025 Recipe Data Table 🍲🍳️\nSeptember 9, 2025 International Visa Requirments 🛂✈️\nSeptember 2, 2025 International Visa Requirments 🇦🇺🐸\n\n\n\nJuly ’25\n\n**July 29, 2025* Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/imo.html#data-prep",
@@ -1446,7 +1446,7 @@
     "href": "tidytuesday/cranes_sweden.html",
     "title": "Crane Migration in Sweden",
     "section": "",
-    "text": "This week tidytuesday will exploring Crane Observations at Lake Hornborgasjön, Sweden Naturum website."
+    "text": "This weeks tidytuesday will explore Crane Observations at Lake Hornborgasjön, Sweden Naturum website."
   },
   {
     "objectID": "tidytuesday/cranes_sweden.html#libraries",
@@ -1468,5 +1468,68 @@
     "title": "Crane Migration in Sweden",
     "section": "Graphing",
     "text": "Graphing\nCreating a plot to understnad the seasonal variations in crane spottings. We notice that more cranes have been observed in recent years.\n\ncranes_adapted |&gt; \n  ggplot(aes(x = year, y = md, color = observations)) + \n  geom_segment(aes(x = year - 0.3, xend = year + 0.3, y = md, yend = md)) +\n  scale_color_gradient(low = \"lightyellow\", high = \"#CC5500\") +\n  guides(color = guide_colorbar(\n    direction = \"horizontal\",   # horizontal\n    barwidth = 10,              # horizontal length\n    barheight = 1,              # vertical thickness\n    title.position = \"top\"\n  )) +\n  theme_minimal() + \n  theme(panel.grid.minor.y = element_blank(),\n        panel.grid.minor.x = element_blank(),\n        panel.grid.major.y = element_line(linetype = \"dashed\"),\n        panel.grid.major.x = element_line(linetype = \"solid\"),\n        legend.position = c(0.77, 0.5))+\n  labs(x = \"\", y = \"\", color = \"Cranes Observed\",\n       title = \"Cranes Observed In Sweden For Fall & Spring Seasons\",\n       subtitle = \"Grey lines were cancelled days for counting\") + \n  scale_y_date(\n    breaks = ymd(c(\"2000-03-01\", \"2000-04-01\", \"2000-05-01\",\n                   \"2000-06-01\", \"2000-07-01\", \"2000-08-01\",\n                   \"2000-09-01\", \"2000-10-01\", \"2000-11-01\")),\n    date_labels = \"%b\") +\n  scale_x_continuous(breaks = seq(1995, 2025, by = 5))"
+  },
+  {
+    "objectID": "euro_basketball.html",
+    "href": "euro_basketball.html",
+    "title": "EuroLeague Basketball",
+    "section": "",
+    "text": "This week tidytuesday will explore EuroLeague Basketball, the premier men’s club basketball competition in Europe."
+  },
+  {
+    "objectID": "euro_basketball.html#libraries",
+    "href": "euro_basketball.html#libraries",
+    "title": "EuroLeague Basketball",
+    "section": "Libraries",
+    "text": "Libraries\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "euro_basketball.html#preparing-the-data",
+    "href": "euro_basketball.html#preparing-the-data",
+    "title": "EuroLeague Basketball",
+    "section": "Preparing The Data",
+    "text": "Preparing The Data\nThe goal is to plot as much of the data as possible.\n\neuro_basketball_cleaned &lt;- euroleague_basketball |&gt; \n  mutate(capacity = str_split(Capacity, \", \")) |&gt; \n  unnest(capacity) |&gt; \n  mutate(capacity = as.numeric(str_replace_all(capacity, \",\", \"\")),\n         last_rank = as.numeric(str_extract(`Last season`, \"\\\\d+\"))) |&gt; \n  select(Team, Country, capacity, last_rank, \n         FinalFour_Appearances, Titles_Won, everything())"
+  },
+  {
+    "objectID": "euro_basketball.html#ggally",
+    "href": "euro_basketball.html#ggally",
+    "title": "EuroLeague Basketball",
+    "section": "GGally",
+    "text": "GGally\n\nlibrary(GGally)"
+  },
+  {
+    "objectID": "tidytuesday/holmes.html",
+    "href": "tidytuesday/holmes.html",
+    "title": "Sherlock Holmes Dataset",
+    "section": "",
+    "text": "This week tidytuesday will explore the complete line-by-line text of the Sherlock Holmes stories and novels from the R package [sherlock](https://github.com/EmilHvitfeldt/sherlock).\nLibraries used for the analysis\n\nlibrary(tidyverse)\nlibrary(tidytext)\nlibrary(tidytuesdayR)\nlibrary(rvest)\nlibrary(tools)\n\nData imported from the tidytuesday repo\n\nholmes &lt;- tidytuesdayR::tt_load('2025-11-18')$holmes |&gt; \n  mutate(book = tolower(book)) |&gt; \n  mutate(book = str_squish(book))\n\n\nData Mainpulation\nScraping from wikipedia to get the publishing year for each of the books to be used in the plot.\n\nholmes_wiki &lt;- read_html(\"https://en.wikipedia.org/wiki/Canon_of_Sherlock_Holmes\") |&gt; \n  html_elements(\"p+ ol li , p+ ol a\") |&gt; \n  html_text() |&gt; \n  as_tibble() |&gt; \n  filter(!is.na(str_extract(value, \"\\\\d{4}\"))) |&gt; \n  mutate(date = str_extract(value, \"\\\\d{4}\")) |&gt; \n  mutate(title = str_extract(value, '^\"?([^\"(]+)\"?')) |&gt; \n  mutate(title = str_replace_all(title, '\"', '')) |&gt; \n  mutate(title = tolower(title)) |&gt; \n  mutate(title = str_squish(title))\n\nJoining the dataset of the publishing year to the dataset with the sentiment analysis.\n\nholmes &lt;- holmes |&gt; \n  left_join(holmes_wiki, by = c(\"book\" = \"title\"))\n\nPulling the sentiments from tidytext.\n\nafinn_sentiments &lt;- tidytext::get_sentiments(\"afinn\") \nnrc_sentiments &lt;- tidytext::get_sentiments(\"nrc\") |&gt; \n  filter(sentiment != \"positive\", sentiment != \"negative\")\n\nJoining the text with the holmes dataset.\n\nsent_data &lt;- holmes |&gt; \n  tidytext::unnest_tokens(words, text) |&gt; \n  anti_join(stop_words, by = c(\"words\" = \"word\")) |&gt; \n  left_join(nrc_sentiments, by = c(\"words\" = \"word\"), relationship = \"many-to-many\") |&gt; \n  group_by(date, sentiment) |&gt; \n  summarize(n = n()) |&gt; \n  filter(!is.na(sentiment)) |&gt; \n  mutate(prop = n / sum(n)) |&gt; \n  mutate(date = as.numeric(date))\n\n\n\nData Viz\nPlot showing the changes in the sentiment of the books overtime.\n\nsent_data |&gt; \n  ggplot(aes(x = date, y = prop)) + \n  geom_line(aes(color = sentiment), size = 1.2) + \n  geom_point(shape = 21, fill = \"white\", aes(color = sentiment), size = 3, alpha = 0.8) + \n  scale_color_brewer(palette = \"Dark2\", \n                     labels = function(x) toTitleCase(x)) +\n  labs(title = \"Proportion of Each Sentiment Over Time\",\n       subtitle = \n         \"Tracking sentiment changes in the Sherlock Holmes novels by published year\",\n       y = \"Proportion\", x = \"Year\") + \n  \n  theme_minimal(base_size = 15) + \n  theme(legend.title = element_blank(),\n        plot.title = element_text(face = \"bold\", size = 16),\n        plot.subtitle = element_text(size = 12),\n        axis.text.x = element_text(angle = 45, hjust = 1),\n        axis.title = element_text(size = 14))"
+  },
+  {
+    "objectID": "tidytuesday/euro_basketball.html",
+    "href": "tidytuesday/euro_basketball.html",
+    "title": "EuroLeague Basketball",
+    "section": "",
+    "text": "This week tidytuesday will explore EuroLeague Basketball, the premier men’s club basketball competition in Europe."
+  },
+  {
+    "objectID": "tidytuesday/euro_basketball.html#libraries",
+    "href": "tidytuesday/euro_basketball.html#libraries",
+    "title": "EuroLeague Basketball",
+    "section": "Libraries",
+    "text": "Libraries\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/euro_basketball.html#preparing-the-data",
+    "href": "tidytuesday/euro_basketball.html#preparing-the-data",
+    "title": "EuroLeague Basketball",
+    "section": "Preparing The Data",
+    "text": "Preparing The Data\nThe goal is to plot as much of the data as possible.\n\neuro_basketball_cleaned &lt;- euroleague_basketball |&gt; \n  mutate(capacity = str_split(Capacity, \", \")) |&gt; \n  unnest(capacity) |&gt; \n  mutate(capacity = as.numeric(str_replace_all(capacity, \",\", \"\")),\n         last_rank = as.numeric(str_extract(`Last season`, \"\\\\d+\"))) |&gt; \n  select(Team, Country, capacity, last_rank, \n         FinalFour_Appearances, Titles_Won, everything())"
+  },
+  {
+    "objectID": "tidytuesday/euro_basketball.html#ggally",
+    "href": "tidytuesday/euro_basketball.html#ggally",
+    "title": "EuroLeague Basketball",
+    "section": "GGally",
+    "text": "GGally\n\nlibrary(GGally)\n\nggparcoord(data)"
   }
 ]

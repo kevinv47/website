@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Kevin Valdivia">
+<meta name="dcterms.date" content="2025-10-07">
 
-<title>dataviz – Kevin Valdivia</title>
+<title>EuroLeague Basketball – Kevin Valdivia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ca18fbd2e8790c6568535d603d3b1e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ca18fbd2e8790c6568535d603d3b1e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,21 +104,21 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="css/styles.css">
-<meta property="og:title" content="– Kevin Valdivia">
-<meta property="og:description" content="">
+<link rel="stylesheet" href="../css/styles.css">
+<meta property="og:title" content="EuroLeague Basketball – Kevin Valdivia">
+<meta property="og:description" content="Seasonal variations overtime">
 <meta property="og:site_name" content="Kevin Valdivia">
 <meta property="og:locale" content="en_US">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Kevin Valdivia</span>
     </a>
   </div>
@@ -93,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -102,23 +138,23 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-essays">    
         <li>
-    <a class="dropdown-item" href="./essays/mex_ine/electoral_reforms.html">
+    <a class="dropdown-item" href="../essays/mex_ine/electoral_reforms.html">
  <span class="dropdown-text">Behind AMLO’s Electoral Reforms</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./essays/mex_ed/mexican_education.html">
+    <a class="dropdown-item" href="../essays/mex_ed/mexican_education.html">
  <span class="dropdown-text">The Mexican Education System</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./essays/cfa_zone/cfa_zone.html">
+    <a class="dropdown-item" href="../essays/cfa_zone/cfa_zone.html">
  <span class="dropdown-text">Economic Integration in Francophone Africa</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./essays/westphalia/westphalia.html">
+    <a class="dropdown-item" href="../essays/westphalia/westphalia.html">
  <span class="dropdown-text">Beyond Westphalia</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/peso/peso_doc.html">
+    <a class="dropdown-item" href="../projects/peso/peso_doc.html">
  <span class="dropdown-text">The Peso In Crisis</span></a>
   </li>  
     </ul>
@@ -129,25 +165,25 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-projects">    
         <li>
-    <a class="dropdown-item" href="./projects/the office/office_text_analysis.html">
+    <a class="dropdown-item" href="../projects/the office/office_text_analysis.html">
  <span class="dropdown-text"><strong>Text Analysis:</strong> <em>The Office</em></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/simulation_study/permutation_experiment.html">
+    <a class="dropdown-item" href="../projects/simulation_study/permutation_experiment.html">
  <span class="dropdown-text"><strong>Permutation Analysis</strong>: <em>Room Draw</em></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/sql_mini_project/sql_project.html">
+    <a class="dropdown-item" href="../projects/sql_mini_project/sql_project.html">
  <span class="dropdown-text"><strong>Graph Replication</strong>: With SQL</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/amlo_mex/amlo_page.html">
+    <a class="dropdown-item" href="../projects/amlo_mex/amlo_page.html">
  <span class="dropdown-text"><strong>Under Development</strong>: The Rise of AMLO</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="./dataviz.html" aria-current="page"> 
+    <a class="nav-link" href="../dataviz.html"> 
 <span class="menu-text"><strong>Data Viz Adventures</strong></span></a>
   </li>  
 </ul>
@@ -161,115 +197,75 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#vizualizations-with-python" id="toc-vizualizations-with-python" class="nav-link active" data-scroll-target="#vizualizations-with-python">Vizualizations With Python</a>
-  <ul class="collapse">
-  <li><a href="#december-24" id="toc-december-24" class="nav-link" data-scroll-target="#december-24">December ’24</a></li>
-  </ul></li>
-  <li><a href="#tidytuesdays-with-r" id="toc-tidytuesdays-with-r" class="nav-link" data-scroll-target="#tidytuesdays-with-r">Tidytuesdays With R</a>
-  <ul class="collapse">
-  <li><a href="#november-25" id="toc-november-25" class="nav-link" data-scroll-target="#november-25">November ’25</a></li>
-  <li><a href="#september-25" id="toc-september-25" class="nav-link" data-scroll-target="#september-25">September ’25</a></li>
-  <li><a href="#july-25" id="toc-july-25" class="nav-link" data-scroll-target="#july-25">July ’25</a></li>
-  <li><a href="#december-24-1" id="toc-december-24-1" class="nav-link" data-scroll-target="#december-24-1">December ’24</a></li>
-  <li><a href="#november-24" id="toc-november-24" class="nav-link" data-scroll-target="#november-24">November ’24</a></li>
-  <li><a href="#october-24" id="toc-october-24" class="nav-link" data-scroll-target="#october-24">October ’24</a></li>
-  <li><a href="#september-24" id="toc-september-24" class="nav-link" data-scroll-target="#september-24">September ’24</a></li>
-  </ul></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">EuroLeague Basketball</h1>
+<p class="subtitle lead">Seasonal variations overtime</p>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<style>
-.chip-link {
-    display: inline-block;
-    padding: 0.5em;
-    margin: 0.2em;
-    background-color: #f1f1f1;
-    border-radius: 16px;
-    font-size: 0.9em;
-    color: #333;
-    text-decoration: none;
-}
-.chip-link:hover {
-    background-color: #ffa04d;
-}
-</style>
-<section id="vizualizations-with-python" class="level1">
-<h1>Vizualizations With Python</h1>
-<hr>
-<p>The following are a selection of data visualizations created using Python, showcasing various techniques and insights.</p>
-<section id="december-24" class="level3">
-<h3 class="anchored" data-anchor-id="december-24">December ’24</h3>
-<ul>
-<li><strong>December 20, 2024</strong> <a href="./python_projects/synthetic_diabetes_data.html" class="chip-link">Synthetic Data: Diabetes ⚕💉️</a></li>
-</ul>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kevin Valdivia </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 7, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This week tidytuesday will explore EuroLeague Basketball, the premier men’s club basketball competition in Europe.</p>
+<section id="libraries" class="level2">
+<h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
+<section id="importing-data" class="level1">
+<h1>Importing Data</h1>
+<p>This data comes from <a href="https://github.com/natanast/EuroleagueBasketball">EuroleagueBasketball R package</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>euroleague_basketball <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-07/euroleague_basketball.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="preparing-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-the-data">Preparing The Data</h2>
+<p>The goal is to plot as much of the data as possible.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>euro_basketball_cleaned <span class="ot">&lt;-</span> euroleague_basketball <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">capacity =</span> <span class="fu">str_split</span>(Capacity, <span class="st">", "</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(capacity) <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">capacity =</span> <span class="fu">as.numeric</span>(<span class="fu">str_replace_all</span>(capacity, <span class="st">","</span>, <span class="st">""</span>)),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">last_rank =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(<span class="st">`</span><span class="at">Last season</span><span class="st">`</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Team, Country, capacity, last_rank, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>         FinalFour_Appearances, Titles_Won, <span class="fu">everything</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="tidytuesdays-with-r" class="level1">
-<h1>Tidytuesdays With R</h1>
-<hr>
-<p>The following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.</p>
-<p>Here is the <a href="https://github.com/rfordatascience/tidytuesday"><strong>official TidyTuesday repo</strong></a></p>
-<section id="november-25" class="level3">
-<h3 class="anchored" data-anchor-id="november-25">November ’25</h3>
-<ul>
-<li><strong>November 18, 2025</strong> <a href="./tidytuesday/holmes.html" class="chip-link">Sherlock Holmes Sentiment 🕵🏽🔍️</a></li>
-</ul>
-</section>
-<section id="september-25" class="level3">
-<h3 class="anchored" data-anchor-id="september-25">September ’25</h3>
-<ul>
-<li><strong>September 30, 2025</strong> <a href="./tidytuesday/cranes_sweden.html" class="chip-link">Crane Migration in Sweden 𓅥🇸🇪️</a></li>
-<li><strong>September 12, 2025</strong> <a href="./tidytuesday/recipe_data.html" class="chip-link">Recipe Data Table 🍲🍳️</a></li>
-<li><strong>September 9, 2025</strong> <a href="./tidytuesday/henley_passport.html" class="chip-link">International Visa Requirments 🛂✈️</a></li>
-<li><strong>September 2, 2025</strong> <a href="./tidytuesday/australian_frogs.html" class="chip-link">International Visa Requirments 🇦🇺🐸</a></li>
-</ul>
-</section>
-<section id="july-25" class="level3">
-<h3 class="anchored" data-anchor-id="july-25">July ’25</h3>
-<ul>
-<li>**July 29, 2025* <a href="./tidytuesday/netflix.html" class="chip-link">Netflix Catalog 🎬🍿️</a></li>
-</ul>
-</section>
-<section id="december-24-1" class="level3">
-<h3 class="anchored" data-anchor-id="december-24-1">December ’24</h3>
-<ul>
-<li><strong>December 3, 2024</strong> <a href="./tidytuesday/highway_traffic_flow.html" class="chip-link">ISO Country Codes 🚙🚛</a></li>
-</ul>
-</section>
-<section id="november-24" class="level3">
-<h3 class="anchored" data-anchor-id="november-24">November ’24</h3>
-<ul>
-<li><strong>November 19, 2024</strong> <a href="./tidytuesday/bobs_burgers.html" class="chip-link">Bob’s Burgers 📺🍔</a></li>
-<li><strong>November 12, 2024</strong> <a href="./tidytuesday/country_code.html" class="chip-link">ISO Country Codes 🍭🌐</a></li>
-</ul>
-</section>
-<section id="october-24" class="level3">
-<h3 class="anchored" data-anchor-id="october-24">October ’24</h3>
-<ul>
-<li><strong>October 29, 2024</strong> <a href="./tidytuesday/monsters.html" class="chip-link">Monster Movies ⚰️👻</a></li>
-<li><strong>October 22, 2024</strong>: <a href="./tidytuesday/CIA_Factbook/cia_factbook.html" class="chip-link">CIA Country Comparison Indicators 📊🌍</a></li>
-<li><strong>October 8, 2024</strong>: <a href="./tidytuesday/biodiversity_national_parks.html" class="chip-link">National Park Species 🌲🦉</a></li>
-<li><strong>October 1, 2024</strong>: <a href="./tidytuesday/chess_matches.html" class="chip-link">Chess Games ♟️🎯</a></li>
-</ul>
-</section>
-<section id="september-24" class="level3">
-<h3 class="anchored" data-anchor-id="september-24">September ’24</h3>
-<ul>
-<li><strong>September 24, 2024</strong>: <a href="./tidytuesday/imo.html" class="chip-link">Math Olympiads 🧮🏆️</a></li>
-<li><strong>September 17, 2024</strong>: <a href="./tidytuesday/shakespeare_words.html" class="chip-link">Shakespeare Dialogue 🎭✒️</a></li>
-<li><strong>September 10, 2024</strong>: <a href="./tidytuesday/school_income.html" class="chip-link">Diversity &amp; Student Outcomes 📚🌍</a></li>
-</ul>
+<section id="ggally" class="level2">
+<h2 class="anchored" data-anchor-id="ggally">GGally</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
