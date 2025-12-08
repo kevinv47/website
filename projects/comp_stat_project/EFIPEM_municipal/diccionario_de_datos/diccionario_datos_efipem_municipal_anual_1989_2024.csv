@@ -1,0 +1,11 @@
+PRODUCTO_DD,COLUMNA,DESCRIPCION,TIPO_DATO,LONGITUD,CODIGO_VALIDO
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,PROD_EST,"Nombre del proyecto estadístico al que pertenecen los datos, en este caso aplica la denominación Estadística de Finanzas Públicas Estatales y Municipales.",varchar,max
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,COBERTURA,Área geográfica a la que están referidos los indicadores estadísticos.,varchar,max
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,ANIO,Año de referencia de la información.,int,,1989-2024
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,ID_ENTIDAD,"Clave de la entidad según Catálogo de Entidades, Municipios y Localidades del INEGI.",varchar,2,  00-32
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,ID_MUNICIPIO,"Clave del municipio según Catálogo de Entidades, Municipios y Localidades del INEGI.",varchar,3, 000-999
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,TEMA,"Categoría correspondiente al mayor nivel de agregación según Catálogo de Claves de la estadística de Finanzas Públicas Estatales y Municipales, refiere a ingresos y egresos",varchar,max
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,CATEGORIA,Nivel de desglose conceptual según Catálogo de Claves de la Estadística de Finanzas Públicas Estatales y Municipales.,varchar,max
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,DESCRIPCION_CATEGORIA,Descripción del concepto financiero según Catálogo de Claves de la Estadística de Finanzas Públicas Estatales y Municipales.,varchar,max
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,VALOR,Valor en pesos correspondiente a cada categoría,int,,0-99999999
+Estadística de Finanzas Públicas Estatales y Municipales. Anual,ESTATUS,Estatus de las cifras conforme a los Lineamientos de Cambios a la información divulgada en las publicaciones estadísticas y geográficas del INEGI,varchar,max

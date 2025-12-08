@@ -1,0 +1,725 @@
+---
+title: "Mexican Municipal President Analysis"
+subtitle: "Analysis of economic spending in the lead up to voting for MORENA"
+date: "`r Sys.Date()`"
+author: "Kelvin Kissi & Kevin Valdivia"
+format: revealjs
+toc: false
+execute: 
+  warning: false
+  message: false
+  echo: false
+bibliography: references.bib
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(janitor)
+library(kableExtra)
+library(scales)
+library(fuzzyjoin)
+library(readxl)
+library(mxmaps)
+library(zoo)
+library(ggridges)
+library(gganimate)
+library(gifski)
+
+coalitions_lookup <- list(
+  `2015` = c("PRD_PT", "PRI_PVEM_PANAL", "PAN", "MC"),
+  `2016` = c("PRD_PT", "PRI_PVEM_PANAL", "PAN", "MC"),
+  `2017` = c("PRD_PT", "PRI_PVEM_PANAL", "PAN", "MC"),
+  `2018` = c("MORENA_PT_PES", "PAN_PRD_MC", "PRI_PVEM_PANAL"),
+  `2019` = c("MORENA_PT_PES", "PAN_PRD_MC", "PRI_PVEM_PANAL"),
+  `2020` = c("MORENA_PT_PES", "PAN_PRD_MC", "PRI_PVEM_PANAL"),
+  `2021` = c("PRI_PAN_PRD", "MORENA_PT_PVEM", "MC"),
+  `2022` = c("PRI_PAN_PRD", "MORENA_PT_PVEM", "MC"),
+  `2023` = c("PRI_PAN_PRD", "MORENA_PT_PVEM", "MC")
+)
+
+
+coalition_matching <- function(party, year) {
+  coalitions <- coalitions_lookup[[as.character(year)]]
+  coalitions_split <-
+    str_split(coalitions, "_") |> set_names(coalitions)
+  
+  matches <- names(keep(coalitions_split, ~
+                          all(sort(party) %in% .x)))
+  if (length(matches) == 1)
+    matches[1]
+  else
+    "OTHER"
+}
+
+non_party_vars <- c(
+    "ID_ESTADO", "NOMBRE_ESTADO", "ID_MUNICIPIO", 
+    "MUNICIPIO", "SECCIONES", "CASILLAS", 
+    "NUM_VOTOS_CAN_NREG", "NUM_VOTOS_VALIDOS",
+    "NUM_VOTOS_NULOS", "TOTAL_VOTOS", 
+    "LISTA_NOMINAL", "PARTICIPACION",
+    "year", "ID_DISTRITO", "CABECERA_DISTRITAL", 
+    "RUTA_ACTA")
+
+
+local_data_extraction <- function(election_level_folder, file_type_ending) {
+  library(stringr)
+  
+  all_data_list <- list()  # empty list
+  i <- 1
+  
+  # List all ZIP files in your folder (including subfolders)
+  all_zips <- list.files(
+    "INE/Local/",
+    pattern = "\\.zip$",
+    full.names = TRUE,
+    recursive = TRUE
+  )
+  
+  # Iterate through ZIP files
+  for (zip_file in all_zips) {
+    # List contents without extracting
+    zip_contents <- unzip(zip_file, list = TRUE)
+    
+    # Filter for ayuntamientos CSVs
+    ayuntamientos_files <- zip_contents$Name[str_detect(zip_contents$Name, election_level_folder)]
+    
+    # Iterate through those files
+    for (file_in_zip in ayuntamientos_files) {
+      # Filter by type (MUNPP, MUN, CAND, etc.)
+      if (str_detect(file_in_zip, file_type_ending)) {
+        # Extract this single file to a temporary folder
+        extracted_file <- unzip(zip_file, files = file_in_zip, exdir = tempdir())
+        
+        # Read CSV
+        
+        all_data_list[[i]] <- read.csv(extracted_file, stringsAsFactors = FALSE) |>
+          mutate(year = str_split(basename(extracted_file), "_")[[1]][1], across(everything(), \(x) {
+            y <- suppressWarnings(as.numeric(x))
+            if (all(is.na(y) & !is.na(x)))
+              x
+            else
+              y
+          })) |>
+          select(-any_of(c(
+            "OBSERVACIONES", "RUTA_ACTA", "NUM_VOTOS_VALIDOS"
+          )))
+        
+        i = i + 1
+      }
+    }
+  }
+  bind_rows(all_data_list)
+}
+
+municipios <- read_excel("INE/Local/inegi_municipios.xlsx", skip = 3) |>
+  clean_names() |>
+  mutate(
+    MUNICIPIO_FULL =
+      str_to_upper(paste0(`nom_mun`, ", ", `nom_ent`)),
+    municipio_code =
+      sprintf("%02d%03d", as.integer(cve_ent), as.integer(cve_mun))
+  ) |>
+  select(MUNICIPIO_FULL, municipio_code)
+
+
+## Load and process all data ##
+election_data <- local_data_extraction("AYUNTAMIENTOS_csv", "MUNPP") |>
+  select(any_of(non_party_vars), everything()) |>
+  pivot_longer(
+    cols = -any_of(non_party_vars),
+    names_to = "partido",
+    values_to = "votes"
+  ) |>
+  
+  
+  mutate(
+    # Preparation for the join
+    NOMBRE_ESTADO = case_when(
+      NOMBRE_ESTADO == "VERACRUZ" ~
+        "Veracruz de Ignacio de la Llave",
+      NOMBRE_ESTADO == "COAHUILA" ~
+        "Coahuila de Zaragoza",
+      NOMBRE_ESTADO == "MICHOACAN" ~
+        "Michoacán de Ocampo",
+      TRUE ~ NOMBRE_ESTADO
+    ),
+    MUNICIPIO_FULL = str_to_upper(paste0(
+      str_remove_all(MUNICIPIO, " \\d{1,2}"), ", ", `NOMBRE_ESTADO`
+    )),
+    old_code = sprintf("%02d%03d", ID_ESTADO, ID_MUNICIPIO),
+    
+    partido = ifelse(partido == "NA.", "NA", partido),
+    ## NA. to the party NA
+    partido_split = str_split(partido, "_"),
+    # Split the parties into a list
+    coalition_group = map2_chr(partido_split, year, coalition_matching),
+    # Assign a coalition
+    coalition_split =
+      str_split(coalition_group, "_"),
+    # Split the coalition
+    dominant_party = case_when(
+      map_lgl(coalition_split, ~ "MORENA" %in% .x) ~ "MORENA",
+      map_lgl(coalition_split, ~ all(c("PAN", "PRI") %in% .x)) ~ "PRIAN",
+      map_lgl(coalition_split, ~ "PAN" %in% .x) ~ "PAN",
+      map_lgl(coalition_split, ~ "PRI" %in% .x) ~ "PRI",
+      map_lgl(coalition_split, ~ "PRD" %in% .x) ~ "PRD",
+      map_lgl(coalition_split, ~ "MC" %in% .x)  ~ "MC",
+      TRUE ~ "partido" # assign the dominant party
+    )
+  ) |>
+  
+  # Identify the winner
+  group_by(year, ID_ESTADO, ID_MUNICIPIO) |>
+  arrange(desc(votes)) |>
+  mutate(winner = if_else(row_number() == 1, 1, 0)) |>
+  ungroup() |>
+  
+  # Make non dominant parties other
+  # (this could not be done before becuase
+  # all of the others one become one big party)
+  mutate(
+    dominant_party = case_when(
+      dominant_party %in% c("MORENA", "PRIAN", "PAN", "PRI", "PRD", "MC") ~ dominant_party,
+      TRUE ~ "Other"
+    ),
+    dominant_party = factor(
+      dominant_party,
+      levels = c("MORENA", "PRIAN", "PRI", "PAN", "PRD", "MC", "Other")
+    )
+  ) |>
+  
+  stringdist_left_join(
+    municipios,
+    by = c("MUNICIPIO_FULL" = "MUNICIPIO_FULL"),
+    max_dist = 2,
+    distance_col = "dist"
+  ) |>
+  rename(MUNICIPIO_FULL_RAW = MUNICIPIO_FULL.x,
+         MUNICIPIO_FULL_MUN = MUNICIPIO_FULL.y) |>
+  group_by(ID_ESTADO, MUNICIPIO_FULL_RAW) |>
+  slice_min(dist, n = 2) |>
+  ungroup() |>
+  rename(nombre = MUNICIPIO_FULL_RAW) |>
+  mutate(municipio_code = ifelse(is.na(municipio_code), old_code, municipio_code)) |>
+  
+  filter(!is.na(municipio_code)) |>
+  group_by(year,
+           municipio_code,
+           TOTAL_VOTOS,
+           coalition_group,
+           dominant_party,
+           nombre,
+           winner) |>
+  summarize(votes = sum(votes, na.rm = TRUE), .groups = "drop") |>
+  filter(!(dominant_party == "Other" & winner == 0)) |>
+  group_by(year, municipio_code, TOTAL_VOTOS) |>
+  arrange(desc(votes)) |>
+  mutate(winner_share = first(votes) / TOTAL_VOTOS) |>
+  slice(1) |>
+  ungroup() |> 
+  select(-c(winner, winner_share))
+
+
+social_programs <- c(
+  "Transferencias, asignaciones, subsidios y otras ayudas",
+  "Ayudas sociales",
+  "Ayudas sociales a personas",
+  "Ayudas sociales a instituciones sin fines de lucro",
+  "Subsidios y subvenciones",
+  "Becas y otras ayudas para programas de capacitación",
+  "Otras ayudas sociales",
+  "Instituciones y programas de asistencia social",
+  "Ayudas sociales a entidades de interés público",
+  "Ayudas sociales a actividades científicas o académicas",
+  "Ayudas sociales a cooperativas",
+  "Instituciones y programas de educación",
+  "Instituciones y programas de salud",
+  "Instituciones y programas de seguridad pública"
+)
+
+
+#' Cleans the preliminary dataset 
+dataset_cleaner <- function(df_path, category_list) {
+  read_csv(df_path) |>
+    clean_names() |>
+    select(year = anio,
+           entity_id = id_entidad,
+           municipality_id = id_municipio,
+           category = categoria,
+           sub_category = descripcion_categoria,
+           value = valor,
+           status = estatus) |>
+    mutate(social_program = ifelse(sub_category %in% category_list, 
+                                   1, 0)) |> 
+    group_by(year, entity_id, municipality_id, social_program) |> 
+    summarize(value = sum(value))
+}
+
+#' Binds the dataset into one master dataset
+master_df <- function(data_folder, category_list){
+  file_paths <- list.files(data_folder, full.names = TRUE)
+  map_dfr(file_paths, dataset_cleaner, category_list = category_list)
+}
+
+economic_data <- suppressMessages(
+  master_df("EFIPEM_municipal/conjunto_de_datos/", 
+            social_programs)) |> 
+  mutate(municipio_code = paste0(entity_id,
+                                 municipality_id)) |> 
+  
+  select(-c(entity_id, municipality_id)) |> 
+  pivot_wider(names_from = social_program,
+              values_from = value) |> 
+  rename("s_spending" = 6,
+         "o_spending" = 5) |> 
+  mutate(all_spending = coalesce(s_spending, 0) + 
+           coalesce(o_spending, 0))
+
+
+population <- read_csv("municimex_population.csv") |> 
+  clean_names() |> 
+  select(municipio_code = inegi_id,
+         population = pobtot)
+
+
+full_data <- economic_data |> 
+  full_join(election_data, 
+            by = c("municipio_code", "year")) |> 
+  full_join(population, by = "municipio_code")
+
+processed_full_data <- full_data |>
+  mutate(spend_capita = all_spending / population) |>
+  # ensure correct order within municipalities
+  arrange(municipio_code, year) |>
+  group_by(municipio_code) |>
+  mutate(
+    spend_diff = spend_capita - lag(spend_capita),
+    # year-over-year change
+    avg_increase_4yr = rollapply(
+      spend_diff,
+      width = 4,
+      FUN = mean,
+      align = "right",
+      fill = NA,
+      na.rm = TRUE
+    ),
+    spend_diff = spend_capita - lag(spend_capita),
+    # year-over-year change
+    avg_increase_3yr = rollapply(
+      spend_diff,
+      width = 3,
+      FUN = mean,
+      align = "right",
+      fill = NA,
+      na.rm = TRUE
+    ),
+    spend_diff = spend_capita - lag(spend_capita),
+    # year-over-year change
+    avg_increase_2yr = rollapply(
+      spend_diff,
+      width = 2,
+      FUN = mean,
+      align = "right",
+      fill = NA,
+      na.rm = TRUE
+    ),
+    spend_diff = spend_capita - lag(spend_capita),
+    # year-over-year change
+    avg_increase_1yr = rollapply(
+      spend_diff,
+      width = 1,
+      FUN = mean,
+      align = "right",
+      fill = NA,
+      na.rm = TRUE
+    ),
+    spend_capita
+  ) |>
+  ungroup() |> 
+  filter(!is.na(dominant_party)) |> 
+  mutate(morena = ifelse(dominant_party == "MORENA", 1, 0)) |> 
+  select(year, municipio_code, morena, avg_increase_4yr, avg_increase_3yr, avg_increase_2yr, avg_increase_1yr, spend_capita, population)
+
+
+data(mxmunicipio.map)
+map_data <- mxmunicipio.map |> 
+  left_join(election_data, by = c("region" = "municipio_code"))
+
+## Party colors ##
+party_colors <- c(
+  "MORENA" = "#d62728",
+  "PRIAN"  = "#0175B0",
+  "PAN"    = "#0122B2",
+  "PRI"    = "#027a02",
+  "PRD"    = "#daba07",
+  "MC"     = "#eb8b05",
+  "Non-MORENA" = "#1f77b4",
+  "Other"  = "#6c0ace" #B0B0B0
+)
+```
+
+## Background
+
+-   **Research focus:** Economic factors influencing MORENA and allied party victories in municipal elections.\
+-   **Key mechanism:** Municipal spending—its increases or stagnation—may drive voter discontent with established parties.\
+-   **Electoral impact:** Discontent could push voters to support MORENA or its local coalition partners.
+
+## Data
+
+To do this research we will be taking data from three different sources: the National Electoral Institute (INE), the National Institute of Statistics and Geography (INEGI), and 2020 census data that also comes from INEGI but was prepared by @coria2022.
+
+## INE Municipal Electoral Data
+
+```{r, fig.width=10, fig.height=4}
+data(mxmunicipio.map)
+
+map_data <- mxmunicipio.map %>%
+  left_join(
+    election_data %>%
+      mutate(
+        dominant_party = ifelse(dominant_party == "MORENA", "MORENA", "Non-MORENA"),
+        year_group = case_when(
+          year %in% 2015:2017 ~ "2015 – 2017",
+          year %in% 2018:2020 ~ "2018 – 2020",
+          year %in% 2021:2023 ~ "2021 – 2023",
+          TRUE ~ NA_character_
+        )
+      ) %>%
+      filter(!is.na(year_group), !is.na(dominant_party)),
+    by = c("region" = "municipio_code")
+  ) %>%
+  filter(!is.na(year_group))
+
+ggplot(map_data) +
+  geom_polygon(
+    aes(
+      x = long,
+      y = lat,
+      group = group,
+      fill = dominant_party,
+      fill = dominant_party
+    ),
+    #color = "#e3e3e3",
+    size = 0.1
+  ) +
+  coord_map() +
+  scale_fill_manual(values = party_colors, na.value = "gray90") +
+  facet_wrap(~ year_group) +
+  labs(
+    title = "   Results of Mexican Municipal Elections by Year Group\n",
+    fill  = ""
+  ) +
+  theme_void() +
+  theme(
+    legend.position = "bottom",
+    legend.justification = "center",
+    legend.background = element_rect(fill = alpha("white", 0.7), color = NA),
+    legend.title = element_text(size = 10),
+    legend.text  = element_text(size = 9),
+    legend.box   = "horizontal",
+    legend.box.just = "center"
+  )
+```
+
+## Spending and Population Data
+
+The municipal spending data from @INEGI_EFIPEM_2025 only accounts for expenditures by the municipality itself. It is important to note that Mexican finances are highly centralized, as analyzed by @CamachoGutierrez_2003, meaning that municipalities have less fiscal autonomy than in many other countries.
+
+```{r}
+processed_full_data |> 
+  select(year, municipio_code, morena, avg_increase_3yr) |> 
+  head()
+```
+
+## Summary Stats
+
+The average increase indicates that municipalities that vote for MORENA had greater average increases.
+
+```{r}
+library(dplyr)
+
+processed_full_data |> 
+  group_by(morena) |> 
+  summarize(
+    median_avg_increase_3yr = median(avg_increase_3yr, na.rm = TRUE),
+    mean_avg_increase_3yr = mean(avg_increase_3yr, na.rm = TRUE))
+```
+
+It is important to note that municipal spending is already very low.
+
+```{r}
+library(dplyr)
+
+processed_full_data |> 
+  summarize(
+    mean_spending = mean(spend_capita, na.rm = TRUE),
+    median_spending = median(spend_capita, na.rm = TRUE))
+```
+
+```{r}
+## 2) Logistic Smooth Plot: economic growth → probability of Morena win
+plot_data <- processed_full_data |>
+  filter(population >= 2000)
+
+# Zoom limits (reuse from before)
+x_limits <- quantile(
+  plot_data$avg_increase_3yr,
+  probs = c(0.025, 0.975),
+  na.rm = TRUE
+)
+```
+
+## Distribution of 3-Year Spending Growth by Party
+
+```{r}
+# Common filtered dataset
+plot_data <- processed_full_data |>
+  filter(population >= 2000) |>
+  mutate(
+    morena_label = factor(
+      morena,
+      levels = c(0, 1),
+      labels = c("Non-MORENA", "MORENA")
+    )
+  )
+
+lims <- quantile(
+  processed_full_data$avg_increase_3yr,
+  probs = c(0.02, 0.98),
+  na.rm = TRUE
+)
+## 1) Density Ridge Plot: distribution of 3-year spending growth by party
+plot_data |>
+  ggplot(aes(
+    x = avg_increase_3yr,
+    y = morena_label,
+    fill = morena_label
+  )) +
+  ggridges::geom_density_ridges(alpha = 0.6, color = "white") +
+  scale_fill_manual(values = c("Non-MORENA" = "#1f77b4",
+                               "MORENA"     = "#d62728")) +
+  labs(
+    title = "",
+    x = "Average 3-Year Increase in Spending per Capita",
+    y = "",
+    fill = "Party"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold")
+  )+
+   coord_cartesian(xlim = lims)
+```
+
+## Average 3-Year Increase in Spending per Capita (Overlay Density)
+
+```{r}
+processed_full_data |>
+  filter(population >= 2000) |>
+  mutate(morena = factor(morena, labels = c("Non-MORENA", "MORENA"))) |>
+  ggplot(aes(x = avg_increase_3yr, fill = morena)) +
+  geom_density(alpha = 0.5, position = "identity") +
+  scale_fill_manual(values = c("#1f77b4", "#d62728")) +
+  coord_cartesian(xlim = lims) +           
+  labs(
+    x = "Average 3-Year Increase in Spending per Capita",
+    y = "Density"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+## Permutation Test
+
+```{r}
+# ======================================================
+# Permutation tests for multiple outcomes
+#   Requires: full_data (with all_spending, year, municipio_code)
+#             processed_full_data (with year, municipio_code, morena,
+#                                 spend_capita, avg_increase_*yr, population)
+# ======================================================
+
+# 0) Attach total spending to the analysis dataframe
+processed_full_data <- processed_full_data %>%
+  dplyr::left_join(
+    full_data %>%
+      dplyr::select(year, municipio_code, all_spending),
+    by = c("year", "municipio_code")
+  )
+
+# ------------------------------------------------------
+# Generic permutation test function WITH plot + PNG save
+# ------------------------------------------------------
+perm_test_with_plot <- function(df, outcome, B = 5000) {
+  outcome_quo <- rlang::enquo(outcome)
+  
+  # 1) Subset to morena + outcome, drop NAs
+  sub <- df %>%
+    dplyr::select(morena, !!outcome_quo) %>%
+    dplyr::filter(!is.na(!!outcome_quo))
+  
+  # 2) Observed difference in means (MORENA - Non-MORENA)
+  obs <- sub %>%
+    dplyr::group_by(morena) %>%
+    dplyr::summarise(m = mean(!!outcome_quo), .groups = "drop") %>%
+    dplyr::arrange(morena) %>%
+    dplyr::summarise(diff = m[2] - m[1]) %>%
+    dplyr::pull(diff)
+  
+  # 3) Permutation distribution
+  perm_stats <- numeric(B)
+  for (b in seq_len(B)) {
+    shuffled <- sample(sub$morena)
+    
+    perm_stats[b] <- sub %>%
+      dplyr::mutate(morena = shuffled) %>%
+      dplyr::group_by(morena) %>%
+      dplyr::summarise(m = mean(!!outcome_quo), .groups = "drop") %>%
+      dplyr::arrange(morena) %>%
+      dplyr::summarise(diff = m[2] - m[1]) %>%
+      dplyr::pull(diff)
+  }
+  
+  # 4) Two-sided p-value
+  p_val <- mean(abs(perm_stats) >= abs(obs))
+  
+  # 5) Plot
+  var_name <- rlang::as_label(outcome_quo)
+  
+  plot_obj <- tibble::tibble(stat = perm_stats) %>%
+    ggplot2::ggplot(ggplot2::aes(x = stat)) +
+    ggplot2::geom_histogram(bins = 40, alpha = 0.6, fill = "grey50") +
+    ggplot2::geom_vline(xintercept = obs, colour = "red", linewidth = 1) +
+    ggplot2::labs(
+      title = paste0("Permutation Distribution: ", var_name),
+      subtitle = paste(
+        "Observed =", round(obs, 1),
+        "| p-value ≈", signif(p_val, 3),
+        "| B =", B
+      ),
+      x = "Permuted Difference in Means (MORENA - Non-MORENA)",
+      y = "Count"
+    ) +
+    ggplot2::theme_minimal()
+  
+  print(plot_obj)
+  ggplot2::ggsave(
+    filename = paste0("perm_plot_", var_name, ".png"),
+    plot = plot_obj,
+    width = 8, height = 5, dpi = 300
+  )
+  
+  # 6) Return a tidy summary row
+  tibble::tibble(
+    variable = var_name,
+    observed_diff = obs,
+    p_value = p_val
+  )
+}
+
+set.seed(154)
+B <- 5000
+
+res_inc_3yr <- perm_test_with_plot(processed_full_data, avg_increase_3yr, B)
+```
+
+## Probability of Morena Victory by Spending Growth
+
+By aggregating municipalities into spending-growth bins, the chart shows that MORENA wins are highest with moderate spending increases, while very large increases see diminishing or negative electoral returns, suggesting steady growth matters more than extreme fiscal changes.
+
+## Probability of Morena Victory by Spending Growth
+
+```{r}
+# Combined jitter + binned probability plot
+library(tidyverse)
+
+plot_data <- processed_full_data |>
+  filter(population >= 2000)
+
+# x-axis zoom (same idea as before)
+x_limits <- quantile(
+  plot_data$avg_increase_3yr,
+  probs = c(0.025, 0.975),
+  na.rm = TRUE
+)
+
+# Bin spending and compute share voting MORENA
+prob_df <- plot_data |>
+  mutate(spend_bin = cut_number(avg_increase_3yr, n = 20)) |>
+  group_by(spend_bin) |>
+  summarise(
+    prob_morena = mean(morena, na.rm = TRUE),
+    mean_spend  = mean(avg_increase_3yr, na.rm = TRUE),
+    n = n(),
+    .groups = "drop"
+  )
+
+ggplot(plot_data, aes(
+  x = avg_increase_3yr,
+  y = morena
+)) +
+  # raw 0/1 outcomes
+  geom_jitter(
+    aes(color = factor(morena)),
+    alpha  = 0.2,
+    height = 0.05
+  ) +
+  # binned probabilities
+  geom_line(
+    data = prob_df,
+    aes(x = mean_spend, y = prob_morena),
+    inherit.aes = FALSE
+  ) +
+  geom_point(
+    data = prob_df,
+    aes(x = mean_spend, y = prob_morena),
+    inherit.aes = FALSE,
+    size = 2
+  ) +
+  scale_color_manual(
+    values = c("0" = "#1f77b4", "1" = "#d62728"),
+    labels = c("Non-MORENA", "MORENA"),
+    name   = "Observed Outcome"
+  ) +
+  coord_cartesian(xlim = x_limits, ylim = c(0, 1)) +
+  labs(
+    x = "Average 3-Year Increase in Spending per Capita",
+    y = "Share of Municipalities Voting MORENA"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_blank())
+```
+
+## Summary of Findings
+
+-   **Moderate, stable spending increases** align most with MORENA victories.\
+-   **Large spikes or drops** in per-capita spending show weaker links to electoral success.\
+-   The spending–voting relationship is **real but subtle**—economic conditions shape outcomes **at the margins**, not decisively.
+
+Fiscal patterns matter, but they are one factor among many in municipal elections.
+
+## Future Directions
+
+-   **Use vote margins**\
+    Move beyond binary win/loss to capture variation in electoral support.
+
+-   **Disaggregate spending**\
+    Separate social programs, infrastructure, and administrative spending to see which matters most.
+
+-   **Panel regression**\
+    Add municipality + year fixed effects to control for local traits and national trends.
+
+-   **Add socioeconomic controls**\
+    Include poverty, urbanization, employment, etc.
+
+## References
+
+-   **Coria, Sergio.** 2022. *MuniciMex-2020: Sociodemographic data of municipalities of Mexico from the 2020 census.* Mendeley Data, vol. 1. <https://doi.org/10.17632/shtkfxx4h8.1>
+
+-   **Instituto Nacional Electoral.** 2021. *Resultados de las Elecciones Municipales, SICEE 2021.* Data set. Sistema de Consulta de la Estadística Electoral (SICEE). <https://siceen21.ine.mx/downloadzip>
+
+-   **Instituto Nacional de Estadística y Geografía.** 2025. *Estadística de Finanzas Públicas Estatales y Municipales (EFIPEM).* Public finance dataset — municipal and state level. Datos abiertos, consulta 26 noviembre 2025. <https://www.inegi.org.mx/programas/finanzas/>
+
+-   **Camacho-Gutiérrez, Pablo.** 2003. “Fiscal Federalism in Mexico: Analysis First, Then Reform.” *Proceedings. Annual Conference on Taxation and Minutes of the Annual Meeting of the National Tax Association* 96: 136–143. National Tax Association.

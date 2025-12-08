@@ -1,0 +1,53 @@
+---
+title: "Creating a Word Map With Custom Shapes"
+subtitle: "Dataset is About The Words Used in Shakespeare's Romeo & Juliet"
+date: "Sep 17, 2024"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(showtext)
+```
+
+
+```{r}
+sechselaeuten <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-12-02/sechselaeuten.csv')
+```
+The anamonly variable is that months average temp vs the average over the entre century.
+```{r}
+global <- read_csv("https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/land_ocean/tavg/12/0/1923-2025/data.csv", skip = 3) |> 
+  mutate(year = as.numeric(str_sub(Date, 1, 4)),
+         month = as.numeric(str_sub(Date, 5, 6))
+         )
+```
+
+```{r}
+summer <- global |> 
+  filter(month %in% c(7, 8, 9)) |> 
+  group_by(year) |> 
+  summarize(temp = mean(Anomaly))
+
+global_snowman <- summer |> 
+  full_join(sechselaeuten, by = "year") |> 
+  filter(year >= 1952)
+```
+
+
+```{r}
+global_snowman |> 
+  ggplot(aes(x = duration, y = temp)) + 
+  geom_text(aes(color = year), 
+            size = 4, label = "snowman", 
+            family = "Font Awesome 5 Free Solid")  +
+  geom_smooth(color = "darkblue", se = FALSE) +
+  theme_minimal()
+```
+

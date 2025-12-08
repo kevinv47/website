@@ -1,0 +1,35 @@
+
+identifier: DDI-MEX-INEGI-EFIPEM-2024-V02
+
+title: Estadística de Finanzas Públicas Estatales y Municipales.EFIPEM. 1989-2024, información anual, cifras preliminares 2024.
+
+description: La Estadística de Finanzas Públicas y Municipales (EFIPEM), es un proyecto que se realiza en el Instituto Nacional de Estadística y Geografía (INEGI) con el objetivo de integrar la información sobre el origen
+y aplicación de los recursos financieros de los Gobiernos de estados, municipios, Ciudad de México y alcaldías, además de mostrar su actuación en el ámbito económico y social, así como coadyuvar en el cálculo del Sistema
+de Cuentas Nacionales de México (SCNM). 
+Cobertura geográfica: Municipal. Estadística de Finanzas Públicas Estatales y Municipales 1989-2024, información anual, cifras preliminares 2024. Se difunde información de 1,669 Gobiernos Municipales.
+
+Para una mayor consulta de los conceptos utilizados en los conjuntos de datos en el campo DESCRIPCION_CATEGORIA, consulte la Síntesis Metodológica de la EFIPEM en la siguiente liga:
+http://internet.contenidos.inegi.org.mx/contenidos/productos//prod_serv/contenidos/espanol/bvinegi/productos/nueva_estruc/702825085926.pdf 
+es necesario puntualizar que los términos encuentran descritos a nivel de capitulo.
+
+modified: 2025-08-14
+
+publisher: Instituto Nacional de Estadística y Geografía (INEGI)
+
+mbox: atencion.usuarios@inegi.org.mx
+
+license: https://www.inegi.org.mx/inegi/terminos.html
+
+dataDictionary: https://www.inegi.org.mx/rnm/index.php/catalog/1120/data-dictionary
+
+keyword: "ingreso", "gasto", "finanzas públicas", "ingresos propios", "ingresos federales", "gasto corriente", "gasto de capital"
+
+contactPoint: Mtro. J. Armando Aguiar Rodríguez, 800 111 4634
+
+temporal: 1989-01-01-2024-12-31
+
+spatial: Municipal
+
+accrualPeriodicity: Anualmente
+
+distribution: https://www.inegi.org.mx/programas/finanzas/

@@ -19,18 +19,18 @@ execute:
 
 *Simulate the average probability of getting my preferred room across random room draw over number of draws*
 
-* **Room types**: red (1st choice), blue (2nd), green (3rd)
-* **Preferences**: 60% prefer red, 30% blue, 10% green
-* **Room availability**: 30 red, 30 blue, 40 green
-* **Total students**: 100 (all in the same room)  
+-   **Room types**: red (1st choice), blue (2nd), green (3rd)
+-   **Preferences**: 60% prefer red, 30% blue, 10% green
+-   **Room availability**: 30 red, 30 blue, 40 green
+-   **Total students**: 100 (all in the same room)
 
 ## Functions Used
 
-* `room_pref`: Assigns **prefrences** to people before me
-* `space_identifier`: Checks for room **availability**
-* `room_assignment`: Assigns **rooms** to people before me
-* `my_room`: Returns **my room assignment** in one random draw
-* `room_draws`: Returns a tibble with # of room draws & avg probabilites of me getting each room
+-   `room_pref`: Assigns **prefrences** to people before me
+-   `space_identifier`: Checks for room **availability**
+-   `room_assignment`: Assigns **rooms** to people before me
+-   `my_room`: Returns **my room assignment** in one random draw
+-   `room_draws`: Returns a tibble with \# of room draws & avg probabilites of me getting each room
 
 ```{r}
 #| echo: false
@@ -39,7 +39,7 @@ read.csv("room_data.csv")
 
 ## `room_pref`
 
-* **Preferences**: 60% prefer red, 30% blue, 10% green
+-   **Preferences**: 60% prefer red, 30% blue, 10% green
 
 ```{r}
 room_pref <- function(red_p, blue_p, green_p) {
@@ -111,23 +111,25 @@ my_room <- function(lottery_num, pref_probs, room_occ) {
 }
 ```
 
+## My Room Draw
 
-## My Room Draw 
 ![](room_draw_2.jpg)
 
-## My Room Draw 
+## My Room Draw
+
 ![](room_draw_3.jpg)
 
-## My Room Draw 
+## My Room Draw
+
 ![](room_draw_4.jpg)
 
-## My Room Draw 
+## My Room Draw
+
 ![](room_draw_5.jpg)
 
-## My Room Draw 
+## My Room Draw
+
 ![](room_draw_6.jpg)
-
-
 
 ```{r}
 #| echo: false
@@ -159,10 +161,9 @@ room_draws <- function(draws, pref_probs, room_occ) {
 }
 ```
 
-
 ## Room Draw
-![](room_draw.jpg)
 
+![](room_draw.jpg)
 
 ## Number of Draws To Proportions
 

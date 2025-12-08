@@ -159,8 +159,6 @@ ontask |>
 
 Now, we will use the same format as the work-related plotting section to create a Shiny app where we can input a word and see the percentage of words in the characters' lines that contain it.
 
-
-
 # Longest Average Lines
 
 Finally we will work towards plotting which character has the longest average lines.
