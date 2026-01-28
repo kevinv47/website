@@ -23,7 +23,8 @@ library(rpart.plot)
 library(tidyverse)
 ```
 
-### Data 
+### Data
+
 This Tidytuesday dataset was curated by [Jon Harmon](https://github.com/jonthegeek) and comes from [IMD](https://developer.imdb.com/non-commercial-datasets/)
 
 ```{r}
@@ -36,7 +37,9 @@ monster_movies <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
 ```
 
 ## Data Manipulation
+
 Getting the data ready for plotting.
+
 ```{r}
 plot_data <- monster_movies |>
     mutate(title_type = str_to_title(title_type)) |> 
@@ -44,28 +47,6 @@ plot_data <- monster_movies |>
     filter(decade >= 1960) |> 
     drop_na(title_type, decade) |>
     count(title_type, decade)
-  
-  
-plot_data |>
-    ggplot() +
-    geom_mosaic(aes(weight = n, x = product(decade), 
-                    fill = title_type)) +
-    theme_void() +
-    labs(title = "Proportions of Mediums With the Monster In The Title") +
-    theme(axis.text.x = element_text(),
-          axis.text.y = element_text(),
-          legend.position = "none") +
-    scale_y_continuous() +
-    annotate( "text",
-              x = .55, y = .5, label = "Movie",
-              color = "white", size = 7, vjust = 1, hjust = 0) +
-      annotate("text",
-                x = .52, y = .8, label = "TV Movie",
-                color = "white", size = 7, vjust = 1, hjust = 0) +
-      annotate( "text",
-                x = .55, y = .95, label = "Video",
-                color = "white", size = 7, vjust = 1, hjust = 0) +
-    scale_fill_brewer(palette = "Dark2")
 ```
 
 We will now develop a predictive model to estimate IMDb ratings. The model will consider key factors such as the movie's genres, the number of votes it received, and its release year. These variables are chosen for their potential influence on a movie's rating and will form the foundation of our analysis.
@@ -91,7 +72,9 @@ movie_wflow_lm |>
   fit(data = monster_model) |> 
   tidy()
 ```
+
 Now we will plot.
+
 ```{r}
 # Fit the model and predict
 movie_wflow_lm_fit <- movie_wflow_lm |> 

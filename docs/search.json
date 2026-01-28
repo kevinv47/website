@@ -1131,7 +1131,7 @@
     "href": "dataviz.html",
     "title": "Vizualizations With Python",
     "section": "",
-    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nJanuary ’26\n\nJanuary 27, 2026 Brazilian Companies 🇧🇷💼️\n\n\n\nDecember ’25\n\nDecember 2, 2025 Böög Prediction ☃️️💥️️\n\n\n\nNovember ’25\n\nNovember 18, 2025 Sherlock Holmes Sentiment 🕵🏽🔍️\n\n\n\nSeptember ’25\n\nSeptember 30, 2025 Crane Migration in Sweden 𓅥🇸🇪️\nSeptember 12, 2025 Recipe Data Table 🍲🍳️\nSeptember 9, 2025 International Visa Requirments 🛂✈️\nSeptember 2, 2025 International Visa Requirments 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2025 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nJanuary ’26\n\nJanuary 27, 2026 Brazilian Companies 🇧🇷💼️\n\n\n\nDecember ’25\n\nDecember 2, 2025 Böög Prediction ☃️️💥️️\n\n\n\nNovember ’25\n\nNovember 18, 2025 Sherlock Holmes Sentiment 🕵🏽🔍️\n\n\n\nSeptember ’25\n\nSeptember 30, 2025 Crane Migration in Sweden 𓅥🇸🇪️\nSeptember 12, 2025 Recipe Data Table 🍲🍳️\nSeptember 9, 2025 International Visa Requirments 🛂✈️\nSeptember 2, 2025 Australian Frogs 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2025 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/imo.html#data-prep",
@@ -1671,5 +1671,411 @@
     "title": "Brazilian Companies",
     "section": "Map Creation",
     "text": "Map Creation\nPalette that takes some colors form the Brazilian map.\n\nbrazil_palette &lt;- c(\"#009739\", \"#84CC16\", \"#FFDF00\", \"#002776\", \"#4DA6FF\")\n\nMap that shows the differences in the capital stock quantiles between the owner qualifications.\n\nquantile_data |&gt; \n  ggplot(aes(owner_qualification, \n             quantile, \n             fill = percentile)) +\n  geom_bar(stat = \"identity\", color = \"black\") +\n  scale_y_continuous(\n    trans = \"log10\",\n    labels = label_number(scale_cut = cut_short_scale()))+\n  coord_polar() +\n  theme_minimal() +\n  scale_fill_manual(values = brazil_palette) +\n  labs(x = \"\", y = \"\", fill = \"\",\n       title = \"Capital Stock Quantiles by Owner Qualification Label\")"
+  },
+  {
+    "objectID": "tidytuesday/2025/recipe_data.html",
+    "href": "tidytuesday/2025/recipe_data.html",
+    "title": "Recipes",
+    "section": "",
+    "text": "This week, we’ll be using a flavorful dataset: a curated collection of recipes sourced from Allrecipes.com. The data is available through the tastyR package, which brings together recipe information for analysis in R. This weeks dataset was curated by Brian Mubia."
+  },
+  {
+    "objectID": "tidytuesday/2025/recipe_data.html#libraries",
+    "href": "tidytuesday/2025/recipe_data.html#libraries",
+    "title": "Recipes",
+    "section": "Libraries",
+    "text": "Libraries\nLoading packages for the data manipulation and vizulization.\n\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(DT)\n\n# Font Awesome for half stars\nlibrary(fontawesome)\nfontawesome::fa_html_dependency()"
+  },
+  {
+    "objectID": "tidytuesday/2025/recipe_data.html#data-importation",
+    "href": "tidytuesday/2025/recipe_data.html#data-importation",
+    "title": "Recipes",
+    "section": "Data Importation",
+    "text": "Data Importation\nImportating the data from the tidytuesday repo.\n\nall_recipes &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-16/all_recipes.csv')\ncuisines &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-16/cuisines.csv')"
+  },
+  {
+    "objectID": "tidytuesday/2025/recipe_data.html#interactive-table",
+    "href": "tidytuesday/2025/recipe_data.html#interactive-table",
+    "title": "Recipes",
+    "section": "Interactive Table",
+    "text": "Interactive Table\nCSS code necessary for the star ratings.\n\n.star {\n  font-size: 16px;\n}\n.star.full {\n  color: blue;\n}\n.star.empty {\n  color: lightgray;\n}\n.star.half {\n  background: linear-gradient(90deg, blue 50%, lightgray 50%);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n}\n\n\nWe will first clean up the data to make it a bit more readable and in the correct format for the DT table.\n\ndf &lt;- cuisines |&gt; \n  mutate(name_link = paste0('&lt;a href = \"',url,'\" target=\"_blank\"&gt;',name,'&lt;/a&gt;')) |&gt; \n  mutate(full = floor(avg_rating + 0.25),\n         half = ifelse((avg_rating + 0.25 - full) &gt;= 0.5, 1, 0),\n         empty = 5 - full - half) |&gt; \n  mutate(stars = ifelse(is.na(avg_rating), NA,\n                              paste0( \n    strrep('&lt;span style=\"color: blue;\"&gt;&#9733;&lt;/span&gt;', full),   # ★\n    strrep('&lt;span style=\"color: blue;\"&gt;&lt;i class=\"fa-solid fa-star-half\"&gt;&lt;/i&gt;&lt;/span&gt;', half),\n    strrep('&lt;span style=\"color: lightgray;\"&gt;&#9733;&lt;/span&gt;', empty) # ☆ in grey\n  \n))) |&gt; \n  select(Dish = name_link, \n         Cuisine = country, \n         stars, avg_rating, \n         total_ratings, \n         calories, fat, carbs, protein, servings,\n         prep_time, cook_time) |&gt; \n  clean_names(case = \"title\")\n\nDisplaying the cuisine data in a DT table.\n\ndf |&gt; \n  DT::datatable(escape = FALSE,\n                class = 'display',\n                extensions = 'Buttons',\n                rownames = FALSE,\n                filter = \"top\",\n                options = list(\n                  dom = 'Bfrtip',\n                  buttons = list(\n                    list(extend = 'colvis', \n                         text = 'Show Nutritional Info',\n                         columns = c(5:9)),\n                    list(extend = 'colvis', \n                         text = 'Show Cook Info',\n                         columns = c(10:11))  \n                    ),\n                  columnDefs = list(list(visible = FALSE,\n                                         targets = c(5:11)))\n                ))"
+  },
+  {
+    "objectID": "tidytuesday/2025/holmes.html",
+    "href": "tidytuesday/2025/holmes.html",
+    "title": "Sherlock Holmes Dataset",
+    "section": "",
+    "text": "This week tidytuesday will explore the complete line-by-line text of the Sherlock Holmes stories and novels from the R package [sherlock](https://github.com/EmilHvitfeldt/sherlock).\nLibraries used for the analysis\n\nlibrary(tidyverse)\nlibrary(tidytext)\nlibrary(tidytuesdayR)\nlibrary(rvest)\nlibrary(tools)\n\nData imported from the tidytuesday repo\n\nholmes &lt;- tidytuesdayR::tt_load('2025-11-18')$holmes |&gt; \n  mutate(book = tolower(book)) |&gt; \n  mutate(book = str_squish(book))\n\n\nData Mainpulation\nScraping from wikipedia to get the publishing year for each of the books to be used in the plot.\n\nholmes_wiki &lt;- read_html(\"https://en.wikipedia.org/wiki/Canon_of_Sherlock_Holmes\") |&gt; \n  html_elements(\"p+ ol li , p+ ol a\") |&gt; \n  html_text() |&gt; \n  as_tibble() |&gt; \n  filter(!is.na(str_extract(value, \"\\\\d{4}\"))) |&gt; \n  mutate(date = str_extract(value, \"\\\\d{4}\")) |&gt; \n  mutate(title = str_extract(value, '^\"?([^\"(]+)\"?')) |&gt; \n  mutate(title = str_replace_all(title, '\"', '')) |&gt; \n  mutate(title = tolower(title)) |&gt; \n  mutate(title = str_squish(title))\n\nJoining the dataset of the publishing year to the dataset with the sentiment analysis.\n\nholmes &lt;- holmes |&gt; \n  left_join(holmes_wiki, by = c(\"book\" = \"title\"))\n\nPulling the sentiments from tidytext.\n\nafinn_sentiments &lt;- tidytext::get_sentiments(\"afinn\") \nnrc_sentiments &lt;- tidytext::get_sentiments(\"nrc\") |&gt; \n  filter(sentiment != \"positive\", sentiment != \"negative\")\n\nJoining the text with the holmes dataset.\n\nsent_data &lt;- holmes |&gt; \n  tidytext::unnest_tokens(words, text) |&gt; \n  anti_join(stop_words, by = c(\"words\" = \"word\")) |&gt; \n  left_join(nrc_sentiments, by = c(\"words\" = \"word\"), relationship = \"many-to-many\") |&gt; \n  group_by(date, sentiment) |&gt; \n  summarize(n = n()) |&gt; \n  filter(!is.na(sentiment)) |&gt; \n  mutate(prop = n / sum(n)) |&gt; \n  mutate(date = as.numeric(date))\n\n\n\nData Viz\nPlot showing the changes in the sentiment of the books overtime.\n\nsent_data |&gt; \n  ggplot(aes(x = date, y = prop)) + \n  geom_line(aes(color = sentiment), size = 1.2) + \n  geom_point(shape = 21, fill = \"white\", aes(color = sentiment), size = 3, alpha = 0.8) + \n  scale_color_brewer(palette = \"Dark2\", \n                     labels = function(x) toTitleCase(x)) +\n  labs(title = \"Proportion of Each Sentiment Over Time\",\n       subtitle = \n         \"Tracking sentiment changes in the Sherlock Holmes novels by published year\",\n       y = \"Proportion\", x = \"Year\") + \n  \n  theme_minimal(base_size = 15) + \n  theme(legend.title = element_blank(),\n        plot.title = element_text(face = \"bold\", size = 16),\n        plot.subtitle = element_text(size = 12),\n        axis.text.x = element_text(angle = 45, hjust = 1),\n        axis.title = element_text(size = 14))"
+  },
+  {
+    "objectID": "tidytuesday/2024/monsters.html",
+    "href": "tidytuesday/2024/monsters.html",
+    "title": "Monster Movies",
+    "section": "",
+    "text": "This week we’re exploring “monster” movies: movies with “monster” in their title. The data this week comes from the Internet Movie Database. Thank you to Jon Harmon for curating this week’s dataset."
+  },
+  {
+    "objectID": "tidytuesday/2024/monsters.html#data-manipulation",
+    "href": "tidytuesday/2024/monsters.html#data-manipulation",
+    "title": "Monster Movies",
+    "section": "Data Manipulation",
+    "text": "Data Manipulation\nGetting the data ready for plotting.\n\nplot_data &lt;- monster_movies |&gt;\n    mutate(title_type = str_to_title(title_type)) |&gt; \n    mutate(decade = (year %/% 10) * 10) |&gt; \n    filter(decade &gt;= 1960) |&gt; \n    drop_na(title_type, decade) |&gt;\n    count(title_type, decade)\n\nWe will now develop a predictive model to estimate IMDb ratings. The model will consider key factors such as the movie’s genres, the number of votes it received, and its release year. These variables are chosen for their potential influence on a movie’s rating and will form the foundation of our analysis.\n\nmonster_model &lt;- monster_movies |&gt;\n  select(primary_title, year, runtime_minutes, average_rating,\n         num_votes, Comedy:Music, Short:War)\n\nmovie_rec &lt;- recipe(average_rating ~ ., \n                    data = monster_model) |&gt;\n  update_role(primary_title, new_role = \"ID\")\n\nmovie_mod_lm &lt;- linear_reg() |&gt;\n  set_engine(engine = \"lm\") |&gt;\n  set_mode(mode = \"regression\")\n\nmovie_wflow_lm &lt;- workflow() |&gt; \n  add_model(movie_mod_lm) |&gt; \n  add_recipe(movie_rec)\n\nmovie_wflow_lm |&gt; \n  fit(data = monster_model) |&gt; \n  tidy()\n\n# A tibble: 26 × 5\n   term               estimate  std.error statistic       p.value\n   &lt;chr&gt;                 &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;\n 1 (Intercept)     18.1        6.17           2.94  0.00343      \n 2 year            -0.00617    0.00308       -2.00  0.0459       \n 3 runtime_minutes  0.00163    0.00261        0.625 0.532        \n 4 num_votes        0.00000301 0.00000120     2.51  0.0125       \n 5 Comedy           0.235      0.145          1.62  0.105        \n 6 Horror          -0.847      0.145         -5.84  0.00000000899\n 7 Mystery          0.250      0.266          0.942 0.347        \n 8 Crime           -0.274      0.256         -1.07  0.284        \n 9 Drama            0.0309     0.176          0.176 0.861        \n10 Romance          0.130      0.444          0.294 0.769        \n# ℹ 16 more rows\n\n\nNow we will plot.\n\n# Fit the model and predict\nmovie_wflow_lm_fit &lt;- movie_wflow_lm |&gt; \n  fit(data = monster_model)\n\n# Generate predictions\npredictions &lt;- movie_wflow_lm_fit |&gt; \n  predict(new_data = monster_model) |&gt; \n  bind_cols(monster_model) |&gt; \n  mutate(residual = abs(average_rating - .pred))  # Calculate residuals (absolute error)\n\n# Create the plot with color based on the residuals\nggplot(predictions, aes(x = average_rating, y = .pred, color = residual)) +\n  geom_point() +\n  geom_abline(intercept = 0, slope = 1) +  # Add the identity line\n  scale_color_gradient(low = \"blue\", high = \"red\") +  # Blue for close, red for far\n  theme_minimal() +\n  labs(\n    x = \"Actual Rating\",\n    y = \"Predicted Rating\",\n    title = \"Actual Rating vs. Predicted Rating\",\n    color = \"Deviation from Line\"\n    )\n\n\n\n\n\n\n\n\nGraphical tree format for the predictive tree, illustrating how different variables affect our predictions for ratings.\n\nmovie_mod_cart &lt;- decision_tree() |&gt; \n  set_engine(engine = \"rpart\") |&gt; \n  set_mode(mode = \"regression\")\n\nmovie_wflow_cart &lt;- workflow() |&gt; \n  add_model(movie_mod_cart) |&gt; \n  add_recipe(movie_rec)\n\nmovies_tree &lt;- movie_wflow_cart |&gt; \n  fit(data = monster_model) |&gt; \n  extract_fit_parsnip()\n\nrpart.plot(movies_tree$fit)"
+  },
+  {
+    "objectID": "tidytuesday/2024/imo.html",
+    "href": "tidytuesday/2024/imo.html",
+    "title": "Math Olympiad Ranks",
+    "section": "",
+    "text": "The data for this week comes from International Mathematical Olympiad (IMO). Thank you to Havisha Khurana for curating this week’s dataset.\nImporting libraries\nlibrary(tidyverse)\nlibrary(maps)\nlibrary(gganimate)\nImporting data\nindividual_results_df &lt;- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/individual_results_df.csv')\nFirst we replace the value “C” followed by a number which appears to represent Russia.\nindiv_country &lt;- individual_results_df |&gt; \n  mutate(country = ifelse(str_detect(country, \"C[0-9]\"), \"Russia\", country))\nWe see that quite a few countries are represented in the data in 2024 whcihc an be enough to make a nice map plot.\nindiv_country |&gt; \n  filter(year == 2024) |&gt; \n  summarise(distinct_countries = n_distinct(country))\n\n# A tibble: 1 × 1\n  distinct_countries\n               &lt;int&gt;\n1                109"
+  },
+  {
+    "objectID": "tidytuesday/2024/imo.html#data-prep",
+    "href": "tidytuesday/2024/imo.html#data-prep",
+    "title": "Math Olympiad Ranks",
+    "section": "Data Prep",
+    "text": "Data Prep\nData prep for makeing the map graph. We specifically need to convert the country names into a consistent form to be able to merge with map data. We are going to take the top performing contestant from each county and year.\n\nindiv_country &lt;- indiv_country |&gt; \n  group_by(country, year) |&gt; \n  arrange(individual_rank) |&gt; \n  slice_head(n = 1) |&gt; \n  arrange(desc(year)) |&gt; \n  select(year, country, individual_rank, award) |&gt; \n  mutate(country = case_when(\n    country == \"United States of America\" ~ \"USA\",\n    country == \"People's Republic of China\" ~ \"China\",\n    country == \"Türkiye\" ~ \"Turkey\",\n    country == \"Islamic Republic of Iran\" ~ \"Iran\",\n    country == \"Republic of Korea\" ~ \"South Korea\",\n    country == \"Islamic Republic of Iran\" ~ \"Iran\",\n    country == \"Turkish Republic of Northern Cyprus\" ~ \"Cyprus\",\n    country == \"Democratic People's Republic of Korea\" ~ \"North Korea\",\n    country == \"United Kingdom\" ~ \"UK\",\n    TRUE ~ country\n  )) \n\nindiv_country\n\n# A tibble: 3,781 × 4\n# Groups:   country, year [3,781]\n    year country    individual_rank award       \n   &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt; &lt;chr&gt;       \n 1  2024 Albania                252 Bronze medal\n 2  2024 Algeria                 47 Gold medal  \n 3  2024 Argentina               82 Silver medal\n 4  2024 Armenia                182 Bronze medal\n 5  2024 Australia               29 Gold medal  \n 6  2024 Austria                 90 Silver medal\n 7  2024 Azerbaijan             252 Bronze medal\n 8  2024 Bangladesh             216 Bronze medal\n 9  2024 Belarus                 11 Gold medal  \n10  2024 Belgium                147 Silver medal\n# ℹ 3,771 more rows\n\n\nHere we will generate the map data from the maps library and we see that the number of countries it has registered is more than double what we see in 2024, which means we may have quite a big part of our map that is empty.\n\nworld_data &lt;- map_data(\"world\")\n\nworld_data |&gt; \n  summarize(n_distinct(region))\n\n  n_distinct(region)\n1                252\n\n\nNow we will merge the two datasets for plotting.\n\nplot_imo &lt;- world_data |&gt; \n  left_join(indiv_country, by = c(\"region\" = \"country\")) |&gt; \n  filter(!is.na(individual_rank))"
+  },
+  {
+    "objectID": "tidytuesday/2024/imo.html#graphing",
+    "href": "tidytuesday/2024/imo.html#graphing",
+    "title": "Math Olympiad Ranks",
+    "section": "Graphing",
+    "text": "Graphing\n\nplot_imo |&gt; \n  ggplot(aes(x = long, y = lat, group = group)) + \n  geom_polygon(data = world_data, \n               aes(x = long, y = lat, group = group),\n               color = \"black\", fill = \"white\") + \n  geom_polygon(aes(fill = individual_rank), color = \"black\") +\n  scale_fill_gradient(name = \"Best Individual Rank\", \n                      trans = \"log\",\n                      low = \"#0e2e61\",\n                      high = \"#91b9fa\",\n                      labels = scales::label_number(accuracy = 1)) +\n  theme_minimal() +\n  transition_states(year, \n                    state_length = 5,\n                    transition_length = 10) +\n  labs(title = 'Top Scoring Math Olympiads in {closest_state}',\n       subtitle = \"Countries filled in with white do not have data\",\n       x = \"\",\n       y = \"\",\n       fill = \"Best\\n Individual Rank\")"
+  },
+  {
+    "objectID": "tidytuesday/2025/australian_frogs.html",
+    "href": "tidytuesday/2025/australian_frogs.html",
+    "title": "Australian Frogs",
+    "section": "",
+    "text": "This analysis uses 2023 data from the sixth annual release of FrogID, an Australian frog call identification initiative. FrogID allows citizen scientists to record frog calls via a mobile app, with experts verifying the species. The dataset, curated by Jessica Moore, contributes to ongoing research on frog ecology, taxonomy, and conservation. Primary data sources include Rowley & Callaghan (2020) and the Australian Society of Herpetologists Official List of Australian Species (2025)."
+  },
+  {
+    "objectID": "tidytuesday/2025/australian_frogs.html#importing-libraries-data",
+    "href": "tidytuesday/2025/australian_frogs.html#importing-libraries-data",
+    "title": "Australian Frogs",
+    "section": "Importing Libraries & Data",
+    "text": "Importing Libraries & Data\nIn this section, we load the necessary R packages for data manipulation, mapping, and visualization, and import the FrogID observation data along with the official frog species names.\n\n# Libraries\nlibrary(tidyverse)\nlibrary(maps)\nlibrary(Polychrome)\nlibrary(plotly)\nlibrary(RColorBrewer)\n\n# Importing Data\nfrogID_data &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frogID_data.csv')\nfrog_names &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-02/frog_names.csv')"
+  },
+  {
+    "objectID": "tidytuesday/2025/australian_frogs.html#data-manipulation",
+    "href": "tidytuesday/2025/australian_frogs.html#data-manipulation",
+    "title": "Australian Frogs",
+    "section": "Data Manipulation",
+    "text": "Data Manipulation\nJoin all the frog data spottings with the frog scientific information.\n\nall_frogs &lt;- frogID_data |&gt;\n  left_join(frog_names, by = \"scientificName\") |&gt;\n  mutate(month = month(eventDate),\n         season = case_when(\n             month %in% c(12, 1, 2) ~ \"Winter\",\n             month %in% c(3, 4, 5) ~ \"Spring\",\n             month %in% c(6, 7, 8) ~ \"Summer\",\n             month %in% c(9, 10, 11) ~ \"Fall\"),\n         genus = str_extract(scientificName, \"^\\\\w+\")\n         )\n\nFinding the frogs that are most spotted and creating a color palette for the plotting.\n\ntop_frogs &lt;- all_frogs |&gt;\n  group_by(genus) |&gt;\n  summarize(n = n()) |&gt;\n  arrange(desc(n)) |&gt;\n  head(7) |&gt;\n  pull(genus)\n\nall_frogs &lt;- all_frogs |&gt;\n  filter(genus %in% c(\"Uperoleia\", \"Pseudophryne\", \"Mixophyes\"))\n\nmycols &lt;- createPalette(7, c(\"#E41A1C\", \"#377EB8\", \"#4DAF4A\"))\nnames(mycols) &lt;- all_frogs |&gt; select(genus) |&gt; unique() |&gt; pull()"
+  },
+  {
+    "objectID": "tidytuesday/2025/australian_frogs.html#plotting",
+    "href": "tidytuesday/2025/australian_frogs.html#plotting",
+    "title": "Australian Frogs",
+    "section": "Plotting",
+    "text": "Plotting\nWe plot the frog spottings into a plotly in such a way we can select and deselect frogs by clicking the legend.\n\naustralia_map &lt;- maps::map(database = \"world\", region = \"Australia\")\n\n\n\n\n\n\n\np &lt;- ggplot(australia_map, \n       aes(x = long, y = lat, group = group)) +\n  geom_polygon(fill = \"white\", color = \"black\") + \n  geom_point(data = all_frogs,\n             aes(x = decimalLongitude, \n                 y = decimalLatitude, \n                 color = genus),\n             alpha = 0.5,\n             size = 1,\n             inherit.aes = FALSE) +\n  theme_minimal() +\n  theme(\n        # legend.position = \"none\",\n        axis.title.x = element_blank(),   # remove x axis title\n        axis.title.y = element_blank(),   # remove y axis title\n        axis.text.x  = element_blank(),   # remove x axis text\n        axis.text.y  = element_blank(),   # remove y axis text\n        axis.ticks   = element_blank(),   # remove ticks\n        panel.grid   = element_blank()    # remove grid lines\n      ) +\n  labs(title = \"Frogs in Australia\",\n       color = \"Select:\") + \n  scale_color_manual(values = mycols) +\n  facet_wrap(~season)\n\nggplotly(p, tooltip = NULL)"
+  },
+  {
+    "objectID": "tidytuesday/2025/boogg.html",
+    "href": "tidytuesday/2025/boogg.html",
+    "title": "Böög Explosion Data",
+    "section": "",
+    "text": "This weeks TidyTuesday data was curated by Matt.\n“The Boeoegg is a snowman effigy made of cotton wool and stuffed with fireworks, created every year for Zurich’s”Sechselaeuten” spring festival. The saying goes that the quicker the Boeoeg’s head explodes, the finer the summer will be.”\nThe libraries that will be used.\n\nlibrary(tidyverse)\nlibrary(lubridate)\n\nImporting the data of the for the boogg data.\n\nsechselaeuten &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-12-02/sechselaeuten.csv')\n\nThe anamonly variable is that months average temp vs the average over the entre century.\n\nglobal &lt;- read_csv(\"https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/land_ocean/tavg/12/0/1923-2025/data.csv\", skip = 3) |&gt; \n  mutate(year = as.numeric(str_sub(Date, 1, 4)),\n         month = as.numeric(str_sub(Date, 5, 6))\n         )\n\nJoining the summer data with the boogg data.\n\nsummer &lt;- global |&gt; \n  filter(month %in% c(7, 8, 9)) |&gt; \n  group_by(year) |&gt; \n  summarize(temp = mean(Anomaly))\n\nglobal_snowman &lt;- summer |&gt; \n  full_join(sechselaeuten, by = \"year\") |&gt; \n  filter(year &gt;= 1952)\n\nNow we can create the graph but we notice that the longer the duration the hotter the summer. This is the opposite of what we had expected. However we do see that the year and the tempature has a clear relationship.\n\nglobal_snowman |&gt; \n  ggplot(aes(x = duration, y = temp)) + \n  geom_point(aes(color = year))  +\n  geom_smooth(color = \"gray\", se = FALSE) +\n  theme_minimal() +\n  labs(x = \"Druation till Explosion\", y = \"Tempature\",\n       color = \"Year\", title = \"Duration to Boog Explosion and Tempature\")"
+  },
+  {
+    "objectID": "tidytuesday/2025/cranes_sweden.html",
+    "href": "tidytuesday/2025/cranes_sweden.html",
+    "title": "Crane Migration in Sweden",
+    "section": "",
+    "text": "This weeks tidytuesday will explore Crane Observations at Lake Hornborgasjön, Sweden Naturum website."
+  },
+  {
+    "objectID": "tidytuesday/2025/cranes_sweden.html#libraries",
+    "href": "tidytuesday/2025/cranes_sweden.html#libraries",
+    "title": "Crane Migration in Sweden",
+    "section": "Libraries",
+    "text": "Libraries\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/2025/cranes_sweden.html#data-wrangling",
+    "href": "tidytuesday/2025/cranes_sweden.html#data-wrangling",
+    "title": "Crane Migration in Sweden",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nChanging the date variables to be compatible with ggploting.\n\ncranes_adapted &lt;- cranes |&gt; \n  mutate(year = year(date),\n         md = mdy(paste0(format(date, \"%m-%d\"), \"2000\", sep = \"-\")))"
+  },
+  {
+    "objectID": "tidytuesday/2025/cranes_sweden.html#graphing",
+    "href": "tidytuesday/2025/cranes_sweden.html#graphing",
+    "title": "Crane Migration in Sweden",
+    "section": "Graphing",
+    "text": "Graphing\nCreating a plot to understnad the seasonal variations in crane spottings. We notice that more cranes have been observed in recent years.\n\ncranes_adapted |&gt; \n  ggplot(aes(x = year, y = md, color = observations)) + \n  geom_segment(aes(x = year - 0.3, xend = year + 0.3, y = md, yend = md)) +\n  scale_color_gradient(low = \"lightyellow\", high = \"#CC5500\") +\n  guides(color = guide_colorbar(\n    direction = \"horizontal\",   # horizontal\n    barwidth = 10,              # horizontal length\n    barheight = 1,              # vertical thickness\n    title.position = \"top\"\n  )) +\n  theme_minimal() + \n  theme(panel.grid.minor.y = element_blank(),\n        panel.grid.minor.x = element_blank(),\n        panel.grid.major.y = element_line(linetype = \"dashed\"),\n        panel.grid.major.x = element_line(linetype = \"solid\"),\n        legend.position = c(0.77, 0.5))+\n  labs(x = \"\", y = \"\", color = \"Cranes Observed\",\n       title = \"Cranes Observed In Sweden For Fall & Spring Seasons\",\n       subtitle = \"Grey lines were cancelled days for counting\") + \n  scale_y_date(\n    breaks = ymd(c(\"2000-03-01\", \"2000-04-01\", \"2000-05-01\",\n                   \"2000-06-01\", \"2000-07-01\", \"2000-08-01\",\n                   \"2000-09-01\", \"2000-10-01\", \"2000-11-01\")),\n    date_labels = \"%b\") +\n  scale_x_continuous(breaks = seq(1995, 2025, by = 5))"
+  },
+  {
+    "objectID": "tidytuesday/2025/henley_passport.html",
+    "href": "tidytuesday/2025/henley_passport.html",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "",
+    "text": "Thanks to Brenden Smith and Jen Richmond from the tidytuesday community for curating this week’s 2025 dataset from the Henley Passport Index, which measures the number of countries each passport allows its holders to enter visa-free, including visa-on-arrival and electronic travel authorization (ETA) access."
+  },
+  {
+    "objectID": "tidytuesday/2025/henley_passport.html#library",
+    "href": "tidytuesday/2025/henley_passport.html#library",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Library",
+    "text": "Library\nThe following are the libraries used in the analysis.\n\nlibrary(tidyverse)\nlibrary(jsonlite)\n\n# Plotting\nlibrary(plotly)\nlibrary(sf)\nlibrary(rnaturalearth)\nlibrary(rnaturalearthdata)"
+  },
+  {
+    "objectID": "tidytuesday/2025/henley_passport.html#data-importation",
+    "href": "tidytuesday/2025/henley_passport.html#data-importation",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Data Importation",
+    "text": "Data Importation\nImporting the data from the tidytuesday repo\n\ncountry_lists = read_csv(\"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-09/country_lists.csv\")\nrank_by_year = read_csv(\"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-09/rank_by_year.csv\")"
+  },
+  {
+    "objectID": "tidytuesday/2025/henley_passport.html#data-manipulation",
+    "href": "tidytuesday/2025/henley_passport.html#data-manipulation",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Data Manipulation",
+    "text": "Data Manipulation\nWe first clean the data to get it into a tidy format. Specifically, we want to create from and to columns to capture the direction of travel, along with the visa requirements for that direction. This structure will make it easier to analyze and visualize visa connections between countries.\n\ntravel_perms_no_domesitc &lt;- country_lists |&gt; \n  pivot_longer(\n    cols = c(visa_required, visa_online, visa_on_arrival, \n             visa_free_access, electronic_travel_authorisation),\n    names_to = \"visa_type\",\n    values_to = \"json_str\") |&gt; \n  mutate(json_parsed = map(json_str, ~ fromJSON(.)[[1]])) |&gt; \n  unnest(json_parsed, names_sep = \"_\") |&gt; \n  select(-json_str) |&gt; \n  select(from = code, from_name = country,\n         to = json_parsed_code, to_name = json_parsed_name,\n         visa_type) |&gt; \n  mutate(visa_type = case_when(\n    visa_type %in% c(\"visa_required\",\n                   \"visa_online\",\n                   \"visa_on_arrival\") ~ \"Visa Required\",\n    visa_type %in% c(\"visa_free_access\",\n                     \"electronic_travel_authorisation\") ~ \"Easy Access\")) |&gt; \n  mutate(from = ifelse(from_name == \"Namibia\", \"NA\", from)) |&gt; \n  distinct()\ntravel_perms_no_domesitc |&gt; head(3)\n\n# A tibble: 3 × 5\n  from  from_name             to    to_name     visa_type    \n  &lt;chr&gt; &lt;chr&gt;                 &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;        \n1 PS    Palestinian Territory AF    Afghanistan Visa Required\n2 PS    Palestinian Territory DZ    Algeria     Visa Required\n3 PS    Palestinian Territory AD    Andorra     Visa Required\n\n\nBefore continuing, we need to ensure that the dataset includes self-to-self observations, so that each country’s visa connections include itself. This way, the country of origin will also appear on the map.\n\nhome_countries &lt;- travel_perms_no_domesitc |&gt; \n  select(from, from_name) |&gt; \n  distinct() |&gt; \n  mutate(visa_type = \"Domestic Travel\",\n         to = from,\n         to_name = from_name)\n\ntravel_perms &lt;- travel_perms_no_domesitc |&gt; rbind(home_countries)"
+  },
+  {
+    "objectID": "tidytuesday/2025/henley_passport.html#graphing",
+    "href": "tidytuesday/2025/henley_passport.html#graphing",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Graphing",
+    "text": "Graphing\nFirst, we will join our visa data with the mapping (geospatial) data to prepare it for visualization.\n\nworld &lt;- ne_countries(scale = \"medium\", returnclass = \"sf\")\nworld_data &lt;- world |&gt; \n  left_join(travel_perms, by = c(\"iso_a2_eh\" = \"to\"))\n\nI will now create a function that generates the visa requirements map for any country. The function takes two parameters: the country code to filter the data and the demonym for the country, which is used in the graph title. This approach is flexible and would also be very useful if I wanted to integrate it into a Shiny app.\n\n#' Create an interactive visa requirements map for a given country\n#'\n#' @param code Character. ISO country code to filter the visa data\n#' @param demonym Character. Nationality used in the graph title\n#' \n#' @return A Plotly interactive map\n#' @example plot_visa_connections(\"MX\", \"Mexicans\")\n#' \nplot_visa_connections &lt;- function(code, demonym) {\n  plot_ly() |&gt; \n    add_sf(\n      data = world_data |&gt; \n        filter(from == code),\n      split = ~iso_a2_eh,\n      color = ~visa_type,\n      colors = c(\n        \"Domestic Travel\" = \"#1f77b4\",\n        \"Easy Access\" = \"#2ca02c\",\n        \"Visa Required\" = \"#d62728\"\n      ),\n      text = ~paste(\"&lt;b&gt;Country:&lt;/b&gt;\", to_name, \n                    \"&lt;b&gt;&lt;br&gt;Visa:&lt;/b&gt;\", visa_type),\n      hoveron = \"fills\",\n      hoverinfo = \"text\" \n    ) |&gt; \n    layout(title = paste0(\"&lt;br&gt;Visa Connections For &lt;b&gt;\", \n                          demonym, \"&lt;/b&gt;\"),\n           showlegend = FALSE)\n}"
+  },
+  {
+    "objectID": "tidytuesday/2025/henley_passport.html#plotting",
+    "href": "tidytuesday/2025/henley_passport.html#plotting",
+    "title": "Henley Passport DatasetVisa Requirements by Country of Origin",
+    "section": "Plotting",
+    "text": "Plotting\nThe following graph shows the visa requirements for entry based on your country of origin. “Easy Access” countries include those that allow either visa-free travel or entry via an electronic travel authorization (ETA) for the specified nationality. “Visa Required” indicates countries where travelers must obtain a visa before entry.\n\nplot_visa_connections(\"MX\", \"Mexicans\")\n\n\n\n\n\n\nplot_visa_connections(\"CA\", \"Canadians\")\n\n\n\n\n\n\nplot_visa_connections(\"BR\", \"Brazilians\")"
+  },
+  {
+    "objectID": "tidytuesday/2025/netflix.html",
+    "href": "tidytuesday/2025/netflix.html",
+    "title": "Netflix Movies & Shows",
+    "section": "",
+    "text": "The data this week will be exploring TV show and movie viewing data from Netflix. Netflix has released these engagment reports since 2023.\nIn this tidytuesday we will make a few graphs to display some of the changes in what is viewed overtime."
+  },
+  {
+    "objectID": "tidytuesday/2025/netflix.html#libraries",
+    "href": "tidytuesday/2025/netflix.html#libraries",
+    "title": "Netflix Movies & Shows",
+    "section": "Libraries",
+    "text": "Libraries\nLoading packages for the data manipulation and vizulization.\n\nlibrary(tidyverse)\nlibrary(plotly)\nlibrary(lubridate)\nlibrary(scales)"
+  },
+  {
+    "objectID": "tidytuesday/2025/netflix.html#data-importation",
+    "href": "tidytuesday/2025/netflix.html#data-importation",
+    "title": "Netflix Movies & Shows",
+    "section": "Data Importation",
+    "text": "Data Importation\nImportating the data from the tidytuesday repo.\n\nmovies &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/movies.csv')\nshows &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-29/shows.csv')"
+  },
+  {
+    "objectID": "tidytuesday/2025/netflix.html#graphing",
+    "href": "tidytuesday/2025/netflix.html#graphing",
+    "title": "Netflix Movies & Shows",
+    "section": "Graphing",
+    "text": "Graphing\n\nScatter plot\n\nsum_movies |&gt;\n  head(2000)|&gt;\n  ggplot(aes(sum_views, sum_hours, color = year_groups)) +\n  geom_point(alpha = 0.2) +\n  scale_x_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  scale_y_log10(labels = label_number(scale_cut = cut_short_scale())) +\n  facet_wrap(~year_groups) +\n  scale_color_brewer(palette = \"Set2\") +\n  labs(title = \"Views of a shows agaisnt the hours accumalated\",\n       x = \"Number of Views\",\n       y = \"Number of Hours\",\n       color = \"Release Date\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\n\nyearly_data &lt;- sum_movies |&gt;\n  group_by(year) |&gt;\n  summarize(views = sum(sum_views),\n            hours = sum(sum_hours)) |&gt;\n  pivot_longer(col = c(hours, views),\n               values_to = \"value\",\n               names_to = \"type\") |&gt;\n  filter(year &lt; 2025)\n\nyearly_data |&gt;\n  ggplot(aes(factor(year), value, \n             color = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"),\n             fill = ifelse(type == \"hours\", \"Watch Hours\", \"Number of Views\"))) +\n  geom_col(alpha = 0.5) +\n  scale_y_continuous(\n    trans = \"log10\",\n    labels = label_number(scale_cut = cut_short_scale()))+\n  theme_minimal() +\n    scale_color_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",      \n    \"Number of Views\" = \"#ff7f0e\"  \n  )) +\n  scale_fill_manual(values = c(\n    \"Watch Hours\" = \"#1f77b4\",\n    \"Number of Views\" = \"#ff7f0e\"\n  )) +\n  labs(title = \"Netflix Views and Hours By Release Date Years\",\n       y = \"\",\n       x = \"\",\n       color = \"\",\n       fill = \"\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +\n  theme(\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank() \n  )"
+  },
+  {
+    "objectID": "tidytuesday/2024/highway_traffic_flow.html",
+    "href": "tidytuesday/2024/highway_traffic_flow.html",
+    "title": "National Highways Traffic Flow",
+    "section": "",
+    "text": "Thank you to Nicola Rennie for curating this week’s dataset. The data can be accessed via the National Highways API. It has the vehicle volume from 4 highway cameras along an English highway, the A64."
+  },
+  {
+    "objectID": "tidytuesday/2024/highway_traffic_flow.html#data-importation-and-prep",
+    "href": "tidytuesday/2024/highway_traffic_flow.html#data-importation-and-prep",
+    "title": "National Highways Traffic Flow",
+    "section": "Data Importation and Prep",
+    "text": "Data Importation and Prep\nThere are a few English Bank Holidays in our dataset specifically May 3rd (Early May bank holiday) and May 31st (Spring bank holiday) in 2021. COVID restrictions are lifted in May 17 of 2021 in England and we will also take this into account. We will encode these details to observe them in our graphs.\n\nA64_traffic &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-12-03/A64_traffic.csv') |&gt; \n  mutate(dow = wday(`Report Date`, label = TRUE)) |&gt; \n  mutate(holiday = ifelse(`Report Date` == ymd(\"2021-05-03\") | `Report Date` == ymd(\"2021-05-31\"), TRUE, FALSE)) |&gt; \n  mutate(status = ifelse(`Report Date` &lt; \"2021-05-17\", \"covid_strict\", \"covid_free\")) # |&gt; \n  # mutate(label = case_when(\n  #   SiteId == 6867 ~ \"Norton-on-Derwent\",\n  #   SiteId == 7035 ~ \"B1249 & A1039\",\n  #   SiteId == 6867 ~ \"York (north)\",\n  #   SiteId == 6867 ~ \"Filey\"\n  # ))"
+  },
+  {
+    "objectID": "tidytuesday/2024/highway_traffic_flow.html#graphing",
+    "href": "tidytuesday/2024/highway_traffic_flow.html#graphing",
+    "title": "National Highways Traffic Flow",
+    "section": "Graphing",
+    "text": "Graphing\nWe will compare vehicle volume during Monday holidays against other Mondays of the month as well as the presence of COVID restrictions.\n\nA64_traffic |&gt; \n  filter(dow == \"Mon\") |&gt; \n  filter(SiteId == 6867) |&gt; \n  mutate(holiday = ifelse(holiday == TRUE, \"Yes\", \"No\")) |&gt; \n  ggplot(aes(x = `Time Period Ending`, y = `Total Volume`, color = holiday, group = `Report Date`, linetype = status)) + \n  theme_minimal() +\n  scale_color_manual(\n    values = c(\"Yes\" = \"darkgreen\", \"No\" = \"red\"),\n    name = \"Holiday\"\n  ) +\n  scale_linetype_manual(\n    values = c(\"covid_free\" = \"solid\", \"covid_strict\" = \"dashed\"),\n    labels = c(\"covid_free\" = \"Lifted\", \"covid_strict\" = \"Active\"),\n    name = \"Covid Restrictions\") +\n  geom_line() +\n  labs(title = \"Vehicle Volumed In The A64 Highway (siteID 6867)\",\n       subtitle = \"The first Mon with COVID restrictions lifted and a holiday \\nhas an increased vehicle volume\",\n       x = \"Hour of Day\",\n       y = \"Vehicle Volume\",\n       color = \"Holiday\")\n\n\n\n\n\n\n\n\nNow I will facet by day of the week, vehicle type, camera on the highway, and covid restrictions.\n\nA64_traffic |&gt; \n  ggplot(aes(\n    x = hour(`Time Period Ending`), \n    group = `Report Date`, \n    linetype = status\n  )) + \n  geom_smooth(aes(y = `0 - 520 cm`, color = \"Cars\"), se = FALSE) + \n  geom_smooth(aes(y = `661 - 1160 cm` * 10, color = \"Trucks\"), se = FALSE) + \n  facet_grid(SiteId ~ dow) + \n  scale_y_continuous(\n    # Features of the first axis\n    name = \"Number of Cars\",\n    # Add a second axis and specify its features\n    sec.axis = sec_axis(~./10, name = \"Number of Small Trucks\")\n  ) + \n  scale_color_manual(\n    values = c(\"Cars\" = \"darkorange\", \"Trucks\" = \"blue\"),\n    name = \"Vehicle Type\"\n  ) +\n  scale_linetype_manual(\n    values = c(\"covid_free\" = \"solid\", \"covid_strict\" = \"dashed\"),\n    labels = c(\"covid_free\" = \"Lifted\", \"covid_strict\" = \"Active\"),\n    name = \"Covid Restrictions\"\n  ) +\n  theme(\n    axis.title.y = element_text(color = \"darkorange\", size = 13),\n    axis.title.y.right = element_text(color = \"blue\", size = 13)\n  ) +\n  labs(title = \"Number of Vehicles Captured By Cameras On A64 Highway\",\n       subtitle = \"Columns represents days of the week while rows represent highways cameras. \\nEach line is a different week and the line type distiguishes the type of covid restrictions in place.\",\n       x = \"Hour of Day\") +\n  theme_minimal()\n\n\n\n\nMore driving after COVID restrictions were lifted can be observed in the graph. Note that the orange lines represent the number of cars and should be interpreted using the left y-axis, while the blue lines represent trucks and should be interpreted using the right y-axis."
+  },
+  {
+    "objectID": "tidytuesday/2024/bobs_burgers.html",
+    "href": "tidytuesday/2024/bobs_burgers.html",
+    "title": "Dialogue From Bob’s Burgers",
+    "section": "",
+    "text": "This week we’re exploring Bob’s Burgers dialogue! Instead of using the official tidytuesday rep data we will use the [bobsburgersR](https://github.com/poncest/bobsburgersR) data package. Thank you to Steven Ponce for the data,"
+  },
+  {
+    "objectID": "tidytuesday/2024/bobs_burgers.html#data-preparation",
+    "href": "tidytuesday/2024/bobs_burgers.html#data-preparation",
+    "title": "Dialogue From Bob’s Burgers",
+    "section": "Data Preparation",
+    "text": "Data Preparation\nWe will be making text analysis graphs realted to burger related lines, so we will first make a list of “burger keywords”. Then we put it in a regex format to detect whether a line has a burger keyword.\n\nburger_keywords &lt;- c(\n  \"patty\", \"burger\", \"cheeseburger\", \"double-decker\", \n  \"bacon burger\", \"slider\", \"smashburger\", \n  \"grilled bun\", \"toasted bun\", \"drive-thru\", \n  \"ketchup\", \"mustard\", \"mayo\", \"pickles\", \"lettuce\", \n  \"tomato\", \"onions\", \"cheese\", \"toppings\", \"fries\"\n)\nburger_keywords_list &lt;- str_c(\"(?i)\", str_c(burger_keywords, collapse = \"|\"))\n\nNow I will put the data in a format so we can plot how frequently burger related words where said accross seasons and episodes. I will also join the data with the imdb data to also have a rating for another plot.\n\nplot_data &lt;- transcript_data |&gt; \n  drop_na(raw_text) |&gt; \n  mutate(word_in = str_detect(raw_text, burger_keywords_list)) |&gt; \n  group_by(season, episode) |&gt; \n  summarize(num_wrds = sum(word_in), .groups = \"drop\") |&gt; \n  full_join(imdb_wikipedia_data, by = c(\"season\", \"episode\"))"
+  },
+  {
+    "objectID": "tidytuesday/2024/bobs_burgers.html#graphing",
+    "href": "tidytuesday/2024/bobs_burgers.html#graphing",
+    "title": "Dialogue From Bob’s Burgers",
+    "section": "Graphing",
+    "text": "Graphing\nFirst I will facet wrap a plot of the requency of burger lines across the seasons.\n\nseason_labels &lt;- setNames(\n  paste(\"Season\", 1:14),\n  as.character(1:14))\n\nplot_data |&gt; \n  ggplot(aes(y = num_wrds, x = episode)) + \n  geom_text(\n    aes(label = \"hamburger\"), \n    size = 2.5, color = \"#D2691E\", \n    family = \"Font Awesome 5 Free Solid\") +\n  facet_wrap(\n    ~season, \n    labeller = as_labeller(season_labels)) + \n  theme_minimal() +\n  labs(\n    subtitle = \"Number of times lines had burger-related words\",\n    title = \"Dialogue from Bob's Burgers\",\n    x = \"Episode Number\",\n    y = \"Number of Lines per Episode\")\n\n\n\n\n\n\n\n\nNow I will make a scatterplot to view the relationship between “burger lines” and the imdb rating.\n\nplot_data |&gt; \n  ggplot(aes(num_wrds, rating)) +\n  geom_text(\n    aes(label = \"hamburger\"), \n    size = 2.5, color = \"#D2691E\", \n    family = \"Font Awesome 5 Free Solid\") +  \n  geom_smooth(color = \"darkgreen\",\n              se = FALSE) +\n  theme_minimal() +\n  labs(title = \"Bob's Burgers: Number of Burger Related Lines Against Episode Rating\",\n       subtitle = \"We see very little relationship as seen by the green trend line\",\n       x = \"Number of Burger Related Lines\",\n       y = \"Episode Rating\")"
+  },
+  {
+    "objectID": "tidytuesday/2024/country_code.html",
+    "href": "tidytuesday/2024/country_code.html",
+    "title": "ISO Country Codes",
+    "section": "",
+    "text": "The dataset this week comes from the {ISOcodes} R package. My analysis will focus on the former_countries dataset which is of formerly used names of countries from ISO 3166-3.\nFor this TidyTuesday, I’m creating an interactive lollipop chart to show when different countries ceased to be countries using the former_countries dataset."
+  },
+  {
+    "objectID": "tidytuesday/2024/country_code.html#data-preparation",
+    "href": "tidytuesday/2024/country_code.html#data-preparation",
+    "title": "ISO Country Codes",
+    "section": "Data Preparation",
+    "text": "Data Preparation\n\nformer &lt;- former_countries |&gt; \n  mutate(date = case_when(\n    nchar(date_withdrawn) == 4 ~ ymd(paste0(date_withdrawn, \"-01-01\")),\n    TRUE ~ ymd(date_withdrawn))) |&gt; \n  mutate(yval = sample(5:20, nrow(former_countries), replace = TRUE)) |&gt; \n  arrange(date) |&gt; \n  mutate(decade = as.character((((year(date) %% 100)) %/% 10) * 10)) |&gt; \n  mutate(decade = case_when(decade == \"0\" ~ \"00\",\n                            TRUE ~ decade)) |&gt; \n  mutate(decade = factor(decade, levels = c(\"70\", \"80\", \"90\", \"00\", \"10\", \"20\"))) |&gt; \n  mutate(name = paste0(year(date), \": \", name))"
+  },
+  {
+    "objectID": "tidytuesday/2024/country_code.html#data-vizualization",
+    "href": "tidytuesday/2024/country_code.html#data-vizualization",
+    "title": "ISO Country Codes",
+    "section": "Data Vizualization",
+    "text": "Data Vizualization\n\n# Define custom colors for each decade\ndecade_colors &lt;- c(\"70\" = \"#1f3a6c\", \n                   \"80\" = \"#6a1b9a\", \n                   \"90\" = \"#e53946\", \n                   \"00\" = \"#f57c00\", \n                   \"10\" = \"#43a047\", \n                   \"20\" = \"#00897b\")\n\n# Reorder `name` by `date`\nformer &lt;- former |&gt; \n  mutate(alpha_3 = fct_reorder(alpha_3, date))\n\n# Create the plot\np &lt;- former |&gt; \n  ggplot(aes(x = alpha_3, y = date)) +\n  geom_segment(aes(xend = alpha_3, yend = min(date), color = decade)) +\n  geom_point(aes(text = name, color = decade), size = 4) +\n  scale_color_manual(values = decade_colors) +\n  theme_minimal() +\n  labs(title = \"Timeline of Country Code Termination From 1970 - 2010\", \n       x = \"Country Code\", \n       y = \"Date of Usage Termination\",\n       color = \"Decade\") +\n  coord_flip()\n\n# Make it a plotly\nggplotly(p, tooltip = \"text\")"
+  },
+  {
+    "objectID": "tidytuesday/2024/CIA_Factbook/cia_factbook.html",
+    "href": "tidytuesday/2024/CIA_Factbook/cia_factbook.html",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "",
+    "text": "We will be exploring the CIA World Factbook. The dataset this week comes from the CIA Factbook, Country Comparisons, 2014, via the {openintro} R package, via the {usdatasets} R package, via this post on LinkedIn.\nBelow is some of the preliminary single variable plot work that contributed to building the Shiny app above."
+  },
+  {
+    "objectID": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#loading-relevant-libraries",
+    "href": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#loading-relevant-libraries",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "Loading relevant libraries",
+    "text": "Loading relevant libraries\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#loading-the-data",
+    "href": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#loading-the-data",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "Loading the data",
+    "text": "Loading the data\n\ncia &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-22/cia_factbook.csv') |&gt; \n    mutate(\n    iso_a3 = countrycode::countrycode(\n      country,\n      origin = \"country.name\",\n      destination = \"iso3c\"\n    )) |&gt; \n  drop_na(iso_a3)"
+  },
+  {
+    "objectID": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#world-map",
+    "href": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#world-map",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "World map",
+    "text": "World map\n\nworld_data &lt;- map_data(\"world\") |&gt; \n  mutate(\n      iso_a3 = countrycode::countrycode(\n      region,\n      origin = \"country.name\",\n      destination = \"iso3c\")) |&gt; \n  drop_na(iso_a3)\n\ndata4map &lt;- world_data |&gt; \n  left_join(cia, by = \"iso_a3\")"
+  },
+  {
+    "objectID": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#make-a-single-plot-for-infant-mortality-rate",
+    "href": "tidytuesday/2024/CIA_Factbook/cia_factbook.html#make-a-single-plot-for-infant-mortality-rate",
+    "title": "Presenting Global Indicies From the CIA Factbook Data",
+    "section": "Make a single plot for Infant Mortality rate",
+    "text": "Make a single plot for Infant Mortality rate\n\ndata4map |&gt; \n  ggplot(aes(x = long, y = lat, group = group)) +\n  geom_polygon(aes(fill = infant_mortality_rate)) +\n  scale_fill_gradient(low = \"blue\", high = \"red\", trans = \"log\", \n                        labels = scales::label_comma(accuracy = 0.01))+\n  theme_void()"
+  },
+  {
+    "objectID": "tidytuesday/2024/biodiversity_national_parks.html",
+    "href": "tidytuesday/2024/biodiversity_national_parks.html",
+    "title": "Biodiverisity in West Coast National Parks",
+    "section": "",
+    "text": "Waffle was used to create the waffle graph.\n\nlibrary(tidyverse)\nlibrary(waffle)"
+  },
+  {
+    "objectID": "tidytuesday/2024/biodiversity_national_parks.html#plotting",
+    "href": "tidytuesday/2024/biodiversity_national_parks.html#plotting",
+    "title": "Biodiverisity in West Coast National Parks",
+    "section": "Plotting",
+    "text": "Plotting\nI plot a waffle chart that shows the biodiversity of biological groups amoung the three west coast naitonal parks in the dataset.\n\nwc_species |&gt; \n  mutate(ParkName = str_extract(ParkName, \".*(?= National Park)\")) |&gt; \n  ggplot(aes(fill = CategoryName, values = n)) +\n  geom_waffle(color = \"white\", size=0.25, n_rows = 10, flip = TRUE) +\n  facet_wrap(~ParkName, strip.position = \"bottom\") +\n  scale_x_discrete() +\n  scale_y_continuous(label = function(x) x * 100, \n                    expand = c(0,0)) +\n  coord_equal() +\n  theme_minimal() +\ntheme(\n    panel.grid = element_blank(), \n    axis.ticks.y = element_line()\n    #strip.text = element_text(face = \"bold\")  # Make facet labels bold\n  ) +\n  guides(fill = guide_legend(reverse = TRUE)) +\n  scale_fill_manual(values = custom_palette) +\n  labs(fill = \"Biological Group\",\n       title = \"Biodiversity in West Coast National Parks\",\n       subtitle = \"Each Square Represents 10 Species by Biological Category\")"
+  },
+  {
+    "objectID": "tidytuesday/2024/chess_matches.html",
+    "href": "tidytuesday/2024/chess_matches.html",
+    "title": "Understanding Chess Match Dataset",
+    "section": "",
+    "text": "library(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/2024/chess_matches.html#packages",
+    "href": "tidytuesday/2024/chess_matches.html#packages",
+    "title": "Understanding Chess Match Dataset",
+    "section": "",
+    "text": "library(tidyverse)"
+  },
+  {
+    "objectID": "tidytuesday/2024/chess_matches.html#loading-chess-dataset",
+    "href": "tidytuesday/2024/chess_matches.html#loading-chess-dataset",
+    "title": "Understanding Chess Match Dataset",
+    "section": "Loading Chess Dataset",
+    "text": "Loading Chess Dataset\nThe chess dataset this week comes from Lichess.org via Kaggle/Mitchell J.\nThe data will also be cleaned during importation, removing all detailed information about the type of opening and leaving only broader categories of data to allow for data aggregation.\n\nchess &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-10-01/chess.csv') |&gt; \n  mutate(opening_main = case_when(\n    str_detect(opening_name, \":\") ~ str_extract(opening_name, \".+?(?=:)\"),\n    str_detect(opening_name, \"\\\\|\") ~ str_extract(opening_name, \".+?(?= \\\\|)\"),\n    str_detect(opening_name, \"#\") ~ str_extract(opening_name, \".+?(?= #)\"),\n    TRUE ~ opening_name)) |&gt; \n  mutate(num_moves = str_count(moves, \"\\\\S+\"))"
+  },
+  {
+    "objectID": "tidytuesday/2024/chess_matches.html#collapsig-data",
+    "href": "tidytuesday/2024/chess_matches.html#collapsig-data",
+    "title": "Understanding Chess Match Dataset",
+    "section": "Collapsig Data",
+    "text": "Collapsig Data\nWe collapse the data by grouping by opening type and filtering for more than 500 observations with this opening.\n\ntop_open &lt;- chess |&gt;  \n  group_by(opening_main) |&gt; \n  summarize(open_count = n(),\n            open_prop = open_count / nrow(chess)) |&gt; \n  arrange(desc(open_count)) |&gt; \n  filter(open_count &gt; 500) |&gt; \n  select(opening_main) |&gt; \n  pull()\n\ntop_open\n\n [1] \"Sicilian Defense\"     \"French Defense\"       \"Queen's Pawn Game\"   \n [4] \"Italian Game\"         \"King's Pawn Game\"     \"Ruy Lopez\"           \n [7] \"English Opening\"      \"Scandinavian Defense\" \"Philidor Defense\"    \n[10] \"Caro-Kann Defense\"   \n\nchess_top &lt;- chess |&gt; \n  filter(opening_main %in% top_open)"
+  },
+  {
+    "objectID": "tidytuesday/2024/chess_matches.html#plotting",
+    "href": "tidytuesday/2024/chess_matches.html#plotting",
+    "title": "Understanding Chess Match Dataset",
+    "section": "Plotting",
+    "text": "Plotting\n\nOutcomes based on opening used\nThe following shows the proportion for the winner of the gram depending on what type of opening was used. Only the most popular openings are shown.\n\nchess_top |&gt; \n  mutate(winner = case_when(\n    winner == \"white\" ~ \"Opener\",\n    winner == \"black\" ~ \"Follower\",\n    winner == \"draw\" ~ \"Draw\")) |&gt; \n  mutate(winner = factor(winner, levels = c(\"Follower\", \"Draw\", \"Opener\"))) |&gt; \n  ggplot(aes(x = opening_main, fill = winner)) +\n  geom_bar(position = \"fill\") +\n  # Tilting the text\n  #theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)) +\n  scale_fill_brewer(palette = \"Dark2\") +\n  coord_flip() +\n  theme_minimal() +\n  labs(x = \"Proportion\",\n      y = \"Opening\",\n      fill = \"Winner\",\n      title = \"Type Opening With Outcome Proportion\")\n\n\n\n\n\n\n\n\n###Exploring links with player rating We plot player ratings and color the observations by the type of opening. One observationis that the Sicilian openign tends to be used between higher rated player matches and the King’s Pawn game is used in lower rated player matches.\n\nchess_top |&gt; \n  ggplot(aes(x = white_rating, y = black_rating, color = opening_main)) +\n  geom_point() +\n  scale_color_brewer(palette = \"Spectral\") +\n  labs(x = \"White Rating\", \n       y = \"Black Rating\", \n       color = \"Opening\",\n       title = \"Player Rating and Type of Opening\")"
+  },
+  {
+    "objectID": "tidytuesday/2024/chess_matches.html#model",
+    "href": "tidytuesday/2024/chess_matches.html#model",
+    "title": "Understanding Chess Match Dataset",
+    "section": "Model",
+    "text": "Model\nWe make a basic model predicting whether the opening will be Sicilian in a particular game. The results are below.\n\nchess &lt;- chess |&gt; \n  mutate(sicilian = ifelse(opening_main == \"Sicilian Defense\", 1, 0))\n\nglm(sicilian ~ black_rating + num_moves, data = chess, family = binomial) |&gt; \n  broom::augment(type.predict = \"response\")\n\n# A tibble: 20,058 × 9\n   sicilian black_rating num_moves .fitted .resid      .hat .sigma    .cooksd\n      &lt;dbl&gt;        &lt;dbl&gt;     &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;\n 1        0         1191        13  0.0754 -0.396 0.000161   0.872 0.00000437\n 2        0         1261        16  0.0823 -0.415 0.000146   0.872 0.00000436\n 3        0         1500        61  0.113  -0.489 0.0000597  0.872 0.00000252\n 4        0         1454        61  0.107  -0.475 0.0000657  0.872 0.00000261\n 5        0         1469        95  0.110  -0.484 0.000114   0.872 0.00000472\n 6        1         1002         5  0.0593  2.38  0.000200   0.871 0.00106   \n 7        0         1423        33  0.101  -0.462 0.0000922  0.872 0.00000346\n 8        0         2108         9  0.217  -0.700 0.000487   0.872 0.0000451 \n 9        0         1392        66  0.0991 -0.457 0.0000779  0.872 0.00000286\n10        0         1209       119  0.0815 -0.412 0.000237   0.872 0.00000702\n# ℹ 20,048 more rows\n# ℹ 1 more variable: .std.resid &lt;dbl&gt;"
+  },
+  {
+    "objectID": "tidytuesday/2024/chess_matches.html#graphing-the-model",
+    "href": "tidytuesday/2024/chess_matches.html#graphing-the-model",
+    "title": "Understanding Chess Match Dataset",
+    "section": "Graphing the model",
+    "text": "Graphing the model\nA model with more predictive power would have a dark shaded region on the bottom left and another on the top right of the graph. We do not find this in the graph below so we can say that this model is not capturing the likelihood of Sicilian opening taking place.\n\nglm(sicilian ~ black_rating + white_rating + num_moves + rated, \n    data = chess, family = \"binomial\") |&gt; \n  broom::augment(type.predict = \"response\") |&gt; \n  ggplot(aes(x = .fitted, y = sicilian)) + \n  geom_point(alpha = 0.1)"
+  },
+  {
+    "objectID": "tidytuesday/2024/shakespeare_words.html",
+    "href": "tidytuesday/2024/shakespeare_words.html",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "",
+    "text": "This week we’re exploring dialogue in Shakespeare plays. The dataset this week comes from shakespeare.mit.edu (via github.com/nrennie/shakespeare) which is the Web’s first edition of the Complete Works of William Shakespeare. The site has offered Shakespeare’s plays and poetry to the internet community since 1993. The analysis I will take inspiratio from is @deepdk"
+  },
+  {
+    "objectID": "tidytuesday/2024/shakespeare_words.html#loading-relevant-libraries",
+    "href": "tidytuesday/2024/shakespeare_words.html#loading-relevant-libraries",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "Loading relevant libraries",
+    "text": "Loading relevant libraries\n\nlibrary(tidyverse)\nlibrary(scales)\nlibrary(tidytext)\nlibrary(devtools)\nlibrary(ggwordcloud)\nlibrary(png)\nlibrary(svglite)\nlibrary(showtext)\nlibrary(sysfonts)"
+  },
+  {
+    "objectID": "tidytuesday/2024/shakespeare_words.html#importation-of-the-data",
+    "href": "tidytuesday/2024/shakespeare_words.html#importation-of-the-data",
+    "title": "Creating a Word Map With Custom Shapes",
+    "section": "Importation of the data",
+    "text": "Importation of the data\n\nromeo_juliet &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-17/romeo_juliet.csv')\n\n\nData Wrangling\nFilter the data-set for only the characters Romeo and Juliet.\n\nromeo_juliet &lt;- romeo_juliet |&gt;  \n  filter(character %in% c(\"Romeo\",\"Juliet\")) \n\nMaking a list of the words that we are not interested in.\n\n# Create a custom list of words to exclude\ncustom_stop_words &lt;- c(\"thou\", \"thy\", \"thee\", \"thine\", \"art\", \"hast\", \"dost\", \"ere\", \"o\",\"hath\")\n\nMake a simple data set that has a column of the character, the word spoke, and the number of times it was spoken.\n\nword_counts &lt;- romeo_juliet |&gt; \n  unnest_tokens(word, dialogue) |&gt; \n  anti_join(stop_words) |&gt;   # Remove common stop words\n  filter(!str_detect(word, \"^[0-9]+$\")) |&gt;   # Remove numbers\n  filter(!word %in% custom_stop_words) |&gt;   # Remove custom words\n  mutate(word = stringr::str_replace(word, \"'s\", \"\")) |&gt; \n  count(character, word, sort = TRUE)\n\nword_counts\n\n# A tibble: 1,941 × 3\n   character word       n\n   &lt;chr&gt;     &lt;chr&gt;  &lt;int&gt;\n 1 Romeo     love      52\n 2 Juliet    romeo     41\n 3 Juliet    love      35\n 4 Juliet    night     30\n 5 Romeo     death     22\n 6 Juliet    nurse     20\n 7 Romeo     juliet    17\n 8 Juliet    sweet     16\n 9 Romeo     fair      15\n10 Romeo     night     15\n# ℹ 1,931 more rows\n\n\nCreating a dataset for each character\n\njuliet &lt;- word_counts |&gt; \n  filter(character == \"Juliet\")\n\nromeo &lt;- word_counts |&gt; \n  filter(character == \"Romeo\")\n\n\n\nAttempt At Importing Fonts\nImporting a custom font (has not been able to work yet)\n\nsysfonts::font_add_google(\"MedievalSharp\", \"MedievalSharp\")\nshowtext::showtext_auto()\n\nmy_font &lt;- \"MedievalSharp\""
+  },
+  {
+    "objectID": "tidytuesday/2024/school_income.html",
+    "href": "tidytuesday/2024/school_income.html",
+    "title": "Economic Diversity In Elite Schools",
+    "section": "",
+    "text": "The data explores economic diversity and student outcomes. The dataset this week comes from Opportunity Insights and is described in its codebook.\nIn this tidytuesday we will make an interactive plotly graph, that has select to highlight capability, between the variables attend and par_income_bin faceted by whether the school is public or private."
+  },
+  {
+    "objectID": "tidytuesday/2024/school_income.html#setting-up-interactive-graph",
+    "href": "tidytuesday/2024/school_income.html#setting-up-interactive-graph",
+    "title": "Economic Diversity In Elite Schools",
+    "section": "Setting up interactive graph",
+    "text": "Setting up interactive graph\n\n\n\n\n\n\nPlotly & Crosstalk::SharedData\n\n\n\nReminder: the SharedData function hass to be used in this way for the plotly to work.\n\n\n\n# Some Data prep so that public and private categroization looks good on the graph\ncollege_admissions &lt;- college_admissions |&gt;\n  mutate(public_name = ifelse(public == TRUE, \"Public University\", \"Private University\"))\n\n# Indispensable setup for plotly\ndata_w_crosstalk &lt;- crosstalk::SharedData$new(college_admissions, ~name)"
+  },
+  {
+    "objectID": "tidytuesday/2024/school_income.html#ggplot-setup",
+    "href": "tidytuesday/2024/school_income.html#ggplot-setup",
+    "title": "Economic Diversity In Elite Schools",
+    "section": "ggplot Setup",
+    "text": "ggplot Setup\nFirst we need to make the ggplot look how we want it to look.\n\nplot_setup &lt;- data_w_crosstalk |&gt; \n  ggplot(aes(x = par_income_bin, y = attend, color = public_name,\n             text = paste0(\"School: \", name))) +\n  geom_point() +\n  geom_line() +\n  facet_grid(~ public_name) +\n    scale_color_manual(values = c(\"Public University\" = \"#024ebf\", \"Private University\" = \"#bf0202\")) +  # Custom colors\n  guides(color = \"none\") + # How to not make the color and public/private appear\n  theme_minimal() +\n  labs(x = \"Parental Income Bin\",\n       y = \"Attned Variable\",\n       title = \"Attend Variable by Parental Income Bin for Elite Schools\")"
   }
 ]

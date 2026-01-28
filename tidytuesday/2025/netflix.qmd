@@ -37,6 +37,7 @@ shows <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidy
 ```
 
 # Data Manipulation
+
 First we clean up the data so that the unit of observation is a movie and the sum of views and watch hours across the years.
 
 ```{r}

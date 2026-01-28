@@ -13,7 +13,9 @@ execute:
 This analysis uses 2023 data from the sixth annual release of [FrogID](https://www.frogid.net.au/explore), an Australian frog call identification initiative. FrogID allows citizen scientists to record frog calls via a mobile app, with experts verifying the species. The dataset, curated by [Jessica Moore](https://github.com/jessjep), contributes to ongoing research on frog ecology, taxonomy, and conservation. Primary data sources include Rowley & Callaghan (2020) and the Australian Society of Herpetologists Official List of Australian Species (2025).
 
 ## Importing Libraries & Data
+
 In this section, we load the necessary R packages for data manipulation, mapping, and visualization, and import the FrogID observation data along with the official frog species names.
+
 ```{r}
 # Libraries
 library(tidyverse)
@@ -43,6 +45,7 @@ all_frogs <- frogID_data |>
          genus = str_extract(scientificName, "^\\w+")
          )
 ```
+
 Finding the frogs that are most spotted and creating a color palette for the plotting.
 
 ```{r}
@@ -61,7 +64,9 @@ names(mycols) <- all_frogs |> select(genus) |> unique() |> pull()
 ```
 
 ## Plotting
+
 We plot the frog spottings into a plotly in such a way we can select and deselect frogs by clicking the legend.
+
 ```{r}
 australia_map <- maps::map(database = "world", region = "Australia")
 

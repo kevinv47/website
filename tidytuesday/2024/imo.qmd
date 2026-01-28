@@ -10,9 +10,11 @@ execute:
   message: false
   eval: true
 ---
+
 The data for this week comes from [International Mathematical Olympiad](https://www.imo-official.org/results.aspx?column=year&order=asc) (IMO). Thank you to [Havisha Khurana](https://github.com/havishak) for curating this week’s dataset.
 
 Importing libraries
+
 ```{r}
 library(tidyverse)
 library(maps)
@@ -20,17 +22,20 @@ library(gganimate)
 ```
 
 Importing data
+
 ```{r}
 individual_results_df <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-24/individual_results_df.csv')
 ```
 
 First we replace the value "C" followed by a number which appears to represent Russia.
+
 ```{r}
 indiv_country <- individual_results_df |> 
   mutate(country = ifelse(str_detect(country, "C[0-9]"), "Russia", country)) 
 ```
 
 We see that quite a few countries are represented in the data in 2024 whcihc an be enough to make a nice map plot.
+
 ```{r}
 indiv_country |> 
   filter(year == 2024) |> 
@@ -38,7 +43,9 @@ indiv_country |>
 ```
 
 ## Data Prep
+
 Data prep for makeing the map graph. We specifically need to convert the country names into a consistent form to be able to merge with map data. We are going to take the top performing contestant from each county and year.
+
 ```{r}
 indiv_country <- indiv_country |> 
   group_by(country, year) |> 
@@ -63,21 +70,25 @@ indiv_country
 ```
 
 Here we will generate the map data from the `maps` library and we see that the number of countries it has registered is more than double what we see in 2024, which means we may have quite a big part of our map that is empty.
+
 ```{r}
 world_data <- map_data("world")
 
 world_data |> 
   summarize(n_distinct(region))
 ```
+
 Now we will merge the two datasets for plotting.
+
 ```{r}
 plot_imo <- world_data |> 
   left_join(indiv_country, by = c("region" = "country")) |> 
   filter(!is.na(individual_rank))
 ```
 
-## Graphing 
-```{r}
+## Graphing
+
+```{r, eval = FALSE}
 plot_imo |> 
   ggplot(aes(x = long, y = lat, group = group)) + 
   geom_polygon(data = world_data, 

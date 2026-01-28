@@ -9,9 +9,11 @@ execute:
   warning: false
   message: false
 ---
-This week [tidytuesday](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-11-18/readme.md) will explore  the complete line-by-line text of the Sherlock Holmes stories and novels from the R package `[sherlock](https://github.com/EmilHvitfeldt/sherlock)`.
+
+This week [tidytuesday](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-11-18/readme.md) will explore the complete line-by-line text of the Sherlock Holmes stories and novels from the R package `[sherlock](https://github.com/EmilHvitfeldt/sherlock)`.
 
 Libraries used for the analysis
+
 ```{r}
 library(tidyverse)
 library(tidytext)
@@ -21,6 +23,7 @@ library(tools)
 ```
 
 Data imported from the tidytuesday repo
+
 ```{r}
 holmes <- tidytuesdayR::tt_load('2025-11-18')$holmes |> 
   mutate(book = tolower(book)) |> 
@@ -28,7 +31,9 @@ holmes <- tidytuesdayR::tt_load('2025-11-18')$holmes |>
 ```
 
 ### Data Mainpulation
+
 Scraping from wikipedia to get the publishing year for each of the books to be used in the plot.
+
 ```{r}
 holmes_wiki <- read_html("https://en.wikipedia.org/wiki/Canon_of_Sherlock_Holmes") |> 
   html_elements("p+ ol li , p+ ol a") |> 
@@ -43,12 +48,14 @@ holmes_wiki <- read_html("https://en.wikipedia.org/wiki/Canon_of_Sherlock_Holmes
 ```
 
 Joining the dataset of the publishing year to the dataset with the sentiment analysis.
+
 ```{r}
 holmes <- holmes |> 
   left_join(holmes_wiki, by = c("book" = "title"))
 ```
 
 Pulling the sentiments from tidytext.
+
 ```{r}
 afinn_sentiments <- tidytext::get_sentiments("afinn") 
 nrc_sentiments <- tidytext::get_sentiments("nrc") |> 
@@ -56,6 +63,7 @@ nrc_sentiments <- tidytext::get_sentiments("nrc") |>
 ```
 
 Joining the text with the holmes dataset.
+
 ```{r}
 sent_data <- holmes |> 
   tidytext::unnest_tokens(words, text) |> 
@@ -67,8 +75,11 @@ sent_data <- holmes |>
   mutate(prop = n / sum(n)) |> 
   mutate(date = as.numeric(date))
 ```
+
 ### Data Viz
+
 Plot showing the changes in the sentiment of the books overtime.
+
 ```{r, fig.width=10, fig.height=5}
 sent_data |> 
   ggplot(aes(x = date, y = prop)) + 
@@ -89,7 +100,3 @@ sent_data |>
         axis.title = element_text(size = 14))
 
 ```
-
-
-
-

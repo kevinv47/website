@@ -15,17 +15,20 @@ This weeks [TidyTuesday data](https://github.com/rfordatascience/tidytuesday/blo
 "The Boeoegg is a snowman effigy made of cotton wool and stuffed with fireworks, created every year for Zurich's "Sechselaeuten" spring festival. The saying goes that the quicker the Boeoeg's head explodes, the finer the summer will be."
 
 The libraries that will be used.
+
 ```{r}
 library(tidyverse)
 library(lubridate)
 ```
 
 Importing the data of the for the boogg data.
+
 ```{r}
 sechselaeuten <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-12-02/sechselaeuten.csv')
 ```
 
 The anamonly variable is that months average temp vs the average over the entre century.
+
 ```{r}
 global <- read_csv("https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/land_ocean/tavg/12/0/1923-2025/data.csv", skip = 3) |> 
   mutate(year = as.numeric(str_sub(Date, 1, 4)),
@@ -34,6 +37,7 @@ global <- read_csv("https://www.ncei.noaa.gov/access/monitoring/climate-at-a-gla
 ```
 
 Joining the summer data with the boogg data.
+
 ```{r}
 summer <- global |> 
   filter(month %in% c(7, 8, 9)) |> 
@@ -46,6 +50,7 @@ global_snowman <- summer |>
 ```
 
 Now we can create the graph but we notice that the longer the duration the hotter the summer. This is the opposite of what we had expected. However we do see that the year and the tempature has a clear relationship.
+
 ```{r}
 global_snowman |> 
   ggplot(aes(x = duration, y = temp)) + 
@@ -55,5 +60,3 @@ global_snowman |>
   labs(x = "Druation till Explosion", y = "Tempature",
        color = "Year", title = "Duration to Boog Explosion and Tempature")
 ```
-
-
