@@ -1,0 +1,99 @@
+---
+title: "Brazilian Companies"
+subtitle: "Distribution of capital stock and owner/partner qualification label "
+date: "Jan 27, 2025"
+author: "Kevin Valdivia"
+format: html
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+This weeks [TidyTuesday dataset](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-01-27/readme.md) was "curated from Brazil’s open CNPJ (Cadastro Nacional da Pessoa Jurídica) records published by the Brazilian Ministry of Finance / Receita Federal on the national open-data portal (dados.gov.br)."
+
+Libraries that will be used in the creation of the graph.
+```{r}
+library(tidyverse)
+library(scales)
+```
+## Data Manipulation
+
+Importing the companies dataset from the TidyTuesday repo.
+```{r}
+companies <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-01-27/companies.csv')
+```
+
+Data manipulation to put the companies with the quantiles that each owner qualification has. 
+```{r}
+quantile_data <- companies |> 
+  
+  mutate(owner_qualification = case_when(
+      owner_qualification == "Director / Officer" ~ "Director",
+      owner_qualification == "President / Chair" ~ "President",
+      owner_qualification == "Judicial Administrator (Court-appointed)" ~ "Judicial",
+      owner_qualification == "Beneficial Owner (individual) resident or domiciled in Brazil" ~ "Beneficial",
+      owner_qualification == "Entrepreneur / Business Owner" ~ "Entrepreneur",
+      owner_qualification == "Administrator / Manager" ~ "Administrator",
+      owner_qualification == "Liquidator" ~ "Liquidator",
+      owner_qualification == "Attorney-in-fact / Legal Representative (Power of Attorney)" ~ "Attorney",
+      owner_qualification == "Managing Partner / Partner-Administrator" ~ "Partner",
+      owner_qualification == "Ostensible Partner (Managing partner in a silent partnership)" ~ "Partner",
+      owner_qualification == "Executor / Estate Administrator" ~ "Executor",
+      owner_qualification == "Sole Owner of an Individual Real Estate Company" ~ "Owner",
+      TRUE ~ owner_qualification
+    )) |> 
+  
+  filter(owner_qualification != "Intervenor / Court-appointed Administrator") |> 
+  group_by(owner_qualification) |> 
+  summarize(q25 = quantile(capital_stock, p = 0.25),
+            q50 = quantile(capital_stock, p = 0.50),
+            q75 = quantile(capital_stock, p = 0.75),
+            q90 = quantile(capital_stock, p = 0.90),
+            q99 = quantile(capital_stock, p = 0.99),
+            n = n()) |> 
+  
+  mutate(q99 = q99 - q90,
+         q90 = q90 - q75,
+         q75 = q75 - q50,
+         q50 = q50 - q25) |> 
+  
+  pivot_longer(cols = q25:q99,
+               names_to = "percentile",
+               values_to = "quantile") |> 
+  
+  arrange(desc(quantile)) |> 
+  
+  mutate(
+    percentile = forcats::fct_rev(percentile),
+    owner_qualification = forcats::fct_reorder(
+      owner_qualification, 
+      quantile, 
+      .desc = TRUE))
+```
+
+## Map Creation
+
+Palette that takes some colors form the Brazilian map.
+```{r}
+brazil_palette <- c("#009739", "#84CC16", "#FFDF00", "#002776", "#4DA6FF")
+```
+
+Map that shows the differences in the capital stock quantiles between the owner qualifications.
+```{r}
+quantile_data |> 
+  ggplot(aes(owner_qualification, 
+             quantile, 
+             fill = percentile)) +
+  geom_bar(stat = "identity", color = "black") +
+  scale_y_continuous(
+    trans = "log10",
+    labels = label_number(scale_cut = cut_short_scale()))+
+  coord_polar() +
+  theme_minimal() +
+  scale_fill_manual(values = brazil_palette) +
+  labs(x = "", y = "", fill = "",
+       title = "Capital Stock Quantiles by Owner Qualification Label")
+```
+
+
+

@@ -46,38 +46,45 @@ The following is a list of some TidyTuesday projects I’ve completed. While I d
 
 Here is the [**official TidyTuesday repo**](https://github.com/rfordatascience/tidytuesday)
 
+### January '26
+-   **January 27, 2026** <a href="tidytuesday/2026/braz_companies.qmd"
+class="chip-link">Brazilian Companies 🇧🇷💼️</a>
+
+### December '25
+-   **December 2, 2025** <a href="tidytuesday/2025/boogg.qmd"
+class="chip-link">Böög Prediction ☃️️💥️️</a>
 
 ### November '25
--   **November 18, 2025** <a href="tidytuesday/holmes.qmd"
+-   **November 18, 2025** <a href="tidytuesday/2025/holmes.qmd"
 class="chip-link">Sherlock Holmes Sentiment 🕵🏽🔍️</a>
 
 ### September '25
--   **September 30, 2025** <a href="tidytuesday/cranes_sweden.qmd" class="chip-link">Crane Migration in Sweden 𓅥🇸🇪️</a>
--   **September 12, 2025** <a href="tidytuesday/recipe_data.qmd" class="chip-link">Recipe Data Table 🍲🍳️</a>
--   **September 9, 2025** <a href="tidytuesday/henley_passport.qmd" class="chip-link">International Visa Requirments 🛂✈️</a>
--   **September 2, 2025** <a href="tidytuesday/australian_frogs.qmd" class="chip-link">International Visa Requirments 🇦🇺🐸</a>
+-   **September 30, 2025** <a href="tidytuesday/2025/cranes_sweden.qmd" class="chip-link">Crane Migration in Sweden 𓅥🇸🇪️</a>
+-   **September 12, 2025** <a href="tidytuesday/2025/recipe_data.qmd" class="chip-link">Recipe Data Table 🍲🍳️</a>
+-   **September 9, 2025** <a href="tidytuesday/2025/henley_passport.qmd" class="chip-link">International Visa Requirments 🛂✈️</a>
+-   **September 2, 2025** <a href="tidytuesday/2025/australian_frogs.qmd" class="chip-link">International Visa Requirments 🇦🇺🐸</a>
 
 ### July '25
--   **July 29, 2025* <a href="tidytuesday/netflix.qmd" class="chip-link">Netflix Catalog 🎬🍿️</a>
+-   **July 29, 2025** <a href="tidytuesday/2025/netflix.qmd" class="chip-link">Netflix Catalog 🎬🍿️</a>
 
 ### December '24
 
--   **December 3, 2024** <a href="tidytuesday/highway_traffic_flow.qmd" class="chip-link">ISO Country Codes 🚙🚛</a>
+-   **December 3, 2024** <a href="tidytuesday/2024/highway_traffic_flow.qmd" class="chip-link">ISO Country Codes 🚙🚛</a>
 
 ### November '24
 
--   **November 19, 2024** <a href="tidytuesday/bobs_burgers.qmd" class="chip-link">Bob's Burgers 📺🍔</a>
--   **November 12, 2024** <a href="tidytuesday/country_code.qmd" class="chip-link">ISO Country Codes 🍭🌐</a>
+-   **November 19, 2024** <a href="tidytuesday/2024/bobs_burgers.qmd" class="chip-link">Bob's Burgers 📺🍔</a>
+-   **November 12, 2024** <a href="tidytuesday/2024/country_code.qmd" class="chip-link">ISO Country Codes 🍭🌐</a>
 
 ### October '24
 
--   **October 29, 2024** <a href="tidytuesday/monsters.qmd" class="chip-link">Monster Movies ⚰️👻</a>
--   **October 22, 2024**: <a href="tidytuesday/CIA_Factbook/cia_factbook.qmd" class="chip-link">CIA Country Comparison Indicators 📊🌍</a>
--   **October 8, 2024**: <a href="tidytuesday/biodiversity_national_parks.qmd" class="chip-link">National Park Species 🌲🦉</a>
--   **October 1, 2024**: <a href="tidytuesday/chess_matches.qmd" class="chip-link">Chess Games ♟️🎯</a>
+-   **October 29, 2024** <a href="tidytuesday/2024/monsters.qmd" class="chip-link">Monster Movies ⚰️👻</a>
+-   **October 22, 2024**: <a href="tidytuesday/2024/CIA_Factbook/cia_factbook.qmd" class="chip-link">CIA Country Comparison Indicators 📊🌍</a>
+-   **October 8, 2024**: <a href="tidytuesday/2024/biodiversity_national_parks.qmd" class="chip-link">National Park Species 🌲🦉</a>
+-   **October 1, 2024**: <a href="tidytuesday/2024/chess_matches.qmd" class="chip-link">Chess Games ♟️🎯</a>
 
 ### September '24
 
--   **September 24, 2024**: <a href="tidytuesday/imo.qmd" class="chip-link">Math Olympiads 🧮🏆️</a>
--   **September 17, 2024**: <a href="tidytuesday/shakespeare_words.qmd" class="chip-link">Shakespeare Dialogue 🎭✒️</a>
--   **September 10, 2024**: <a href="tidytuesday/school_income.qmd" class="chip-link">Diversity & Student Outcomes 📚🌍</a>
+-   **September 24, 2024**: <a href="tidytuesday/2024/imo.qmd" class="chip-link">Math Olympiads 🧮🏆️</a>
+-   **September 17, 2024**: <a href="tidytuesday/2024/shakespeare_words.qmd" class="chip-link">Shakespeare Dialogue 🎭✒️</a>
+-   **September 10, 2024**: <a href="tidytuesday/2024/school_income.qmd" class="chip-link">Diversity & Student Outcomes 📚🌍</a>
