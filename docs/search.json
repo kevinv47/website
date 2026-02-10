@@ -1096,7 +1096,7 @@
     "href": "python_projects/synthetic_diabetes_data.html#libraries-and-data-importation",
     "title": "Visualizing Synthetic Diabetes Data",
     "section": "Libraries and Data Importation",
-    "text": "Libraries and Data Importation\n\n# For pulling the data\nimport kagglehub\n\n# For loading in the data and data manipulation\nimport pandas as pd\n\n# For making vizualizations\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nI will be pulling the data directly from kaggle using kagglehub.\n\n# Download latest version\npath = kagglehub.dataset_download(\"kevintan701/diabetes-prediction-datasets\")\n\ndiabetes = pd.read_csv(path + \"/diabetes_data.csv\")[['weight', 'height', 'stress_level', 'risk_score']]\nprint(diabetes.head())\n\n      weight      height  stress_level  risk_score\n0  77.450712  183.993554             1   38.000000\n1  67.926035  179.246337             2   39.162310\n2  79.715328  170.596304             0   31.481633\n3  92.845448  163.530632             1   45.000000\n4  66.487699  176.982233             0    4.717234"
+    "text": "Libraries and Data Importation\n\n# For pulling the data\nimport kagglehub\n\n# For loading in the data and data manipulation\nimport pandas as pd\n\n# For making vizualizations\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nI will be pulling the data directly from kaggle using kagglehub.\n\n# Download latest version\npath = kagglehub.dataset_download(\"kevintan701/diabetes-prediction-datasets\")\n\ndiabetes = pd.read_csv(path + \"/diabetes_data.csv\")[['weight', 'height', 'stress_level', 'risk_score']]\nprint(diabetes.head())\n\nWarning: Looks like you're using an outdated `kagglehub` version (installed: 0.3.6), please consider upgrading to the latest version (0.4.1).\n      weight      height  stress_level  risk_score\n0  77.450712  183.993554             1   38.000000\n1  67.926035  179.246337             2   39.162310\n2  79.715328  170.596304             0   31.481633\n3  92.845448  163.530632             1   45.000000\n4  66.487699  176.982233             0    4.717234"
   },
   {
     "objectID": "python_projects/synthetic_diabetes_data.html#data-vizualizations",
@@ -1131,7 +1131,7 @@
     "href": "dataviz.html",
     "title": "Vizualizations With Python",
     "section": "",
-    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nJanuary ’26\n\nJanuary 27, 2026 Brazilian Companies 🇧🇷💼️\n\n\n\nDecember ’25\n\nDecember 2, 2025 Böög Prediction ☃️️💥️️\n\n\n\nNovember ’25\n\nNovember 18, 2025 Sherlock Holmes Sentiment 🕵🏽🔍️\n\n\n\nSeptember ’25\n\nSeptember 30, 2025 Crane Migration in Sweden 𓅥🇸🇪️\nSeptember 12, 2025 Recipe Data Table 🍲🍳️\nSeptember 9, 2025 International Visa Requirments 🛂✈️\nSeptember 2, 2025 Australian Frogs 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2025 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
+    "text": "Vizualizations With Python\n\nThe following are a selection of data visualizations created using Python, showcasing various techniques and insights.\n\nDecember ’24\n\nDecember 20, 2024 Synthetic Data: Diabetes ⚕💉️\n\n\n\n\nTidytuesdays With R\n\nThe following is a list of some TidyTuesday projects I’ve completed. While I don’t publish my .qmd files every week, I share them when I can.\nHere is the official TidyTuesday repo\n\nFeburary ’26\n\nFeburary 20, 2026 Milan Olympics 🇮🇹❄️️\n\n\n\nJanuary ’26\n\nJanuary 27, 2026 Brazilian Companies 🇧🇷💼️\n\n\n\nDecember ’25\n\nDecember 2, 2025 Böög Prediction ☃️️💥️️\n\n\n\nNovember ’25\n\nNovember 18, 2025 Sherlock Holmes Sentiment 🕵🏽🔍️\n\n\n\nSeptember ’25\n\nSeptember 30, 2025 Crane Migration in Sweden 𓅥🇸🇪️\nSeptember 12, 2025 Recipe Data Table 🍲🍳️\nSeptember 9, 2025 International Visa Requirments 🛂✈️\nSeptember 2, 2025 Australian Frogs 🇦🇺🐸\n\n\n\nJuly ’25\n\nJuly 29, 2025 Netflix Catalog 🎬🍿️\n\n\n\nDecember ’24\n\nDecember 3, 2024 ISO Country Codes 🚙🚛\n\n\n\nNovember ’24\n\nNovember 19, 2024 Bob’s Burgers 📺🍔\nNovember 12, 2024 ISO Country Codes 🍭🌐\n\n\n\nOctober ’24\n\nOctober 29, 2024 Monster Movies ⚰️👻\nOctober 22, 2024: CIA Country Comparison Indicators 📊🌍\nOctober 8, 2024: National Park Species 🌲🦉\nOctober 1, 2024: Chess Games ♟️🎯\n\n\n\nSeptember ’24\n\nSeptember 24, 2024: Math Olympiads 🧮🏆️\nSeptember 17, 2024: Shakespeare Dialogue 🎭✒️\nSeptember 10, 2024: Diversity & Student Outcomes 📚🌍"
   },
   {
     "objectID": "tidytuesday/imo.html#data-prep",
@@ -2077,5 +2077,47 @@
     "title": "Economic Diversity In Elite Schools",
     "section": "ggplot Setup",
     "text": "ggplot Setup\nFirst we need to make the ggplot look how we want it to look.\n\nplot_setup &lt;- data_w_crosstalk |&gt; \n  ggplot(aes(x = par_income_bin, y = attend, color = public_name,\n             text = paste0(\"School: \", name))) +\n  geom_point() +\n  geom_line() +\n  facet_grid(~ public_name) +\n    scale_color_manual(values = c(\"Public University\" = \"#024ebf\", \"Private University\" = \"#bf0202\")) +  # Custom colors\n  guides(color = \"none\") + # How to not make the color and public/private appear\n  theme_minimal() +\n  labs(x = \"Parental Income Bin\",\n       y = \"Attned Variable\",\n       title = \"Attend Variable by Parental Income Bin for Elite Schools\")"
+  },
+  {
+    "objectID": "tidytuesday/2026/Sin título.html",
+    "href": "tidytuesday/2026/Sin título.html",
+    "title": "Winter Olympics Schedule",
+    "section": "",
+    "text": "The data for this week comes from the Milan Winter Olympics competition schedule. The data was compiled in this github repo.\nLibraries used in this analysis\nlibrary(tidyverse)\nlibrary(lubridate)"
+  },
+  {
+    "objectID": "tidytuesday/2026/Sin título.html#data-cleaning",
+    "href": "tidytuesday/2026/Sin título.html#data-cleaning",
+    "title": "Winter Olympics Schedule",
+    "section": "Data Cleaning",
+    "text": "Data Cleaning\nImporting the data from the TidyTuesday repository.\n\nraw_schedule &lt;- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-02-10/schedule.csv') \n\nData cleaning to create the categories of ice and snow events and creating new day and hour variables.\n\nschedule &lt;- raw_schedule |&gt; \n  select(discipline_code, discipline_name, event_code, \n         event_description, start_datetime_utc, end_datetime_utc,\n         is_medal_event, venue_name, location_name, session_code, \n         start_time) |&gt; \n  distinct() |&gt; \n  mutate(week = lubridate::week(start_datetime_utc),\n         day = lubridate::yday(start_datetime_utc)) |&gt; \n  mutate(surface = case_when(\n      discipline_name == \"Bobsleigh\" ~ \"ice\",\n      discipline_name == \"Curling\" ~ \"ice\",\n      discipline_name == \"Figure Skating\" ~ \"ice\",\n      discipline_name == \"Ice Hockey\" ~ \"ice\",\n      discipline_name == \"Luge\" ~ \"ice\",\n      discipline_name == \"Short Track Speed Skating\" ~ \"ice\",\n      discipline_name == \"Skeleton\" ~ \"ice\",\n      discipline_name == \"Speed Skating\" ~ \"ice\",\n      TRUE ~ \"snow\"\n    ),\n    start_hour = hour(start_time),\n    day = wday(start_datetime_utc, week_start = 1, label = TRUE)\n    )"
+  },
+  {
+    "objectID": "tidytuesday/2026/Sin título.html#data-viz",
+    "href": "tidytuesday/2026/Sin título.html#data-viz",
+    "title": "Winter Olympics Schedule",
+    "section": "Data Viz",
+    "text": "Data Viz\nVizualtion of the frequency of the events over the course of a day faceted by types of the events and days of the week.\n\nschedule |&gt; \n  \n  mutate(surface = ifelse(surface == \"ice\", \"Ice\", \"Snow\")) |&gt; \n  group_by(start_hour, surface, day) |&gt; \n  summarize(n = n()) |&gt; \n  \n  ggplot(aes(x = start_hour, \n             y = n, \n             fill = surface)) +\n  geom_col(position = \"identity\") +\n  facet_grid(day~surface) +\n  theme_linedraw() +\n  scale_fill_manual(values = c(\"Ice\"  = \"lightblue\", \n                               \"Snow\" = \"darkblue\"))+ \n  theme(legend.position = \"none\") +\n  labs(x = \"Hour of Day\", y = \"\", \n       title = \"Frequency of Milan Winter Olympics Events\",\n       subtitle = \"Vertically faceted by days of the week\")"
+  },
+  {
+    "objectID": "tidytuesday/2026/milan_olympics.html",
+    "href": "tidytuesday/2026/milan_olympics.html",
+    "title": "Winter Olympics Schedule",
+    "section": "",
+    "text": "The data for this week comes from the Milan Winter Olympics competition schedule. The data was compiled in this github repo.\nLibraries used in this analysis\nlibrary(tidyverse)\nlibrary(lubridate)"
+  },
+  {
+    "objectID": "tidytuesday/2026/milan_olympics.html#data-cleaning",
+    "href": "tidytuesday/2026/milan_olympics.html#data-cleaning",
+    "title": "Winter Olympics Schedule",
+    "section": "Data Cleaning",
+    "text": "Data Cleaning\nImporting the data from the TidyTuesday repository.\n\nraw_schedule &lt;- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-02-10/schedule.csv') \n\nData cleaning to create the categories of ice and snow events and creating new day and hour variables.\n\nschedule &lt;- raw_schedule |&gt; \n  select(discipline_code, discipline_name, event_code, \n         event_description, start_datetime_utc, end_datetime_utc,\n         is_medal_event, venue_name, location_name, session_code, \n         start_time) |&gt; \n  distinct() |&gt; \n  mutate(week = lubridate::week(start_datetime_utc),\n         day = lubridate::yday(start_datetime_utc)) |&gt; \n  mutate(surface = case_when(\n      discipline_name == \"Bobsleigh\" ~ \"ice\",\n      discipline_name == \"Curling\" ~ \"ice\",\n      discipline_name == \"Figure Skating\" ~ \"ice\",\n      discipline_name == \"Ice Hockey\" ~ \"ice\",\n      discipline_name == \"Luge\" ~ \"ice\",\n      discipline_name == \"Short Track Speed Skating\" ~ \"ice\",\n      discipline_name == \"Skeleton\" ~ \"ice\",\n      discipline_name == \"Speed Skating\" ~ \"ice\",\n      TRUE ~ \"snow\"\n    ),\n    start_hour = hour(start_time),\n    day = wday(start_datetime_utc, week_start = 1, label = TRUE)\n    )"
+  },
+  {
+    "objectID": "tidytuesday/2026/milan_olympics.html#data-viz",
+    "href": "tidytuesday/2026/milan_olympics.html#data-viz",
+    "title": "Winter Olympics Schedule",
+    "section": "Data Viz",
+    "text": "Data Viz\nVizualtion of the frequency of the events over the course of a day faceted by types of the events and days of the week.\n\nschedule |&gt; \n  \n  mutate(surface = ifelse(surface == \"ice\", \"Ice\", \"Snow\")) |&gt; \n  group_by(start_hour, surface, day) |&gt; \n  summarize(n = n()) |&gt; \n  \n  ggplot(aes(x = start_hour, \n             y = n, \n             fill = surface)) +\n  geom_col(position = \"identity\") +\n  facet_grid(day~surface) +\n  theme_linedraw() +\n  scale_fill_manual(values = c(\"Ice\"  = \"lightblue\", \n                               \"Snow\" = \"darkblue\"))+ \n  theme(legend.position = \"none\") +\n  labs(x = \"Hour of Day\", y = \"\", \n       title = \"Frequency of Milan Winter Olympics Events\",\n       subtitle = \"Vertically faceted by days of the week\")"
   }
 ]

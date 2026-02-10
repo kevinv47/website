@@ -15,6 +15,7 @@ The data used here will come from user [KevinTan701](https://www.kaggle.com/data
 I will create visualizations to better understand some of the assumptions made in the synthetically generated data.
 
 ## Libraries and Data Importation
+
 ```{python}
 # For pulling the data
 import kagglehub
@@ -28,6 +29,7 @@ import seaborn as sns
 ```
 
 I will be pulling the data directly from kaggle using `kagglehub`.
+
 ```{python}
 # Download latest version
 path = kagglehub.dataset_download("kevintan701/diabetes-prediction-datasets")
@@ -68,6 +70,7 @@ plt.show()
 ```
 
 Here is the same data but as a jittered strip plot.
+
 ```{python}
 sns.stripplot(data=diabetes, 
               x='stress_level', 
@@ -92,6 +95,7 @@ plt.show()
 In this synthetic data, there appear to be more outliers for higher risk scores than usual in the medium stress level. I am curious about how this synthetic data was generated. With real-world data, I wonder how researchers categorize patients into stress level categories, as I imagine that most patients are likely to overestimate their stress levels rather than underestimate them. Perhaps researchers could use other indicators, such as hours at employment and type of employment, to more accurately categorize stress levels.
 
 Now I will look at the relationship between height and weight in the dataset.
+
 ```{python}
 sns.scatterplot(data=diabetes,
             x='height',
@@ -111,4 +115,5 @@ plt.ylabel("Weight (kg)")
 plt.legend(title="Risk Score")
 plt.show()
 ```
+
 There are a few observations we can make here. First, the data unexpectedly suggests that, on average, taller individuals tend to weigh less, which appears counterintuitive. Second, there seems to be a section in the middle of the plot, marked by a cluster of dots in a lighter pink color, that slopes upwards in the center. The synthetic data indicates that there may be an optimal weight-to-height region that is associated with a lower diabetes risk score.

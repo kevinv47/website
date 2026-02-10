@@ -1,0 +1,84 @@
+---
+title: "Winter Olympics Schedule"
+subtitle: "Milan Cortina"
+date: "Feburary 10, 2026"
+author: "Kevin Valdivia"
+format: html
+  # html:
+  #   code-fold: true
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+The data for this week comes from the Milan Winter Olympics competition schedule. The data was compiled in this [github repo](https://github.com/chendaniely/olympics-2026).
+
+Libraries used in this analysis
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+
+## Data Cleaning
+Importing the data from the TidyTuesday repository.
+```{r}
+raw_schedule <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-02-10/schedule.csv') 
+```
+
+Data cleaning to create the categories of ice and snow events and creating new day and hour variables.
+```{r}
+schedule <- raw_schedule |> 
+  select(discipline_code, discipline_name, event_code, 
+         event_description, start_datetime_utc, end_datetime_utc,
+         is_medal_event, venue_name, location_name, session_code, 
+         start_time) |> 
+  distinct() |> 
+  mutate(week = lubridate::week(start_datetime_utc),
+         day = lubridate::yday(start_datetime_utc)) |> 
+  mutate(surface = case_when(
+      discipline_name == "Bobsleigh" ~ "ice",
+      discipline_name == "Curling" ~ "ice",
+      discipline_name == "Figure Skating" ~ "ice",
+      discipline_name == "Ice Hockey" ~ "ice",
+      discipline_name == "Luge" ~ "ice",
+      discipline_name == "Short Track Speed Skating" ~ "ice",
+      discipline_name == "Skeleton" ~ "ice",
+      discipline_name == "Speed Skating" ~ "ice",
+      TRUE ~ "snow"
+    ),
+    start_hour = hour(start_time),
+    day = wday(start_datetime_utc, week_start = 1, label = TRUE)
+    )
+```
+
+## Data Viz
+Vizualtion of the frequency of the events over the course of a day faceted by types of the events and days of the week.
+```{r, fig.height=6}
+schedule |> 
+  
+  mutate(surface = ifelse(surface == "ice", "Ice", "Snow")) |> 
+  group_by(start_hour, surface, day) |> 
+  summarize(n = n()) |> 
+  
+  ggplot(aes(x = start_hour, 
+             y = n, 
+             fill = surface)) +
+  geom_col(position = "identity") +
+  facet_grid(day~surface) +
+  theme_linedraw() +
+  scale_fill_manual(values = c("Ice"  = "lightblue", 
+                               "Snow" = "darkblue"))+ 
+  theme(legend.position = "none") +
+  labs(x = "Hour of Day", y = "", 
+       title = "Frequency of Milan Winter Olympics Events",
+       subtitle = "Vertically faceted by days of the week")
+```
+
+
+
+
+
+
+
