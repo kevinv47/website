@@ -2083,7 +2083,7 @@
     "href": "tidytuesday/2026/Sin título.html",
     "title": "Winter Olympics Schedule",
     "section": "",
-    "text": "The data for this week comes from the Milan Winter Olympics competition schedule. The data was compiled in this github repo.\nLibraries used in this analysis\nlibrary(tidyverse)\nlibrary(lubridate)"
+    "text": "library(tidyverse)\nlibrary(ggpattern)\n\n\nclutch_size_cleaned &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-03-03/clutch_size_cleaned.csv')\ntortoise &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-03-03/tortoise_body_condition_cleaned.csv')\n\n\ntortoise |&gt; \n  group_by(sex, locality) |&gt; \n  mutate(ave_condition = mean(body_condition_index),\n         sex = ifelse(sex == \"f\", \"F\", \"M\")) |&gt; \n  \n  ggplot() + \n  geom_violin_pattern(aes(y = body_condition_index, x = sex,\n                  fill = locality, pattern = sex)) +\n  geom_boxplot(aes(y = body_condition_index, x = sex), \n               width = 0.3, alpha = 0.3, color = \"white\",\n               outlier.shape = NA) +\n  \n  scale_pattern_manual(values = c(\"M\" = \"none\",\n                                  \"F\" = \"stripe\"\n                        #\"stripe\"\n                        #\"crosshatch\"\n                        #\"circle\"\n                        #\"pch\" \n                        #\"plasma\"\n                        #\"gradient\"\n                        #“none”\n  )) +\n  labs(x = \"\",\n       y = \"Body Condition\",\n       title = \"Body Condition by Sex and Locality\",\n       pattern = \"Sex\", fill = \"Locality\"\n       ) +\n  scale_fill_manual(values = c(\"#2F4F2F\", \n                               \"#6B8E23\", \n                               \"#A3B86C\")) + \n  guides(fill = guide_legend(override.aes = \n                               list(pattern = \"none\"))) +\n  facet_grid(~locality, switch = \"x\") +\n  \n  theme_minimal()"
   },
   {
     "objectID": "tidytuesday/2026/Sin título.html#data-cleaning",
@@ -2119,5 +2119,33 @@
     "title": "Winter Olympics Schedule",
     "section": "Data Viz",
     "text": "Data Viz\nVizualtion of the frequency of the events over the course of a day faceted by types of the events and days of the week.\n\nschedule |&gt; \n  \n  mutate(surface = ifelse(surface == \"ice\", \"Ice\", \"Snow\")) |&gt; \n  group_by(start_hour, surface, day) |&gt; \n  summarize(n = n()) |&gt; \n  \n  ggplot(aes(x = start_hour, \n             y = n, \n             fill = surface)) +\n  geom_col(position = \"identity\") +\n  facet_grid(day~surface) +\n  theme_linedraw() +\n  scale_fill_manual(values = c(\"Ice\"  = \"lightblue\", \n                               \"Snow\" = \"darkblue\"))+ \n  theme(legend.position = \"none\") +\n  labs(x = \"Hour of Day\", y = \"\", \n       title = \"Frequency of Milan Winter Olympics Events\",\n       subtitle = \"Vertically faceted by days of the week\")"
+  },
+  {
+    "objectID": "tidytuesday/2026/tortoise.html",
+    "href": "tidytuesday/2026/tortoise.html",
+    "title": "Golem Grad Tortoises",
+    "section": "",
+    "text": "This weeks tidytuesday dataset comes from the paper “Sex Ratio Bias Triggers Demographic Suicide in a Dense Tortoise Population”. The goal of this project was to make an intresting looking plot and use ggpatterns and work on makeing a y-axis level with two levels."
+  },
+  {
+    "objectID": "tidytuesday/2026/tortoise.html#libraries",
+    "href": "tidytuesday/2026/tortoise.html#libraries",
+    "title": "Golem Grad Tortoises",
+    "section": "Libraries",
+    "text": "Libraries\nThe libraries that were used\n\nlibrary(tidyverse)\nlibrary(ggpattern)"
+  },
+  {
+    "objectID": "tidytuesday/2026/tortoise.html#data",
+    "href": "tidytuesday/2026/tortoise.html#data",
+    "title": "Golem Grad Tortoises",
+    "section": "Data",
+    "text": "Data\nImporting the data from the tidytuesday repo.\n\ntortoise &lt;- read_csv(\n  'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-03-03/tortoise_body_condition_cleaned.csv'\n  )"
+  },
+  {
+    "objectID": "tidytuesday/2026/tortoise.html#plot",
+    "href": "tidytuesday/2026/tortoise.html#plot",
+    "title": "Golem Grad Tortoises",
+    "section": "Plot",
+    "text": "Plot\nPlotting to practice using patterns and sublayered x axis labels.\n\ntortoise |&gt; \n  group_by(sex, locality) |&gt; \n  mutate(ave_condition = mean(body_condition_index),\n         sex = ifelse(sex == \"f\", \"F\", \"M\")) |&gt; \n  \n  ggplot() + \n  geom_violin_pattern(aes(y = body_condition_index, x = sex,\n                  fill = locality, pattern = sex)) +\n  geom_boxplot(aes(y = body_condition_index, x = sex), \n               width = 0.3, alpha = 0.3, color = \"white\",\n               outlier.shape = NA) +\n  \n  scale_pattern_manual(values = c(\"M\" = \"none\",\n                                  \"F\" = \"stripe\"\n                        #\"stripe\"\n                        #\"crosshatch\"\n                        #\"circle\"\n                        #\"pch\" \n                        #\"plasma\"\n                        #\"gradient\"\n                        #“none”\n  )) +\n  labs(x = \"\",\n       y = \"Body Condition\",\n       title = \"Body Condition by Sex and Locality\",\n       pattern = \"Sex\", fill = \"Locality\"\n       ) +\n  scale_fill_manual(values = c(\"#2F4F2F\", \n                               \"#6B8E23\", \n                               \"#A3B86C\")) + \n  guides(fill = guide_legend(override.aes = \n                               list(pattern = \"none\"))) +\n  facet_grid(~locality, switch = \"x\") +\n  \n  theme_minimal()"
   }
 ]

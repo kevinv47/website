@@ -1,0 +1,79 @@
+---
+title: "Golem Grad Tortoises"
+subtitle: "Patterns & X-Axis"
+date: "March 3, 2026"
+author: "Kevin Valdivia"
+format: html
+  # html:
+  #   code-fold: true
+toc: false # Table of contents
+execute: 
+  warning: false
+  message: false
+---
+
+This weeks tidytuesday dataset comes from the paper ["Sex Ratio Bias Triggers Demographic Suicide in a Dense Tortoise Population"](https://onlinelibrary.wiley.com/doi/10.1111/ele.70296). The goal of this project was to make an intresting looking plot and use ggpatterns and work on makeing a y-axis level with two levels.
+
+## Libraries
+The libraries that were used
+```{r}
+library(tidyverse)
+library(ggpattern)
+```
+
+
+
+## Data 
+Importing the data from the tidytuesday repo.
+```{r}
+
+tortoise <- read_csv(
+  'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-03-03/tortoise_body_condition_cleaned.csv'
+  )
+
+```
+
+## Plot
+Plotting to practice using patterns and sublayered x axis labels.
+```{r}
+tortoise |> 
+  group_by(sex, locality) |> 
+  mutate(ave_condition = mean(body_condition_index),
+         sex = ifelse(sex == "f", "F", "M")) |> 
+  
+  ggplot() + 
+  geom_violin_pattern(aes(y = body_condition_index, x = sex,
+                  fill = locality, pattern = sex)) +
+  geom_boxplot(aes(y = body_condition_index, x = sex), 
+               width = 0.3, alpha = 0.3, color = "white",
+               outlier.shape = NA) +
+  
+  scale_pattern_manual(values = c("M" = "none",
+                                  "F" = "stripe"
+                        #"stripe"
+                        #"crosshatch"
+                        #"circle"
+                        #"pch" 
+                        #"plasma"
+                        #"gradient"
+                        #“none”
+  )) +
+  labs(x = "",
+       y = "Body Condition",
+       title = "Body Condition by Sex and Locality",
+       pattern = "Sex", fill = "Locality"
+       ) +
+  scale_fill_manual(values = c("#2F4F2F", 
+                               "#6B8E23", 
+                               "#A3B86C")) + 
+  guides(fill = guide_legend(override.aes = 
+                               list(pattern = "none"))) +
+  facet_grid(~locality, switch = "x") +
+  
+  theme_minimal() 
+
+```
+
+
+
+
