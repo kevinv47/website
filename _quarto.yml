@@ -36,6 +36,8 @@ website:
             text: "**Under Development**: The Rise of AMLO"
           - href: projects/comp_stat_project/presentation.qmd
             text: "**Under Development**: The Rise of AMLO"
+          - href: "projects/thesis/ThesisPresentation.html"
+            text: "Thesis Presentation"
       - href: dataviz.qmd
         text: "**Data Viz Adventures**"
   open-graph:

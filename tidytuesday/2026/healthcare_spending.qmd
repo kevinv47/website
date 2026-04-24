@@ -1,0 +1,65 @@
+---
+title: "Golem Grad Tortoises"
+subtitle: "Patterns & X-Axis"
+date: "March 3, 2026"
+author: "Kevin Valdivia"
+format: html
+  # html:
+  #   code-fold: true
+toc: false # Table of contents
+execute: 
+  eval: false
+  warning: false
+  message: false
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+financing_schemes <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-04-21/financing_schemes.csv')
+
+health_spending <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-04-21/health_spending.csv')
+
+spending_purpose <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-04-21/spending_purpose.csv')
+```
+
+```{r}
+health_spending |> 
+  filter(iso3_code %in% c("MEX", "ESP", "USA", "HTI", "ARG", "CUB") &
+           unit == "% of current health expenditure",
+         year == 2023) |>
+  ggplot(aes(x = country_name, y = value, 
+             fill = indicator_code)) +
+  geom_bar(stat = "identity")
+```
+
+```{r}
+world_data |> 
+  filter(sovereignt == "Spain")
+```
+
+```{r}
+library(rnaturalearth)
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world_data <- world |> 
+  left_join(health_spending, by = c("iso_a3_eh" = "iso3_code")) |> 
+  mutate(ext_aid = ifelse(indicator_code == "ext_che", value, 0)) |> 
+  filter(year == 2023) |> 
+  group_by(geounit) |> 
+  arrange(desc(ext_aid)) |> 
+  slice(1)
+  
+
+
+world_data |> 
+  ggplot() +
+  geom_sf(aes(fill = (ext_aid))) +
+  scale_fill_gradient(low = "white", high = "darkgreen") + 
+  theme_minimal() + 
+  labs(title = "",
+       fill = "")
+
+```

@@ -9,21 +9,26 @@ execute:
   warning: false
   message: false
 ---
+
 This weeks [TidyTuesday dataset](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-01-27/readme.md) was "curated from Brazil’s open CNPJ (Cadastro Nacional da Pessoa Jurídica) records published by the Brazilian Ministry of Finance / Receita Federal on the national open-data portal (dados.gov.br)."
 
 Libraries that will be used in the creation of the graph.
+
 ```{r}
 library(tidyverse)
 library(scales)
 ```
+
 ## Data Manipulation
 
 Importing the companies dataset from the TidyTuesday repo.
+
 ```{r}
 companies <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-01-27/companies.csv')
 ```
 
-Data manipulation to put the companies with the quantiles that each owner qualification has. 
+Data manipulation to put the companies with the quantiles that each owner qualification has.
+
 ```{r}
 quantile_data <- companies |> 
   
@@ -74,11 +79,13 @@ quantile_data <- companies |>
 ## Map Creation
 
 Palette that takes some colors form the Brazilian map.
+
 ```{r}
 brazil_palette <- c("#009739", "#84CC16", "#FFDF00", "#002776", "#4DA6FF")
 ```
 
 Map that shows the differences in the capital stock quantiles between the owner qualifications.
+
 ```{r}
 quantile_data |> 
   ggplot(aes(owner_qualification, 
@@ -94,6 +101,3 @@ quantile_data |>
   labs(x = "", y = "", fill = "",
        title = "Capital Stock Quantiles by Owner Qualification Label")
 ```
-
-
-
