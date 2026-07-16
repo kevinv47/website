@@ -46,7 +46,7 @@ website:
     utterances:
       repo: yourusername/yourrepository  # Add your GitHub repo if using Utterances
   page-footer:
-    left: "© Copyright 2024 Kevin Valdivia. Except where otherwise noted."
+    left: "" # © Copyright 2026 Kevin Valdivia. Except where otherwise noted.
 
 format:
   html:

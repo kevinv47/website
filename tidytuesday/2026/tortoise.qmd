@@ -12,19 +12,23 @@ execute:
   message: false
 ---
 
-This weeks tidytuesday dataset comes from the paper ["Sex Ratio Bias Triggers Demographic Suicide in a Dense Tortoise Population"](https://onlinelibrary.wiley.com/doi/10.1111/ele.70296). The goal of this project was to make an intresting looking plot and use ggpatterns and work on makeing a y-axis level with two levels.
+This weeks tidytuesday dataset comes from the paper ["Sex Ratio Bias Triggers Demographic Suicide in a Dense Tortoise Population"]. The goal of this project was to make an intresting looking plot and use ggpatterns and work on makeing a y-axis level with two levels.
+
+  ["Sex Ratio Bias Triggers Demographic Suicide in a Dense Tortoise Population"]: https://onlinelibrary.wiley.com/doi/10.1111/ele.70296
 
 ## Libraries
+
 The libraries that were used
+
 ```{r}
 library(tidyverse)
 library(ggpattern)
 ```
 
+## Data
 
-
-## Data 
 Importing the data from the tidytuesday repo.
+
 ```{r}
 
 tortoise <- read_csv(
@@ -34,7 +38,9 @@ tortoise <- read_csv(
 ```
 
 ## Plot
+
 Plotting to practice using patterns and sublayered x axis labels.
+
 ```{r}
 tortoise |> 
   group_by(sex, locality) |> 
@@ -73,7 +79,3 @@ tortoise |>
   theme_minimal() 
 
 ```
-
-
-
-
